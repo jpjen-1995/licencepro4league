@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ID LICENCE 4 PRO LEAGUE</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    /* ========== STYLES COMPLETS ========== */
+    #loginPage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b3d2e 0%, #1a6b4a 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      background: rgba(255,255,255,0.95);
+      padding: 2rem;
+    }
+    .login-logo {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #0b3d2e;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .login-subtitle {
+      text-align: center;
+      color: #2d6a4f;
+      margin-bottom: 1.5rem;
+    }
+    body {
+      padding-top: 70px;
+      background: #e8f5e9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .app-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #f8f9fa;
+    }
+    .navbar-dark .navbar-brand {
+      color: #f8f9fa;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+      color: rgba(255,255,255,0.8);
+    }
+    .navbar-dark .navbar-nav .nav-link.active {
+      color: #fff;
+      background-color: #0b3d2e;
+      border-radius: 5px 5px 0 0;
+    }
+    .navbar-dark {
+      background-color: #0b3d2e !important;
+    }
+    .btn-primary {
+      background-color: #1a6b4a;
+      border-color: #1a6b4a;
+    }
+    .btn-primary:hover {
+      background-color: #0f4f35;
+      border-color: #0f4f35;
+    }
+    .btn-success {
+      background-color: #2d6a4f;
+      border-color: #2d6a4f;
+    }
+    .btn-success:hover {
+      background-color: #1b4a35;
+      border-color: #1b4a35;
+    }
+    .btn-outline-primary {
+      color: #1a6b4a;
+      border-color: #1a6b4a;
+    }
+    .btn-outline-primary:hover {
+      background-color: #1a6b4a;
+      color: #fff;
+    }
+    .table-dark {
+      background-color: #0b3d2e;
+    }
+    .card-preview {
+      width: 55mm;
+      height: 85mm;
+      border: 2px solid #000;
+      padding: 3mm 2mm 2mm 2mm;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-sizing: border-box;
+      border-radius: 4mm;
+      overflow: hidden;
+    }
+    .card-preview.landscape {
+      width: 85mm;
+      height: 55mm;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      padding: 3mm 2mm 2mm 2mm;
+    }
+    .card-top-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5mm;
+      width: 100%;
+    }
+    .extra-text {
+      font-size: 5.5px;
+      text-align: center;
+      flex: 1;
+    }
+    .federal-logo-header {
+      max-height: 5mm;
+      max-width: 9mm;
+      object-fit: contain;
+      margin-right: 1.5mm;
+    }
+    .card-org-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1mm;
+      width: 100%;
+    }
+    .org-logo-header {
+      max-height: 5mm;
+      max-width: 9mm;
+      object-fit: contain;
+      margin-right: 1mm;
+    }
+    .card-header-custom {
+      font-weight: bold;
+      font-size: 8px;
+      text-align: center;
+    }
+    .photo-qr-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2mm;
+      margin: 2mm 0 1.5mm 0;
+    }
+    .card-preview.landscape .photo-qr-row {
+      width: 42%;
+      justify-content: space-between;
+      gap: 1mm;
+      flex-shrink: 0;
+      align-items: center;
+    }
+    .photo-area {
+      width: 22mm;
+      height: 28mm;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #eee;
+      flex-shrink: 0;
+      border-radius: 2mm;
+    }
+    .card-preview.landscape .photo-area {
+      width: 19mm;
+      height: 24mm;
+    }
+    .photo-area img.photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .qr-area {
+      width: 16mm;
+      height: 16mm;
+      flex-shrink: 0;
+    }
+    .card-preview.landscape .qr-area {
+      width: 13mm;
+      height: 13mm;
+    }
+    .qr-area canvas, .qr-area img {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .info-area {
+      flex: 1;
+      padding: 1mm 1mm 0 1mm;
+      font-size: 7px;
+      line-height: 1.3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card-preview.landscape .info-area {
+      width: 56%;
+      font-size: 6.5px;
+      margin-left: 1.5mm;
+    }
+    .info-area strong {
+      font-weight: 600;
+    }
+    .info-area .field {
+      margin-bottom: 0.2mm;
+      font-size: 7px;
+    }
+    .card-preview.landscape .info-area .field {
+      font-size: 6.5px;
+    }
+    .card-footer {
+      font-size: 4.5px;
+      text-align: center;
+      margin-top: 1.5mm;
+      border-top: 0.5px solid #aaa;
+      padding-top: 0.5mm;
+      width: 100%;
+    }
+    @media print {
+      body * { visibility: hidden; }
+      .print-area, .print-area * { visibility: visible; }
+      .print-area { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+      .card-preview { margin: 0; box-shadow: none; border: 1px solid #000; }
+      .no-print { display: none !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    .tab-content {
+      background: white;
+      padding: 20px;
+      border: 1px solid #dee2e6;
+      border-top: none;
+      border-radius: 0 0 5px 5px;
+    }
+    .nav-tabs .nav-link {
+      cursor: pointer;
+    }
+    .nav-tabs .nav-link.active {
+      background-color: white;
+      border-bottom-color: transparent;
+    }
+    .disabled-btn {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .settings-block {
+      margin-bottom: 40px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fefefe;
+    }
+    .settings-block h4 {
+      margin-bottom: 20px;
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .preview-container {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .print-iframe {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 0;
+      visibility: hidden;
+    }
+    .perm-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .perm-group label {
+      margin-right: 15px;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+<!-- ========== PAGE DE CONNEXION ========== -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">🏆 ID LICENCE 4 PRO LEAGUE</div>
+    <div class="login-subtitle">Par Eniktech<br>Gestion avancée des licences</div>
+    <form id="loginForm">
+      <div class="mb-3"><label for="username">Nom d'utilisateur</label><input type="text" class="form-control" id="username" placeholder="admin" required></div>
+      <div class="mb-3"><label for="password">Mot de passe</label><input type="password" class="form-control" id="password" required></div>
+      <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+    </form>
+    <p class="text-muted small mt-3 text-center">admin / idges2025</p>
+  </div>
+</div>
+
+<!-- ========== APPLICATION (contenu complet) ========== -->
+<div id="appContent" style="display: none;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand app-brand" href="#">🏆 ID LICENCE 4 PRO LEAGUE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="nav nav-tabs ms-auto me-3" id="mainTabs">
+          <li class="nav-item"><a class="nav-link active" data-panel="clubsTab">🏟️ Clubs</a></li>
+          <li class="nav-item"><a class="nav-link" data-panel="licencesTab">📋 Licences</a></li>
+          <li class="nav-item"><a class="nav-link" data-panel="importTab">📥 Importer</a></li>
+          <li class="nav-item"><a class="nav-link" data-panel="settingsTab">⚙️ Paramètres</a></li>
+          <li class="nav-item" id="usersTabNav" style="display:none;"><a class="nav-link" data-panel="usersTab">👥 Utilisateurs</a></li>
+        </ul>
+        <div class="d-flex align-items-center text-light">
+          <span class="me-3" id="currentClubDisplay"></span>
+          <span class="me-3" id="currentUserDisplay"></span>
+          <button class="btn btn-outline-light" id="logoutBtn">Déconnexion</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="tab-content" id="mainTabsContent">
+      <!-- CLUBS -->
+      <div class="tab-pane show active" data-panel="clubsTab">
+        <h4>🏟️ Clubs</h4>
+        <div class="mb-3 d-flex justify-content-between">
+          <button class="btn btn-success" id="btnAddClub">➕ Ajouter un club</button>
+          <div><span>Club actif : <strong id="clubActifLabel">Aucun</strong></span></div>
+        </div>
+        <div id="addClubForm" style="display:none;" class="mb-3 p-3 border rounded">
+          <input type="text" id="newClubName" class="form-control mb-2" placeholder="Nom du club">
+          <input type="text" id="newClubSaison" class="form-control mb-2" placeholder="Saison (ex: 2025-2026)">
+          <button class="btn btn-primary btn-sm" id="btnSaveClub">Enregistrer</button>
+          <button class="btn btn-secondary btn-sm" id="btnCancelAddClub">Annuler</button>
+        </div>
+        <div id="renameClubForm" style="display:none;" class="mb-3 p-3 border rounded">
+          <input type="hidden" id="renameOldId">
+          <input type="text" id="renameNewName" class="form-control mb-2" placeholder="Nouveau nom">
+          <input type="text" id="renameNewSaison" class="form-control mb-2" placeholder="Nouvelle saison">
+          <button class="btn btn-primary btn-sm" id="btnRenameClub">Valider</button>
+          <button class="btn btn-secondary btn-sm" id="btnCancelRename">Annuler</button>
+        </div>
+        <div class="table-responsive"><table class="table table-striped" id="clubsTable"><thead class="table-dark"><tr><th>Club</th><th>Saison</th><th>Nb Licences</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+      </div>
+
+      <!-- LICENCES -->
+      <div class="tab-pane" data-panel="licencesTab" style="display:none;">
+        <div id="licenceSection">
+          <h4>Nouvelle licence pour <span id="licenceClubName"></span></h4>
+          <p id="noClubAlert" class="text-danger" style="display:none;">⚠️ Aucun club sélectionné.</p>
+          <form id="licenceForm" class="row g-3" novalidate>
+            <div class="col-md-4"><label class="form-label">Nom complet</label><input type="text" class="form-control" id="nom" required></div>
+            <div class="col-md-3"><label class="form-label">Date de naissance</label><input type="date" class="form-control" id="dateNaissance" required></div>
+            <div class="col-md-3"><label class="form-label">Lieu de naissance</label><input type="text" class="form-control" id="lieu" required></div>
+            <div class="col-md-2"><label class="form-label">Sexe</label><select class="form-select" id="sexe" required><option value="">Choisir...</option><option value="M">M</option><option value="F">F</option></select></div>
+            <div class="col-md-3"><label class="form-label">Fonction</label>
+              <select class="form-select" id="typeLicence" required>
+                <option value="">Choisir...</option>
+                <option value="Joueur">Joueur</option>
+                <option value="Encadreur">Encadreur</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label class="form-label">CNI/Passeport N°</label><input type="text" class="form-control" id="cniNum" required></div>
+            <div class="col-md-3"><label class="form-label">Date de délivrance</label><input type="date" class="form-control" id="cniDate" required></div>
+            <div class="col-md-3"><label class="form-label">Lieu de délivrance</label><input type="text" class="form-control" id="cniLieu" required></div>
+            <div class="col-md-4"><label class="form-label">Photo</label><input type="file" class="form-control" id="photoInput" accept="image/*" required></div>
+            <div class="col-md-4"><label class="form-label">N° Licence (auto)</label><input type="text" class="form-control" id="numeroPreview" readonly></div>
+            <div class="col-12"><button type="submit" class="btn btn-primary" id="btnGenerateLicence">Générer la licence</button></div>
+          </form>
+        </div>
+        <hr>
+        <h5>Licences du club <span id="listClubName"></span> <small>(<span id="licenceCount">0</span>)</small></h5>
+        <div class="d-flex gap-2 mb-2">
+          <button class="btn btn-outline-primary btn-sm" id="btnBordereau">📄 Bordereau</button>
+          <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Portrait">🖨️ Planche A4 (Portrait)</button>
+          <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Landscape">🖨️ Planche A4 (Paysage)</button>
+        </div>
+        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Fonction</th><th>Saison</th><th>Sexe</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+      </div>
+
+      <!-- IMPORT CSV -->
+      <div class="tab-pane" data-panel="importTab" style="display:none;">
+        <h4>Importer pour <span id="importClubName"></span></h4>
+        <p>Fichier CSV (colonnes : Nom,DateNaissance,Lieu,Sexe,Fonction,CNI_N°,CNI_Date,CNI_Lieu)</p>
+        <input type="file" id="csvFile" accept=".csv" class="form-control mb-3">
+        <div id="importPreview" class="d-none">
+          <h5>Aperçu</h5>
+          <div class="table-responsive"><table class="table table-sm" id="importTable"><thead class="table-dark"><tr><th>Nom</th><th>Né le</th><th>Lieu</th><th>Sexe</th><th>Fonction</th><th>CNI</th><th>Photo</th></tr></thead><tbody></tbody></table></div>
+          <button class="btn btn-success" id="btnGenerateAll">Générer toutes les licences</button>
+        </div>
+      </div>
+
+      <!-- PARAMÈTRES -->
+      <div class="tab-pane" data-panel="settingsTab" style="display:none;">
+        <h4>Paramètres graphiques des cartes</h4>
+        <div class="settings-block" id="portraitBlock">
+          <h4>📄 Configuration PORTRAIT (55x85 mm)</h4>
+          <form id="portraitSettingsForm" class="row g-3">
+            <div class="col-12"><label class="form-label">Entête du document (texte supplémentaire)</label><textarea class="form-control" id="portraitExtraText" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label">Titre du document</label><input type="text" class="form-control" id="portraitHeaderText"></div>
+            <div class="col-md-6"><label class="form-label">Logo organisation</label><input type="file" class="form-control" id="portraitLogoFile" accept="image/*"><div class="mt-2 d-flex align-items-center gap-2"><div id="portraitLogoPreview"></div><button type="button" class="btn btn-sm btn-outline-danger btn-delete-logo" data-orient="portrait" style="display:none;">Supprimer</button></div></div>
+            <div class="col-md-6"><label class="form-label">Logo fédéral</label><input type="file" class="form-control" id="portraitLogoFederalFile" accept="image/*"><div class="mt-2 d-flex align-items-center gap-2"><div id="portraitLogoFederalPreview"></div><button type="button" class="btn btn-sm btn-outline-danger btn-delete-logo-federal" data-orient="portrait" style="display:none;">Supprimer</button></div></div>
+            <div class="col-md-6">
+              <label class="form-label">Fond</label>
+              <div class="form-check"><input class="form-check-input" type="radio" name="portraitBgType" id="portraitBgColor" value="color" checked><label for="portraitBgColor">Couleur</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="portraitBgType" id="portraitBgImage" value="image"><label for="portraitBgImage">Image</label></div>
+              <div id="portraitBgColorPicker" class="mt-2"><input type="color" class="form-control form-control-color" id="portraitBackgroundColor" value="#ffffff"></div>
+              <div id="portraitBgImageUpload" class="mt-2 d-none"><input type="file" class="form-control" id="portraitBgImageFile" accept="image/*"><div class="mt-2" id="portraitBgImagePreview"></div></div>
+            </div>
+            <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer configuration Portrait</button><button type="button" class="btn btn-outline-danger ms-2 btn-reset-settings" data-orient="portrait">↺ Réinitialiser</button></div>
+          </form>
+          <hr><h5>Aperçu (Portrait)</h5><div class="preview-container"><div class="card-preview" id="portraitPreview"></div></div>
+        </div>
+        <div class="settings-block" id="landscapeBlock">
+          <h4>📄 Configuration PAYSAGE (85x55 mm)</h4>
+          <form id="landscapeSettingsForm" class="row g-3">
+            <div class="col-12"><label class="form-label">Entête du document (texte supplémentaire)</label><textarea class="form-control" id="landscapeExtraText" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label">Titre du document</label><input type="text" class="form-control" id="landscapeHeaderText"></div>
+            <div class="col-md-6"><label class="form-label">Logo organisation</label><input type="file" class="form-control" id="landscapeLogoFile" accept="image/*"><div class="mt-2 d-flex align-items-center gap-2"><div id="landscapeLogoPreview"></div><button type="button" class="btn btn-sm btn-outline-danger btn-delete-logo" data-orient="landscape" style="display:none;">Supprimer</button></div></div>
+            <div class="col-md-6"><label class="form-label">Logo fédéral</label><input type="file" class="form-control" id="landscapeLogoFederalFile" accept="image/*"><div class="mt-2 d-flex align-items-center gap-2"><div id="landscapeLogoFederalPreview"></div><button type="button" class="btn btn-sm btn-outline-danger btn-delete-logo-federal" data-orient="landscape" style="display:none;">Supprimer</button></div></div>
+            <div class="col-md-6">
+              <label class="form-label">Fond</label>
+              <div class="form-check"><input class="form-check-input" type="radio" name="landscapeBgType" id="landscapeBgColor" value="color" checked><label for="landscapeBgColor">Couleur</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="landscapeBgType" id="landscapeBgImage" value="image"><label for="landscapeBgImage">Image</label></div>
+              <div id="landscapeBgColorPicker" class="mt-2"><input type="color" class="form-control form-control-color" id="landscapeBackgroundColor" value="#ffffff"></div>
+              <div id="landscapeBgImageUpload" class="mt-2 d-none"><input type="file" class="form-control" id="landscapeBgImageFile" accept="image/*"><div class="mt-2" id="landscapeBgImagePreview"></div></div>
+            </div>
+            <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer configuration Paysage</button><button type="button" class="btn btn-outline-danger ms-2 btn-reset-settings" data-orient="landscape">↺ Réinitialiser</button></div>
+          </form>
+          <hr><h5>Aperçu (Paysage)</h5><div class="preview-container"><div class="card-preview landscape" id="landscapePreview"></div></div>
+        </div>
+        <hr>
+        <h5>💾 Gestion des données</h5>
+        <div class="row"><div class="col-md-4"><button class="btn btn-outline-info w-100" id="btnExportDataOnly">📤 Exporter les données</button></div><div class="col-md-4"><label>📥 Importer des données</label><input type="file" id="importDataOnlyFile" accept=".json" class="form-control"><button class="btn btn-outline-warning mt-2 w-100" id="btnImportDataOnly">Remplacer les données</button></div><div class="col-md-4"><button class="btn btn-outline-danger w-100" id="btnClearData">🗑️ Effacer toutes les données</button></div></div>
+        <hr><h5>Sauvegarde complète</h5><div class="row"><div class="col-md-6"><button class="btn btn-info w-100" id="btnExportFull">📤 Exporter tout</button></div><div class="col-md-6"><label>📥 Importer une sauvegarde</label><input type="file" id="importFullFile" accept=".json" class="form-control"><button class="btn btn-warning mt-2 w-100" id="btnImportFull">Restaurer</button></div></div>
+        <hr><h5>⚙️ Configuration seule</h5><div class="row"><div class="col-md-4"><button class="btn btn-outline-secondary w-100" id="btnExportSettingsOnly">📤 Exporter les paramètres</button></div><div class="col-md-8"><label>📥 Importer des paramètres</label><input type="file" id="importSettingsFile" accept=".json" class="form-control"><button class="btn btn-outline-secondary mt-2 w-100" id="btnImportSettingsOnly">Remplacer les paramètres</button></div></div>
+      </div>
+
+      <!-- UTILISATEURS -->
+      <div class="tab-pane" data-panel="usersTab" style="display:none;">
+        <h4>Gestion des utilisateurs</h4>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-header">Ajouter / Modifier un utilisateur</div>
+              <div class="card-body">
+                <form id="userForm">
+                  <input type="hidden" id="editUserId">
+                  <div class="mb-2"><label>Nom d'utilisateur</label><input type="text" id="userUsername" class="form-control" required></div>
+                  <div class="mb-2"><label>Mot de passe</label><input type="password" id="userPassword" class="form-control" placeholder="Laisser vide pour conserver"></div>
+                  <div class="mb-2"><label>Permissions</label>
+                    <div class="perm-group">
+                      <label><input type="checkbox" id="perm_clubs_view"> Voir clubs</label>
+                      <label><input type="checkbox" id="perm_clubs_edit"> Gérer clubs</label>
+                      <label><input type="checkbox" id="perm_licences_view"> Voir licences</label>
+                      <label><input type="checkbox" id="perm_licences_edit"> Gérer licences</label>
+                      <label><input type="checkbox" id="perm_import"> Importer CSV</label>
+                      <label><input type="checkbox" id="perm_print"> Imprimer</label>
+                      <label><input type="checkbox" id="perm_settings"> Modifier paramètres</label>
+                      <label><input type="checkbox" id="perm_users"> Gérer utilisateurs</label>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  <button type="button" id="cancelUserEdit" class="btn btn-secondary">Annuler</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <h5>Liste des utilisateurs</h5>
+            <div class="table-responsive"><table class="table table-striped" id="usersTable"><thead class="table-dark"><tr><th>Utilisateur</th><th>Permissions</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL aperçu carte -->
+<div class="modal fade" id="cardModal" tabindex="-1">
+  <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Aperçu de la carte</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body text-center">
+    <div class="mb-3 no-print">
+      <label>Orientation :</label>
+      <select id="orientationSelect" class="form-select w-auto d-inline-block ms-2">
+        <option value="portrait">Portrait</option>
+        <option value="landscape">Paysage</option>
+      </select>
+      <button class="btn btn-success ms-2" id="btnDownloadJPEG">📥 Télécharger JPEG</button>
+    </div>
+    <div class="print-area"><div class="card-preview" id="cardPreview"></div></div>
+    <button class="btn btn-primary no-print mt-3" id="btnPrintCard">🖨️ Imprimer</button>
+  </div></div></div>
+</div>
+
+<!-- MODAL modification licence -->
+<div class="modal fade" id="editLicenceModal" tabindex="-1">
+  <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modifier la licence</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="editLicenceForm" class="row g-3" novalidate>
+    <input type="hidden" id="editLicenceId">
+    <div class="col-md-4"><label>Nom complet</label><input type="text" class="form-control" id="editNom" required></div>
+    <div class="col-md-3"><label>Date de naissance</label><input type="date" class="form-control" id="editDateNaissance" required></div>
+    <div class="col-md-3"><label>Lieu</label><input type="text" class="form-control" id="editLieu" required></div>
+    <div class="col-md-2"><label>Sexe</label><select class="form-select" id="editSexe" required><option value="M">M</option><option value="F">F</option></select></div>
+    <div class="col-md-3"><label>Fonction</label><select class="form-select" id="editTypeLicence" required><option value="Joueur">Joueur</option><option value="Encadreur">Encadreur</option></select></div>
+    <div class="col-md-3"><label>CNI/Passeport N°</label><input type="text" class="form-control" id="editCniNum" required></div>
+    <div class="col-md-3"><label>Date délivrance</label><input type="date" class="form-control" id="editCniDate" required></div>
+    <div class="col-md-3"><label>Lieu délivrance</label><input type="text" class="form-control" id="editCniLieu" required></div>
+    <div class="col-md-4"><label>Nouvelle photo (optionnel)</label><input type="file" class="form-control" id="editPhotoInput" accept="image/*"></div>
+    <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Annuler</button></div>
+  </form></div></div></div>
+</div>
+
+<iframe id="printFrame" class="print-iframe"></iframe>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  (function(){
+    'use strict';
+
+    // ---------- IndexedDB ----------
+    const DB_NAME = 'IDGesDB';
+    const DB_VERSION = 4;
+    let db = null;
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        if (db && db.name === DB_NAME) return resolve(db);
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => { db = req.result; resolve(db); };
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('clubs')) {
+            const store = db.createObjectStore('clubs', { keyPath: 'id', autoIncrement: true });
+            store.createIndex('name_saison', ['name', 'saison'], { unique: true });
+          }
+          if (!db.objectStoreNames.contains('licenses')) {
+            const store = db.createObjectStore('licenses', { keyPath: 'id', autoIncrement: true });
+            store.createIndex('club_saison', ['clubId', 'saison']);
+          }
+          if (!db.objectStoreNames.contains('users')) {
+            db.createObjectStore('users', { keyPath: 'id', autoIncrement: true });
+          }
+          if (!db.objectStoreNames.contains('settings')) db.createObjectStore('settings', { keyPath: 'key' });
+          if (!db.objectStoreNames.contains('counter')) db.createObjectStore('counter', { keyPath: 'id' });
+        };
+      });
+    }
+
+    async function getStore(storeName, mode='readonly') {
+      const database = await openDB();
+      return database.transaction(storeName, mode).objectStore(storeName);
+    }
+
+    // ----- Club -----
+    async function loadClubs() { const s=await getStore('clubs'); return new Promise(r=>s.getAll().onsuccess=e=>r(e.target.result)); }
+    async function saveClub(c) { const s=await getStore('clubs','readwrite'); return new Promise(r=>s.add(c).onsuccess=e=>r(e.target.result)); }
+    async function updateClub(c) { const s=await getStore('clubs','readwrite'); return new Promise(r=>s.put(c).onsuccess=e=>r(e.target.result)); }
+    async function deleteClub(id) { const s=await getStore('clubs','readwrite'); return new Promise(r=>s.delete(id).onsuccess=r); }
+
+    // ----- License -----
+    async function loadLicences() { const s=await getStore('licenses'); return new Promise(r=>s.getAll().onsuccess=e=>r(e.target.result)); }
+    async function saveLicence(l) { const s=await getStore('licenses','readwrite'); return new Promise(r=>s.add(l).onsuccess=e=>r(e.target.result)); }
+    async function updateLicence(l) { const s=await getStore('licenses','readwrite'); return new Promise(r=>s.put(l).onsuccess=e=>r(e.target.result)); }
+    async function deleteLicence(id) { const s=await getStore('licenses','readwrite'); return new Promise(r=>s.delete(id).onsuccess=r); }
+    async function deleteLicencesByClub(clubId, saison) { const ls=await loadLicences(); for(let l of ls.filter(l=>l.clubId===clubId && l.saison===saison)) await deleteLicence(l.id); }
+
+    // ----- Users -----
+    async function loadUsers() {
+      const s=await getStore('users');
+      const users = await new Promise(r=>s.getAll().onsuccess=e=>r(e.target.result));
+      let modified = false;
+      for(let u of users) {
+        if(!u.permissions) {
+          if(u.role === 'admin') {
+            u.permissions = {
+              clubs_view: true, clubs_edit: true,
+              licences_view: true, licences_edit: true,
+              import: true, print: true,
+              settings: true, users: true
+            };
+          } else {
+            u.permissions = {
+              clubs_view: true, clubs_edit: false,
+              licences_view: true, licences_edit: true,
+              import: false, print: true,
+              settings: false, users: false
+            };
+          }
+          modified = true;
+        }
+      }
+      if(modified) {
+        const sw = await getStore('users','readwrite');
+        for(let u of users) await new Promise(r=>sw.put(u).onsuccess=r);
+      }
+      return users;
+    }
+    async function saveUser(u) { const s=await getStore('users','readwrite'); return new Promise(r=>s.add(u).onsuccess=e=>r(e.target.result)); }
+    async function updateUser(u) { const s=await getStore('users','readwrite'); return new Promise(r=>s.put(u).onsuccess=e=>r(e.target.result)); }
+    async function deleteUser(id) { const s=await getStore('users','readwrite'); return new Promise(r=>s.delete(id).onsuccess=r); }
+
+    // ----- Settings -----
+    async function loadSettings() {
+      const s=await getStore('settings');
+      return new Promise(r=>{
+        s.get('portrait').onsuccess = ePort => {
+          s.get('landscape').onsuccess = eLand => {
+            const defaultPortrait = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
+            const defaultLandscape = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
+            const portrait = ePort.target.result ? ePort.target.result.value : defaultPortrait;
+            const landscape = eLand.target.result ? eLand.target.result.value : defaultLandscape;
+            r({ portrait, landscape });
+          };
+        };
+      });
+    }
+    async function savePortraitSettings(settings) { const s=await getStore('settings','readwrite'); return new Promise(r=>s.put({key:'portrait', value:settings}).onsuccess=r); }
+    async function saveLandscapeSettings(settings) { const s=await getStore('settings','readwrite'); return new Promise(r=>s.put({key:'landscape', value:settings}).onsuccess=r); }
+
+    // ----- Counter -----
+    async function getLicenseCounter() {
+      const s=await getStore('counter','readwrite');
+      return new Promise(r=>{
+        s.get('licenseCounter').onsuccess=e=>{
+          let val=e.target.result ? e.target.result.value : 0;
+          val++;
+          s.put({id:'licenseCounter', value:val});
+          r(val);
+        };
+      });
+    }
+
+    // ----- Helpers -----
+    function hashPwd(pwd) { return CryptoJS.SHA256(pwd).toString(); }
+    function hashObj(obj) { return CryptoJS.SHA256(JSON.stringify(obj)).toString(); }
+    async function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) reject(new Error('Aucun fichier'));
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = () => reject(new Error('Erreur lecture fichier'));
+        fr.readAsDataURL(file);
+      });
+    }
+    function buildNumeroLicence(nom, dateNaissance, counter) {
+      const prefix = nom.trim().substring(0,2).toUpperCase();
+      const d = new Date(dateNaissance);
+      const year = d.getFullYear();
+      const month = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return prefix + year + month + day + String(counter).padStart(3,'0');
+    }
+
+    // ----- Variables globales -----
+    let currentUser=null;
+    let currentClub=null;
+    let currentPermissions = null;
+    const loginPage=document.getElementById('loginPage');
+    const appContent=document.getElementById('appContent');
+    const currentUserDisplay=document.getElementById('currentUserDisplay');
+    const currentClubDisplay=document.getElementById('currentClubDisplay');
+    const usersTabNav=document.getElementById('usersTabNav');
+    const printFrame = document.getElementById('printFrame');
+
+    // ----- Permissions -----
+    function hasPermission(perm) {
+      return currentPermissions && currentPermissions[perm] === true;
+    }
+
+    function applyPermissionsUI() {
+      const btnAddClub = document.getElementById('btnAddClub');
+      if(btnAddClub) btnAddClub.style.display = hasPermission('clubs_edit') ? 'inline-block' : 'none';
+      const btnGenerateLicence = document.getElementById('btnGenerateLicence');
+      if(btnGenerateLicence) btnGenerateLicence.disabled = !hasPermission('licences_edit');
+      const licenceFormInputs = document.querySelectorAll('#licenceForm input, #licenceForm select');
+      licenceFormInputs.forEach(inp => inp.disabled = !hasPermission('licences_edit'));
+      const importTab = document.querySelector('[data-panel="importTab"]');
+      if(importTab) importTab.style.display = hasPermission('import') ? 'block' : 'none';
+      const settingsTab = document.querySelector('[data-panel="settingsTab"]');
+      if(settingsTab) settingsTab.style.display = hasPermission('settings') ? 'block' : 'none';
+      usersTabNav.style.display = hasPermission('users') ? 'block' : 'none';
+      const btnBordereau = document.getElementById('btnBordereau');
+      const btnPlanchePortrait = document.getElementById('btnPlancheA4Portrait');
+      const btnPlancheLandscape = document.getElementById('btnPlancheA4Landscape');
+      if(btnBordereau) btnBordereau.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      if(btnPlanchePortrait) btnPlanchePortrait.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      if(btnPlancheLandscape) btnPlancheLandscape.style.display = hasPermission('print') ? 'inline-block' : 'none';
+    }
+
+    // ----- Affichage du club -----
+    async function updateClubDisplay() {
+      if(currentClub && currentClub.name){
+        currentClubDisplay.innerHTML=`🏟️ <strong>${currentClub.name}</strong> (${currentClub.saison})`;
+        document.getElementById('clubActifLabel').innerHTML=`${currentClub.name} (${currentClub.saison})`;
+        document.getElementById('licenceClubName').innerText=currentClub.name;
+        document.getElementById('listClubName').innerText=currentClub.name;
+        document.getElementById('importClubName').innerText=currentClub.name;
+        document.getElementById('noClubAlert').style.display='none';
+      } else {
+        currentClubDisplay.innerHTML='🏟️ Aucun club';
+        document.getElementById('clubActifLabel').innerHTML='Aucun';
+        document.getElementById('licenceClubName').innerText='?';
+        document.getElementById('listClubName').innerText='?';
+        document.getElementById('importClubName').innerText='?';
+        document.getElementById('noClubAlert').style.display='block';
+      }
+    }
+
+    // ----- Rafraîchir liste clubs -----
+    async function refreshClubsList() {
+      const clubs=await loadClubs();
+      const licences=await loadLicences();
+      const tbody=document.querySelector('#clubsTable tbody');
+      tbody.innerHTML='';
+      for(const c of clubs){
+        const nb=licences.filter(l=>l.clubId===c.id && l.saison===c.saison).length;
+        const tr=document.createElement('tr');
+        let actions = '';
+        if(hasPermission('clubs_edit')) {
+          actions = `<button class="btn btn-sm btn-primary select-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>
+                     <button class="btn btn-sm btn-outline-secondary rename-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✏️</button>
+                     <button class="btn btn-sm btn-danger delete-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">🗑️</button>`;
+        } else {
+          actions = `<button class="btn btn-sm btn-primary select-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>`;
+        }
+        tr.innerHTML=`<td>${c.name}</td><td>${c.saison}</td><td>${nb}</td><td>${actions}</td>`;
+        tbody.appendChild(tr);
+      }
+      document.querySelectorAll('.select-club-btn').forEach(btn=>btn.onclick=async()=>{
+        currentClub={id:parseInt(btn.dataset.id),name:btn.dataset.name,saison:btn.dataset.saison};
+        await updateClubDisplay();
+        await refreshLicenceList();
+        updateNumeroPreview();
+        switchTab('licencesTab');
+      });
+      if(hasPermission('clubs_edit')) {
+        document.querySelectorAll('.rename-club-btn').forEach(btn=>btn.onclick=()=>{
+          document.getElementById('renameOldId').value=btn.dataset.id;
+          document.getElementById('renameNewName').value=btn.dataset.name;
+          document.getElementById('renameNewSaison').value=btn.dataset.saison;
+          document.getElementById('renameClubForm').style.display='block';
+          document.getElementById('addClubForm').style.display='none';
+        });
+        document.querySelectorAll('.delete-club-btn').forEach(btn=>btn.onclick=async()=>{
+          const id=parseInt(btn.dataset.id), name=btn.dataset.name, saison=btn.dataset.saison;
+          if(!confirm(`Supprimer le club "${name}" et toutes ses licences ?`)) return;
+          await deleteLicencesByClub(id,saison);
+          await deleteClub(id);
+          if(currentClub?.id===id){ currentClub=null; await updateClubDisplay(); }
+          await refreshClubsList();
+          await refreshLicenceList();
+        });
+      }
+    }
+
+    // ----- Événements clubs -----
+    document.getElementById('btnAddClub').onclick=()=>{ if(hasPermission('clubs_edit')) { document.getElementById('addClubForm').style.display='block'; document.getElementById('renameClubForm').style.display='none'; } };
+    document.getElementById('btnCancelAddClub').onclick=()=>document.getElementById('addClubForm').style.display='none';
+    document.getElementById('btnSaveClub').onclick=async()=>{
+      if(!hasPermission('clubs_edit')) return;
+      const name=document.getElementById('newClubName').value.trim(), saison=document.getElementById('newClubSaison').value.trim();
+      if(!name||!saison) return alert('Nom et saison requis');
+      const clubs=await loadClubs();
+      if(clubs.some(c=>c.name===name && c.saison===saison)) return alert('Ce club existe déjà');
+      const newId=await saveClub({name,saison});
+      currentClub={id:newId,name,saison};
+      await updateClubDisplay();
+      await refreshClubsList();
+      await refreshLicenceList();
+      document.getElementById('addClubForm').style.display='none';
+      document.getElementById('newClubName').value='';
+      document.getElementById('newClubSaison').value='';
+    };
+    document.getElementById('btnRenameClub').onclick=async()=>{
+      if(!hasPermission('clubs_edit')) return;
+      const id=parseInt(document.getElementById('renameOldId').value), newName=document.getElementById('renameNewName').value.trim(), newSaison=document.getElementById('renameNewSaison').value.trim();
+      if(!newName||!newSaison) return alert('Nom et saison requis');
+      const clubs=await loadClubs();
+      const club=clubs.find(c=>c.id===id);
+      if(!club) return alert('Club introuvable');
+      if(clubs.some(c=>c.name===newName && c.saison===newSaison && c.id!==id)) return alert('Conflit');
+      club.name=newName; club.saison=newSaison;
+      await updateClub(club);
+      const licences=await loadLicences();
+      for(const l of licences.filter(l=>l.clubId===id)){ l.clubName=newName; l.saison=newSaison; await updateLicence(l); }
+      if(currentClub?.id===id) currentClub={...currentClub,name:newName,saison:newSaison};
+      await updateClubDisplay();
+      await refreshClubsList();
+      await refreshLicenceList();
+      document.getElementById('renameClubForm').style.display='none';
+    };
+    document.getElementById('btnCancelRename').onclick=()=>document.getElementById('renameClubForm').style.display='none';
+
+    // ----- Aperçu numéro licence -----
+    function updateNumeroPreview() {
+      const nom = document.getElementById('nom').value.trim();
+      const date = document.getElementById('dateNaissance').value;
+      if (nom && date && currentClub) {
+        const prefix = nom.trim().substring(0,2).toUpperCase();
+        const d = new Date(date);
+        document.getElementById('numeroPreview').value = prefix + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + "000";
+      } else {
+        document.getElementById('numeroPreview').value = '';
+      }
+    }
+    document.getElementById('nom').addEventListener('input', updateNumeroPreview);
+    document.getElementById('dateNaissance').addEventListener('input', updateNumeroPreview);
+
+    // ----- Création licence -----
+    document.getElementById('licenceForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!hasPermission('licences_edit')) return alert('Permission insuffisante');
+      if (!currentClub) return alert('Sélectionnez un club');
+
+      const nom = document.getElementById('nom').value.trim();
+      const dateNais = document.getElementById('dateNaissance').value;
+      const lieu = document.getElementById('lieu').value.trim();
+      const sexe = document.getElementById('sexe').value;
+      const type = document.getElementById('typeLicence').value;
+      const cniNum = document.getElementById('cniNum').value.trim();
+      const cniDate = document.getElementById('cniDate').value;
+      const cniLieu = document.getElementById('cniLieu').value.trim();
+      const photoFile = document.getElementById('photoInput').files[0];
+
+      if (!nom || !dateNais || !lieu || !sexe || !type || !cniNum || !cniDate || !cniLieu || !photoFile) {
+        return alert('Tous les champs sont requis');
+      }
+
+      try {
+        const photo = await fileToDataURL(photoFile);
+        if (!currentClub) throw new Error('Club perdu');
+        const counter = await getLicenseCounter();
+        const numero = buildNumeroLicence(nom, dateNais, counter);
+        const licence = {
+          numero, nom, dateNaissance: dateNais, lieu, sexe, type,
+          cniNum, cniDate, cniLieu,
+          clubId: currentClub.id, clubName: currentClub.name, saison: currentClub.saison,
+          photo, dateCreation: new Date().toISOString().slice(0,10)
+        };
+        await saveLicence(licence);
+        alert('Licence créée : ' + numero);
+        document.getElementById('licenceForm').reset();
+        document.getElementById('numeroPreview').value = '';
+        document.getElementById('photoInput').value = '';
+        await refreshLicenceList();
+        await refreshClubsList();
+        if (hasPermission('print')) {
+          showCardPreview(licence);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Erreur lors de la création : ' + (err.message || 'Veuillez réessayer'));
+      }
+    });
+
+    // ----- Rafraîchir liste licences -----
+    async function refreshLicenceList(){
+      if(!currentClub){
+        document.getElementById('licenceCount').innerText='0';
+        document.querySelector('#licencesTable tbody').innerHTML='<tr><td colspan="6">Aucun club sélectionné</td></tr>';
+        return;
+      }
+      let licences=await loadLicences();
+      const clubs=await loadClubs();
+      licences=licences.map(l=>{
+        if(!l.clubName && l.clubId){
+          const c=clubs.find(c=>c.id===l.clubId);
+          if(c) l.clubName=c.name;
+        }
+        return l;
+      });
+      const filtered=licences.filter(l=>l.clubId===currentClub.id && l.saison===currentClub.saison);
+      document.getElementById('licenceCount').innerText=filtered.length;
+      const tbody=document.querySelector('#licencesTable tbody');
+      tbody.innerHTML='';
+      for(const l of filtered){
+        let actions = '';
+        if(hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> `;
+        if(hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button>`;
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${l.numero}</td><td>${l.nom}</td><td>${l.type || ''}</td><td>${l.saison}</td><td>${l.sexe}</td><td>${actions}</td>`;
+        tbody.appendChild(tr);
+      }
+      document.querySelectorAll('.view-btn').forEach(btn=>btn.onclick=async()=>{
+        const lic=(await loadLicences()).find(l=>l.id===parseInt(btn.dataset.id));
+        if(lic && hasPermission('print')) showCardPreview(lic);
+      });
+      if(hasPermission('licences_edit')) {
+        document.querySelectorAll('.edit-btn').forEach(btn=>btn.onclick=async()=>{
+          const lic=(await loadLicences()).find(l=>l.id===parseInt(btn.dataset.id));
+          if(lic) openEditModal(lic);
+        });
+        document.querySelectorAll('.delete-btn').forEach(btn=>btn.onclick=async()=>{
+          if(!confirm('Supprimer cette licence ?')) return;
+          await deleteLicence(parseInt(btn.dataset.id));
+          await refreshLicenceList();
+          await refreshClubsList();
+        });
+      }
+    }
+
+    // ----- Édition licence -----
+    async function openEditModal(licence){
+      if(!hasPermission('licences_edit')) return;
+      document.getElementById('editLicenceId').value=licence.id;
+      document.getElementById('editNom').value=licence.nom;
+      document.getElementById('editDateNaissance').value=licence.dateNaissance;
+      document.getElementById('editLieu').value=licence.lieu;
+      document.getElementById('editSexe').value=licence.sexe;
+      document.getElementById('editTypeLicence').value=licence.type || 'Joueur';
+      document.getElementById('editCniNum').value=licence.cniNum || '';
+      document.getElementById('editCniDate').value=licence.cniDate || '';
+      document.getElementById('editCniLieu').value=licence.cniLieu || '';
+      document.getElementById('editPhotoInput').value='';
+      new bootstrap.Modal(document.getElementById('editLicenceModal')).show();
+    }
+    document.getElementById('editLicenceForm').addEventListener('submit',async(e)=>{
+      e.preventDefault();
+      if(!hasPermission('licences_edit')) return;
+      const id=parseInt(document.getElementById('editLicenceId').value);
+      const nom=document.getElementById('editNom').value.trim();
+      const dateNais=document.getElementById('editDateNaissance').value;
+      const lieu=document.getElementById('editLieu').value.trim();
+      const sexe=document.getElementById('editSexe').value;
+      const type=document.getElementById('editTypeLicence').value;
+      const cniNum=document.getElementById('editCniNum').value.trim();
+      const cniDate=document.getElementById('editCniDate').value;
+      const cniLieu=document.getElementById('editCniLieu').value.trim();
+      const photoFile=document.getElementById('editPhotoInput').files[0];
+      const licences=await loadLicences();
+      const idx=licences.findIndex(l=>l.id===id);
+      if(idx===-1) return alert('Licence introuvable');
+      let licence=licences[idx];
+      let photo=licence.photo;
+      if(photoFile) {
+        try { photo = await fileToDataURL(photoFile); } catch(err) { alert('Erreur lecture photo'); return; }
+      }
+      if (nom !== licence.nom || dateNais !== licence.dateNaissance) {
+        const oldNum = licence.numero;
+        const control = oldNum.slice(-3);
+        const counter = parseInt(control, 10);
+        licence.numero = buildNumeroLicence(nom, dateNais, counter);
+      }
+      licence.nom=nom; licence.dateNaissance=dateNais; licence.lieu=lieu; licence.sexe=sexe;
+      licence.type=type; licence.cniNum=cniNum; licence.cniDate=cniDate; licence.cniLieu=cniLieu;
+      licence.photo=photo;
+      await updateLicence(licence);
+      bootstrap.Modal.getInstance(document.getElementById('editLicenceModal')).hide();
+      await refreshLicenceList();
+      await refreshClubsList();
+    });
+
+    // ----- Bordereau -----
+    document.getElementById('btnBordereau').addEventListener('click',async()=>{
+      if(!hasPermission('print')) return alert('Permission insuffisante');
+      if(!currentClub) return;
+      const licences=await loadLicences();
+      const filtered=licences.filter(l=>l.clubId===currentClub.id && l.saison===currentClub.saison);
+      if(!filtered.length) return alert('Aucune licence');
+      const settings=await loadSettings();
+      const logoHtml=settings.portrait.logoFederal?`<img src="${settings.portrait.logoFederal}" style="max-height:30px;vertical-align:middle;margin-right:10px;">`:'';
+      let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau ${currentClub.name}</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} Bordereau - ${currentClub.name} (${currentClub.saison})</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr><th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Sexe</th><th>Fonction</th><th>CNI</th><th>Saison</th></tr></thead><tbody>`;
+      filtered.forEach(l=>html+=`<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${l.sexe}</td><td>${l.type||''}</td><td>${l.cniNum||''}</td><td>${l.saison}</td></tr>`);
+      html+=`</tbody></table><p style="text-align:center">Généré par ID LICENCE 4 PRO LEAGUE</p></body></html>`;
+      const w=window.open('','_blank'); w.document.write(html); w.document.close(); w.print();
+    });
+
+    // ----- Générateur HTML de carte -----
+    function genererCarteHTML(licence, orientation, settings) {
+      const photoHtml = licence.photo ? `<img src="${licence.photo}" class="photo">` : 'Photo';
+      const orgLogoHtml = settings.logo ? `<img src="${settings.logo}" class="org-logo-header">` : '';
+      const federalLogoHtml = settings.logoFederal ? `<img src="${settings.logoFederal}" class="federal-logo-header">` : '';
+      const extraTextHtml = settings.extraText ? `<span class="extra-text">${settings.extraText.replace(/\n/g,'<br>')}</span>` : '';
+      const headerOrgHtml = settings.headerText || 'FÉDÉRATION SPORTIVE';
+      const fields = [
+        {l:'N°', v:licence.numero},
+        {l:'Nom', v:licence.nom},
+        {l:'Né(e) le', v:licence.dateNaissance + ' à ' + licence.lieu},
+        {l:'Sexe · Fonction', v: (licence.sexe || '') + ' · ' + (licence.type || '')},
+        {l:'CNI/Passeport', v:licence.cniNum || ''},
+        {l:'Délivré le', v:(licence.cniDate||'') + ' à ' + (licence.cniLieu||'')},
+        {l:'Club', v:licence.clubName},
+        {l:'Saison', v:licence.saison}
+      ];
+      const infoLines = fields.map(f => `<div class="field"><strong>${f.l} :</strong> ${f.v}</div>`).join('');
+      const bgStyle = (settings.bgType === 'image' && settings.bgImage) ? `background-image: url('${settings.bgImage}'); background-size: cover;` : `background-color: ${settings.bgColor || '#ffffff'};`;
+      const cardClass = orientation === 'landscape' ? 'card-preview landscape' : 'card-preview';
+      const qrId = `qr-${Date.now()}-${Math.random().toString(36).substr(2,6)}`;
+      return `<div class="${cardClass}" style="${bgStyle}">
+        <div class="card-top-header">${federalLogoHtml}${extraTextHtml}</div>
+        <div class="card-org-line">${orgLogoHtml}<span class="card-header-custom">${headerOrgHtml}</span></div>
+        <div class="photo-qr-row">
+          <div class="photo-area">${photoHtml}</div>
+          <div class="qr-area" id="${qrId}"></div>
+        </div>
+        <div class="info-area">${infoLines}</div>
+        <div class="card-footer">Créé le ${licence.dateCreation} · ID LICENCE 4 PRO LEAGUE</div>
+      </div>`;
+    }
+
+    function printHTML(contentHtml) {
+      return new Promise((resolve, reject) => {
+        const iframe = printFrame;
+        iframe.srcdoc = '';
+        iframe.srcdoc = contentHtml;
+        iframe.onload = () => {
+          try {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            resolve();
+          } catch(e) { reject(e); }
+        };
+        setTimeout(() => {
+          if (!iframe.contentDocument || iframe.contentDocument.body.innerHTML === '') {
+            iframe.srcdoc = contentHtml;
+          }
+        }, 100);
+      });
+    }
+
+    // ----- Planche A4 -----
+    async function genererPlancheA4(orientation) {
+      if(!hasPermission('print')) return alert('Permission insuffisante');
+      if (!currentClub) { alert('Aucun club sélectionné'); return; }
+      const licences = await loadLicences();
+      const filtered = licences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
+      if (!filtered.length) { alert('Aucune licence pour ce club'); return; }
+      const allSettings = await loadSettings();
+      const settings = orientation === 'portrait' ? allSettings.portrait : allSettings.landscape;
+      
+      let cardsHtml = '';
+      const qrInfos = [];
+      for (let idx = 0; idx < filtered.length; idx++) {
+        const l = filtered[idx];
+        const cardHtml = genererCarteHTML(l, orientation, settings);
+        const match = cardHtml.match(/id="([^"]+)"/);
+        if (match) qrInfos.push({ id: match[1], licence: l });
+        cardsHtml += cardHtml;
+      }
+      
+      const pageSize = orientation === 'landscape' ? 'landscape' : 'portrait';
+      const plancheHtml = `<!DOCTYPE html>
+      <html>
+      <head><meta charset="UTF-8"><title>Planche A4 - ${orientation === 'portrait' ? 'Portrait' : 'Paysage'}</title>
+      <style>
+        .card-preview { width: 55mm; height: 85mm; border: 2px solid #000; padding: 3mm 2mm 2mm 2mm; margin: 0; display: flex; flex-direction: column; justify-content: space-between; background-size: cover; background-position: center; background-repeat: no-repeat; color: #000; box-sizing: border-box; border-radius: 4mm; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
+        .card-preview.landscape { width: 85mm; height: 55mm; flex-direction: row; flex-wrap: wrap; align-content: flex-start; padding: 3mm 2mm 2mm 2mm; }
+        .card-top-header { display: flex; align-items: center; justify-content: center; margin-bottom: 1.5mm; width: 100%; }
+        .extra-text { font-size: 5.5px; text-align: center; flex: 1; }
+        .federal-logo-header { max-height: 5mm; max-width: 9mm; object-fit: contain; margin-right: 1.5mm; }
+        .card-org-line { display: flex; align-items: center; justify-content: center; margin-bottom: 1mm; width: 100%; }
+        .org-logo-header { max-height: 5mm; max-width: 9mm; object-fit: contain; margin-right: 1mm; }
+        .card-header-custom { font-weight: bold; font-size: 8px; text-align: center; }
+        .photo-qr-row { display: flex; align-items: center; justify-content: center; gap: 2mm; margin: 2mm 0 1.5mm 0; }
+        .card-preview.landscape .photo-qr-row { width: 42%; justify-content: space-between; gap: 1mm; flex-shrink: 0; align-items: center; }
+        .photo-area { width: 22mm; height: 28mm; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; flex-shrink: 0; border-radius: 2mm; }
+        .card-preview.landscape .photo-area { width: 19mm; height: 24mm; }
+        .photo-area img { width: 100%; height: 100%; object-fit: cover; }
+        .qr-area { width: 16mm; height: 16mm; flex-shrink: 0; }
+        .card-preview.landscape .qr-area { width: 13mm; height: 13mm; }
+        .qr-area canvas, .qr-area img { width: 100% !important; height: 100% !important; }
+        .info-area { flex: 1; padding: 1mm 1mm 0 1mm; font-size: 7px; line-height: 1.3; display: flex; flex-direction: column; justify-content: center; }
+        .card-preview.landscape .info-area { width: 56%; font-size: 6.5px; margin-left: 1.5mm; }
+        .info-area strong { font-weight: 600; }
+        .info-area .field { margin-bottom: 0.2mm; font-size: 7px; }
+        .card-preview.landscape .info-area .field { font-size: 6.5px; }
+        .card-footer { font-size: 4.5px; text-align: center; margin-top: 1.5mm; border-top: 0.5px solid #aaa; padding-top: 0.5mm; width: 100%; }
+        @page { size: A4 ${pageSize}; margin: 10mm; }
+        body { margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 5mm; background: white; }
+        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 5mm; }
+        * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      </style>
+      <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script>
+      </head>
+      <body><div class="grid">${cardsHtml}</div>
+      <script>
+        window.onload = function() {
+          const qrInfos = ${JSON.stringify(qrInfos.map(q => ({id: q.id, licence: q.licence})))};
+          qrInfos.forEach(item => {
+            const container = document.getElementById(item.id);
+            if (container) {
+              const signData = {
+                numero: item.licence.numero,
+                nom: item.licence.nom,
+                dateNaissance: item.licence.dateNaissance,
+                lieu: item.licence.lieu,
+                sexe: item.licence.sexe,
+                clubName: item.licence.clubName,
+                saison: item.licence.saison,
+                type: item.licence.type || '',
+                cniNum: item.licence.cniNum || ''
+              };
+              signData.hash = CryptoJS.SHA256(JSON.stringify(signData)).toString();
+              new QRCode(container, { text: JSON.stringify(signData), width: 100, height: 100 });
+            }
+          });
+        };
+      <\/script>
+      </body></html>`;
+      try { await printHTML(plancheHtml); } catch(e) { alert("Erreur impression : " + e.message); }
+    }
+
+    document.getElementById('btnPlancheA4Portrait').onclick = () => genererPlancheA4('portrait');
+    document.getElementById('btnPlancheA4Landscape').onclick = () => genererPlancheA4('landscape');
+
+    // ----- Aperçu carte et téléchargement JPEG -----
+    async function showCardPreview(licence) {
+      if(!hasPermission('print')) return;
+      const allSettings = await loadSettings();
+      const previewDiv = document.getElementById('cardPreview');
+      const orientationSelect = document.getElementById('orientationSelect');
+      
+      function updatePreview() {
+        const orientation = orientationSelect.value;
+        const settings = orientation === 'portrait' ? allSettings.portrait : allSettings.landscape;
+        const cardHtml = genererCarteHTML(licence, orientation, settings);
+        previewDiv.innerHTML = cardHtml;
+        const match = cardHtml.match(/id="([^"]+)"/);
+        if (match) {
+          const qrId = match[1];
+          const container = document.getElementById(qrId);
+          if (container) {
+            const signData = {
+              numero: licence.numero,
+              nom: licence.nom,
+              dateNaissance: licence.dateNaissance,
+              lieu: licence.lieu,
+              sexe: licence.sexe,
+              clubName: licence.clubName,
+              saison: licence.saison,
+              type: licence.type || '',
+              cniNum: licence.cniNum || ''
+            };
+            signData.hash = hashObj(signData);
+            new QRCode(container, { text: JSON.stringify(signData), width: 100, height: 100 });
+          }
+        }
+      }
+      updatePreview();
+      orientationSelect.onchange = updatePreview;
+
+      document.getElementById('btnPrintCard').onclick = async () => {
+        const chosen = orientationSelect.value;
+        const settings = chosen === 'portrait' ? allSettings.portrait : allSettings.landscape;
+        const cardHtml = genererCarteHTML(licence, chosen, settings);
+        const qrId = `qr-print-${Date.now()}`;
+        let finalHtml = cardHtml.replace(/id="([^"]+)"/, `id="${qrId}"`);
+        const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', clubName: '${licence.clubName}', saison: '${licence.saison}', type: '${licence.type||''}', cniNum: '${licence.cniNum||''}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, clubName: licence.clubName, saison: licence.saison, type: licence.type||'', cniNum: licence.cniNum||''})}'}), width: 100, height: 100});<\/script></body></html>`;
+        try { await printHTML(printDoc); } catch(e) { alert("Erreur impression : " + e.message); }
+      };
+
+      document.getElementById('btnDownloadJPEG').onclick = function() {
+        const cardElement = document.getElementById('cardPreview');
+        const rect = cardElement.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+
+        const clone = cardElement.cloneNode(true);
+        clone.style.border = 'none';
+        clone.style.boxShadow = 'none';
+        clone.style.backgroundColor = '#ffffff';
+        clone.style.margin = '0';
+        clone.style.padding = '2mm';
+        clone.style.boxSizing = 'border-box';
+
+        const container = document.createElement('div');
+        container.style.position = 'absolute';
+        container.style.left = '-9999px';
+        container.style.top = '0';
+        container.style.width = width + 'px';
+        container.style.height = height + 'px';
+        container.style.backgroundColor = '#ffffff';
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.padding = '2px';
+        clone.style.width = '100%';
+        clone.style.height = '100%';
+        container.appendChild(clone);
+        document.body.appendChild(container);
+
+        setTimeout(() => {
+          html2canvas(container, {
+            scale: 3,
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: '#ffffff',
+            width: width,
+            height: height,
+            logging: false
+          }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `licence_${licence.numero}.jpg`;
+            link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.click();
+            document.body.removeChild(container);
+          }).catch(err => {
+            alert('Erreur lors de la génération du JPEG : ' + err.message);
+            document.body.removeChild(container);
+          });
+        }, 500);
+      };
+
+      new bootstrap.Modal(document.getElementById('cardModal')).show();
+    }
+
+    // ----- Import CSV -----
+    let csvData = [];
+    document.getElementById('csvFile').addEventListener('change', function(e) {
+      if(!hasPermission('import')) return;
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const text = ev.target.result;
+        const lines = text.split(/\r?\n/);
+        csvData = [];
+        for (let i = 0; i < lines.length; i++) {
+          const cols = lines[i].split(',');
+          if (cols.length >= 8 && cols[0].trim() !== '') {
+            csvData.push({
+              nom: cols[0].trim(),
+              dateNaissance: cols[1].trim(),
+              lieu: cols[2].trim(),
+              sexe: cols[3].trim(),
+              type: cols[4].trim(),
+              cniNum: cols[5].trim(),
+              cniDate: cols[6].trim(),
+              cniLieu: cols[7].trim()
+            });
+          }
+        }
+        const previewDiv = document.getElementById('importPreview');
+        previewDiv.classList.remove('d-none');
+        const tbody = document.querySelector('#importTable tbody');
+        tbody.innerHTML = '';
+        csvData.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${row.nom}</td><td>${row.dateNaissance}</td><td>${row.lieu}</td><td>${row.sexe}</td><td>${row.type}</td><td>${row.cniNum}</td><td><span class="text-muted">(photo par défaut)</span></td>`;
+          tbody.appendChild(tr);
+        });
+      };
+      reader.readAsText(file, 'UTF-8');
+    });
+
+    document.getElementById('btnGenerateAll').addEventListener('click', async () => {
+      if(!hasPermission('import')) return alert('Permission insuffisante');
+      if (!currentClub) { alert('Sélectionnez un club'); return; }
+      if (csvData.length === 0) { alert('Aucune donnée CSV chargée'); return; }
+      let created = 0;
+      for (const row of csvData) {
+        try {
+          const defaultPhoto = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+          const counter = await getLicenseCounter();
+          const numero = buildNumeroLicence(row.nom, row.dateNaissance, counter);
+          const licence = {
+            numero,
+            nom: row.nom,
+            dateNaissance: row.dateNaissance,
+            lieu: row.lieu,
+            sexe: row.sexe,
+            type: row.type,
+            cniNum: row.cniNum,
+            cniDate: row.cniDate,
+            cniLieu: row.cniLieu,
+            clubId: currentClub.id,
+            clubName: currentClub.name,
+            saison: currentClub.saison,
+            photo: defaultPhoto,
+            dateCreation: new Date().toISOString().slice(0,10)
+          };
+          await saveLicence(licence);
+          created++;
+        } catch(err) { console.error(err); }
+      }
+      alert(`${created} licence(s) créée(s)`);
+      await refreshLicenceList();
+      await refreshClubsList();
+    });
+
+    // ----- Paramètres UI -----
+    async function loadUISettings() {
+      try {
+        const settings = await loadSettings();
+        document.getElementById('portraitHeaderText').value = settings.portrait.headerText || '';
+        document.getElementById('portraitExtraText').value = settings.portrait.extraText || '';
+        document.getElementById('portraitBackgroundColor').value = settings.portrait.bgColor || '#ffffff';
+        if (settings.portrait.bgType === 'image') {
+          document.getElementById('portraitBgImage').checked = true;
+          document.getElementById('portraitBgColorPicker').classList.add('d-none');
+          document.getElementById('portraitBgImageUpload').classList.remove('d-none');
+        } else {
+          document.getElementById('portraitBgColor').checked = true;
+          document.getElementById('portraitBgColorPicker').classList.remove('d-none');
+          document.getElementById('portraitBgImageUpload').classList.add('d-none');
+        }
+        document.getElementById('landscapeHeaderText').value = settings.landscape.headerText || '';
+        document.getElementById('landscapeExtraText').value = settings.landscape.extraText || '';
+        document.getElementById('landscapeBackgroundColor').value = settings.landscape.bgColor || '#ffffff';
+        if (settings.landscape.bgType === 'image') {
+          document.getElementById('landscapeBgImage').checked = true;
+          document.getElementById('landscapeBgColorPicker').classList.add('d-none');
+          document.getElementById('landscapeBgImageUpload').classList.remove('d-none');
+        } else {
+          document.getElementById('landscapeBgColor').checked = true;
+          document.getElementById('landscapeBgColorPicker').classList.remove('d-none');
+          document.getElementById('landscapeBgImageUpload').classList.add('d-none');
+        }
+        updateLogoPreview('portrait', settings.portrait.logo, settings.portrait.logoFederal);
+        updateLogoPreview('landscape', settings.landscape.logo, settings.landscape.logoFederal);
+        updateSettingsPreview('portrait');
+        updateSettingsPreview('landscape');
+      } catch(e) {
+        console.error('Erreur chargement paramètres:', e);
+      }
+    }
+
+    function updateLogoPreview(orient, logoDataUrl, federalDataUrl) {
+      const logoPreview = document.getElementById(`${orient}LogoPreview`);
+      const fedPreview = document.getElementById(`${orient}LogoFederalPreview`);
+      const btnDelLogo = document.querySelector(`.btn-delete-logo[data-orient="${orient}"]`);
+      const btnDelFed = document.querySelector(`.btn-delete-logo-federal[data-orient="${orient}"]`);
+      if (logoDataUrl) {
+        logoPreview.innerHTML = `<img src="${logoDataUrl}" style="max-height:80px;">`;
+        if (btnDelLogo) btnDelLogo.style.display = 'inline-block';
+      } else {
+        logoPreview.innerHTML = '';
+        if (btnDelLogo) btnDelLogo.style.display = 'none';
+      }
+      if (federalDataUrl) {
+        fedPreview.innerHTML = `<img src="${federalDataUrl}" style="max-height:80px;">`;
+        if (btnDelFed) btnDelFed.style.display = 'inline-block';
+      } else {
+        fedPreview.innerHTML = '';
+        if (btnDelFed) btnDelFed.style.display = 'none';
+      }
+    }
+
+    async function updateSettingsPreview(orient) {
+      try {
+        const previewDiv = document.getElementById(`${orient}Preview`);
+        const headerText = document.getElementById(`${orient}HeaderText`).value || 'FÉDÉRATION SPORTIVE';
+        const extraText = document.getElementById(`${orient}ExtraText`).value;
+        const bgType = document.querySelector(`input[name="${orient}BgType"]:checked`)?.value || 'color';
+        const bgColor = document.getElementById(`${orient}BackgroundColor`).value;
+        const logoFile = document.getElementById(`${orient}LogoFile`).files[0];
+        const federalFile = document.getElementById(`${orient}LogoFederalFile`).files[0];
+        const bgFile = document.getElementById(`${orient}BgImageFile`).files[0];
+        const currentSettings = (await loadSettings())[orient];
+        const logo = logoFile ? await fileToDataURL(logoFile) : currentSettings.logo;
+        const fed = federalFile ? await fileToDataURL(federalFile) : currentSettings.logoFederal;
+        const bg = bgFile ? await fileToDataURL(bgFile) : currentSettings.bgImage;
+        const isLandscape = (orient === 'landscape');
+        previewDiv.className = `card-preview ${isLandscape ? 'landscape' : ''}`;
+        if (isLandscape) { previewDiv.style.width = '85mm'; previewDiv.style.height = '55mm'; }
+        else { previewDiv.style.width = '55mm'; previewDiv.style.height = '85mm'; }
+        if (bgType === 'image' && bg) previewDiv.style.backgroundImage = `url('${bg}')`;
+        else previewDiv.style.backgroundColor = bgColor || '#ffffff';
+        previewDiv.style.backgroundSize = 'cover';
+        const dummyLicence = {
+          numero: 'DO25031999001',
+          nom: 'Exemple Nom',
+          dateNaissance: '01/01/2000',
+          lieu: 'Ville exemple',
+          sexe: 'M',
+          clubName: 'Club test',
+          saison: '2025-2026',
+          type: 'Joueur',
+          cniNum: 'ABC123',
+          cniDate: '2025-01-01',
+          cniLieu: 'Ville',
+          photo: null,
+          dateCreation: '2025-01-01'
+        };
+        const cardHtml = genererCarteHTML(dummyLicence, orient, { headerText, extraText, logo, logoFederal: fed, bgType, bgColor, bgImage: bg });
+        previewDiv.innerHTML = cardHtml;
+        const match = cardHtml.match(/id="([^"]+)"/);
+        if (match) new QRCode(document.getElementById(match[1]), { text: 'APERÇU', width: 80, height: 80 });
+      } catch(e) {
+        console.error('Erreur mise à jour aperçu:', e);
+      }
+    }
+
+    // ----- Sauvegarde paramètres -----
+    async function saveOrientationSettings(orient) {
+      if(!hasPermission('settings')) return alert('Permission insuffisante');
+      try {
+        const headerText = document.getElementById(`${orient}HeaderText`).value.trim();
+        const extraText = document.getElementById(`${orient}ExtraText`).value.trim();
+        const bgType = document.querySelector(`input[name="${orient}BgType"]:checked`)?.value || 'color';
+        const bgColor = document.getElementById(`${orient}BackgroundColor`).value;
+        const logoFile = document.getElementById(`${orient}LogoFile`).files[0];
+        const federalFile = document.getElementById(`${orient}LogoFederalFile`).files[0];
+        const bgFile = document.getElementById(`${orient}BgImageFile`).files[0];
+        const current = (await loadSettings())[orient];
+        const logo = logoFile ? await fileToDataURL(logoFile) : current.logo;
+        const fed = federalFile ? await fileToDataURL(federalFile) : current.logoFederal;
+        const bg = bgFile ? await fileToDataURL(bgFile) : current.bgImage;
+        const newSettings = { headerText: headerText || 'FÉDÉRATION SPORTIVE', extraText, logo, logoFederal: fed, bgType, bgColor, bgImage: bg };
+        if (orient === 'portrait') await savePortraitSettings(newSettings);
+        else await saveLandscapeSettings(newSettings);
+        alert(`Configuration ${orient === 'portrait' ? 'Portrait' : 'Paysage'} enregistrée`);
+        updateLogoPreview(orient, logo, fed);
+        updateSettingsPreview(orient);
+      } catch(e) {
+        console.error(e);
+        alert('Erreur lors de l\'enregistrement');
+      }
+    }
+
+    async function resetOrientationSettings(orient) {
+      if(!hasPermission('settings')) return alert('Permission insuffisante');
+      const defaultSettings = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
+      if (orient === 'portrait') await savePortraitSettings(defaultSettings);
+      else await saveLandscapeSettings(defaultSettings);
+      const all = await loadSettings();
+      const settings = all[orient];
+      document.getElementById(`${orient}HeaderText`).value = settings.headerText;
+      document.getElementById(`${orient}ExtraText`).value = settings.extraText;
+      document.getElementById(`${orient}BackgroundColor`).value = settings.bgColor;
+      if (settings.bgType === 'image') document.getElementById(`${orient}BgImage`).checked = true;
+      else document.getElementById(`${orient}BgColor`).checked = true;
+      document.getElementById(`${orient}LogoFile`).value = '';
+      document.getElementById(`${orient}LogoFederalFile`).value = '';
+      document.getElementById(`${orient}BgImageFile`).value = '';
+      updateLogoPreview(orient, settings.logo, settings.logoFederal);
+      updateSettingsPreview(orient);
+      alert(`Configuration ${orient === 'portrait' ? 'Portrait' : 'Paysage'} réinitialisée`);
+    }
+
+    document.getElementById('portraitSettingsForm').addEventListener('submit', e => { e.preventDefault(); saveOrientationSettings('portrait'); });
+    document.getElementById('landscapeSettingsForm').addEventListener('submit', e => { e.preventDefault(); saveOrientationSettings('landscape'); });
+    document.querySelectorAll('.btn-reset-settings').forEach(btn => {
+      btn.addEventListener('click', () => resetOrientationSettings(btn.dataset.orient));
+    });
+    document.querySelectorAll('.btn-delete-logo').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if(!hasPermission('settings')) return;
+        const orient = btn.dataset.orient;
+        const current = (await loadSettings())[orient];
+        current.logo = null;
+        if (orient === 'portrait') await savePortraitSettings(current);
+        else await saveLandscapeSettings(current);
+        updateLogoPreview(orient, null, current.logoFederal);
+        updateSettingsPreview(orient);
+      });
+    });
+    document.querySelectorAll('.btn-delete-logo-federal').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if(!hasPermission('settings')) return;
+        const orient = btn.dataset.orient;
+        const current = (await loadSettings())[orient];
+        current.logoFederal = null;
+        if (orient === 'portrait') await savePortraitSettings(current);
+        else await saveLandscapeSettings(current);
+        updateLogoPreview(orient, current.logo, null);
+        updateSettingsPreview(orient);
+      });
+    });
+
+    function bindBgRadio(orient) {
+      const colorRadio = document.getElementById(`${orient}BgColor`);
+      const imageRadio = document.getElementById(`${orient}BgImage`);
+      const colorPickerDiv = document.getElementById(`${orient}BgColorPicker`);
+      const imageUploadDiv = document.getElementById(`${orient}BgImageUpload`);
+      if (colorRadio && imageRadio) {
+        colorRadio.addEventListener('change', () => { if (colorRadio.checked) { colorPickerDiv.classList.remove('d-none'); imageUploadDiv.classList.add('d-none'); updateSettingsPreview(orient); } });
+        imageRadio.addEventListener('change', () => { if (imageRadio.checked) { colorPickerDiv.classList.add('d-none'); imageUploadDiv.classList.remove('d-none'); updateSettingsPreview(orient); } });
+      }
+    }
+    bindBgRadio('portrait');
+    bindBgRadio('landscape');
+
+    ['portraitHeaderText','portraitExtraText','portraitBackgroundColor','portraitLogoFile','portraitLogoFederalFile','portraitBgImageFile'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => updateSettingsPreview('portrait'));
+      if (el) el.addEventListener('input', () => updateSettingsPreview('portrait'));
+    });
+    ['landscapeHeaderText','landscapeExtraText','landscapeBackgroundColor','landscapeLogoFile','landscapeLogoFederalFile','landscapeBgImageFile'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => updateSettingsPreview('landscape'));
+      if (el) el.addEventListener('input', () => updateSettingsPreview('landscape'));
+    });
+
+    // ----- Export / Import -----
+    async function getAllData() {
+      const settings = await loadSettings();
+      return { users: await loadUsers(), licences: await loadLicences(), clubs: await loadClubs(), settings };
+    }
+    async function replaceAllData(data) {
+      const db = await openDB();
+      const tx = db.transaction(['clubs', 'licenses', 'users', 'counter', 'settings'], 'readwrite');
+      await Promise.all([tx.objectStore('clubs').clear(), tx.objectStore('licenses').clear(), tx.objectStore('users').clear(), tx.objectStore('counter').clear(), tx.objectStore('settings').clear()]);
+      const oldToNew = new Map();
+      for (const old of (data.clubs || [])) {
+        const { id, ...c } = old;
+        const newId = await saveClub(c);
+        oldToNew.set(id, { id: newId, name: c.name, saison: c.saison });
+      }
+      for (const old of (data.licences || [])) {
+        const newC = oldToNew.get(old.clubId);
+        if (!newC) continue;
+        const { id, ...l } = old;
+        l.clubId = newC.id;
+        l.clubName = newC.name;
+        await saveLicence(l);
+      }
+      for (const old of (data.users || [])) {
+        const { id, ...u } = old;
+        await saveUser(u);
+      }
+      if (data.settings) {
+        if (data.settings.portrait) await savePortraitSettings(data.settings.portrait);
+        if (data.settings.landscape) await saveLandscapeSettings(data.settings.landscape);
+      }
+    }
+    document.getElementById('btnExportDataOnly').onclick = async () => { const data = await getAllData(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = `idges_data_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    let importDataContent = null;
+    document.getElementById('importDataOnlyFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importDataContent = ev.target.result; r.readAsText(f); } };
+    document.getElementById('btnImportDataOnly').onclick = async () => { if (!importDataContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer toutes les données ?')) return; try { const d = JSON.parse(importDataContent); if (!d.users || !d.licences || !d.clubs) throw new Error(); await replaceAllData(d); alert('Données importées. Rechargement...'); location.reload(); } catch (e) { alert('Erreur'); } };
+    document.getElementById('btnClearData').onclick = async () => { if (confirm('Effacer tout ?')) { await replaceAllData({ users: [], licences: [], clubs: [] }); sessionStorage.removeItem('currentClub'); location.reload(); } };
+    document.getElementById('btnExportFull').onclick = async () => { const data = await getAllData(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = `idges_full_backup_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    let importFullContent = null;
+    document.getElementById('importFullFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importFullContent = ev.target.result; r.readAsText(f); } };
+    document.getElementById('btnImportFull').onclick = async () => { if (!importFullContent) return alert('Choisissez un fichier'); if (!confirm('Restaurer tout ?')) return; try { const d = JSON.parse(importFullContent); if (!d.users || !d.licences || !d.clubs || !d.settings) throw new Error(); await replaceAllData(d); alert('Sauvegarde restaurée. Rechargement...'); location.reload(); } catch (e) { alert('Erreur'); } };
+    document.getElementById('btnExportSettingsOnly').onclick = async () => { const s = await loadSettings(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(s)], { type: 'application/json' })); a.download = `idges_settings_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    let importSettingsContent = null;
+    document.getElementById('importSettingsFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importSettingsContent = ev.target.result; r.readAsText(f); } };
+    document.getElementById('btnImportSettingsOnly').onclick = async () => { if (!importSettingsContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer la configuration ?')) return; try { const ns = JSON.parse(importSettingsContent); if (!ns.portrait || !ns.landscape) throw new Error(); await savePortraitSettings(ns.portrait); await saveLandscapeSettings(ns.landscape); alert('Paramètres importés'); await loadUISettings(); } catch (e) { alert('Erreur'); } };
+
+    // ----- Utilisateurs -----
+    function permsToCheckboxes(perms) {
+      document.getElementById('perm_clubs_view').checked = perms.clubs_view || false;
+      document.getElementById('perm_clubs_edit').checked = perms.clubs_edit || false;
+      document.getElementById('perm_licences_view').checked = perms.licences_view || false;
+      document.getElementById('perm_licences_edit').checked = perms.licences_edit || false;
+      document.getElementById('perm_import').checked = perms.import || false;
+      document.getElementById('perm_print').checked = perms.print || false;
+      document.getElementById('perm_settings').checked = perms.settings || false;
+      document.getElementById('perm_users').checked = perms.users || false;
+    }
+    function checkboxesToPerms() {
+      return {
+        clubs_view: document.getElementById('perm_clubs_view').checked,
+        clubs_edit: document.getElementById('perm_clubs_edit').checked,
+        licences_view: document.getElementById('perm_licences_view').checked,
+        licences_edit: document.getElementById('perm_licences_edit').checked,
+        import: document.getElementById('perm_import').checked,
+        print: document.getElementById('perm_print').checked,
+        settings: document.getElementById('perm_settings').checked,
+        users: document.getElementById('perm_users').checked
+      };
+    }
+    async function refreshUsersList() {
+      if(!hasPermission('users')) return;
+      const users = await loadUsers();
+      const tbody = document.querySelector('#usersTable tbody');
+      tbody.innerHTML = '';
+      for(const u of users) {
+        const perms = u.permissions || {};
+        const permSummary = Object.entries(perms).filter(([k,v])=>v).map(([k])=>k.substring(0,3)).join(', ');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${u.username}</td><td>${permSummary || 'Aucune'}</td>
+        <td><button class="btn btn-sm btn-warning edit-user-btn" data-id="${u.id}" data-username="${u.username}">✏️</button>
+        ${u.username !== currentUser.username ? `<button class="btn btn-sm btn-danger delete-user-btn" data-id="${u.id}" data-username="${u.username}">🗑️</button>` : ''}</td>`;
+        tbody.appendChild(tr);
+      }
+      document.querySelectorAll('.edit-user-btn').forEach(btn => {
+        btn.onclick = async () => {
+          const userId = parseInt(btn.dataset.id);
+          const usersList = await loadUsers();
+          const user = usersList.find(u => u.id === userId);
+          if(user) {
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('userUsername').value = user.username;
+            document.getElementById('userPassword').value = '';
+            permsToCheckboxes(user.permissions || {});
+          }
+        };
+      });
+      document.querySelectorAll('.delete-user-btn').forEach(btn => {
+        btn.onclick = async () => {
+          if(!confirm(`Supprimer l'utilisateur ${btn.dataset.username} ?`)) return;
+          await deleteUser(parseInt(btn.dataset.id));
+          await refreshUsersList();
+        };
+      });
+    }
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if(!hasPermission('users')) return alert('Permission insuffisante');
+      const userId = document.getElementById('editUserId').value;
+      const username = document.getElementById('userUsername').value.trim();
+      const password = document.getElementById('userPassword').value;
+      const perms = checkboxesToPerms();
+      if(!username) return alert('Nom requis');
+      const users = await loadUsers();
+      if(userId === '') { // création
+        if(users.find(u => u.username === username)) return alert('Nom déjà utilisé');
+        if(!password) return alert('Mot de passe requis pour nouvelle création');
+        await saveUser({ username, passwordHash: hashPwd(password), permissions: perms });
+      } else { // modification
+        const existing = users.find(u => u.id === parseInt(userId));
+        if(!existing) return alert('Utilisateur introuvable');
+        if(existing.username !== username && users.find(u => u.username === username)) return alert('Nom déjà utilisé');
+        existing.username = username;
+        if(password) existing.passwordHash = hashPwd(password);
+        existing.permissions = perms;
+        await updateUser(existing);
+        if(currentUser.id === existing.id) {
+          currentUser.username = username;
+          currentUserDisplay.textContent = `👤 ${username}`;
+          currentPermissions = perms;
+          applyPermissionsUI();
+        }
+      }
+      document.getElementById('editUserId').value = '';
+      document.getElementById('userUsername').value = '';
+      document.getElementById('userPassword').value = '';
+      permsToCheckboxes({});
+      await refreshUsersList();
+    });
+    document.getElementById('cancelUserEdit').onclick = () => {
+      document.getElementById('editUserId').value = '';
+      document.getElementById('userUsername').value = '';
+      document.getElementById('userPassword').value = '';
+      permsToCheckboxes({});
+    };
+
+    // ----- Authentification -----
+    async function initAdmin() {
+      const users = await loadUsers();
+      if(!users.some(u => u.username === 'admin')) {
+        await saveUser({
+          username: 'admin',
+          passwordHash: hashPwd('idges2025'),
+          permissions: {
+            clubs_view: true, clubs_edit: true,
+            licences_view: true, licences_edit: true,
+            import: true, print: true,
+            settings: true, users: true
+          }
+        });
+      }
+    }
+    async function login(username, password) {
+      try {
+        const users = await loadUsers();
+        const user = users.find(u => u.username === username && u.passwordHash === hashPwd(password));
+        if(user){
+          currentUser = { id: user.id, username: user.username };
+          currentPermissions = user.permissions || {};
+          sessionStorage.setItem('loggedUser', JSON.stringify(currentUser));
+          sessionStorage.setItem('currentPermissions', JSON.stringify(currentPermissions));
+          const saved = sessionStorage.getItem('currentClub');
+          if(saved) currentClub = JSON.parse(saved);
+          await showApp();
+          return true;
+        }
+        return false;
+      } catch(e) {
+        console.error('Erreur login:', e);
+        return false;
+      }
+    }
+    function logout(){
+      sessionStorage.removeItem('loggedUser');
+      sessionStorage.removeItem('currentPermissions');
+      sessionStorage.removeItem('currentClub');
+      currentUser=null; currentClub=null; currentPermissions=null;
+      loginPage.style.display='flex';
+      appContent.style.display='none';
+    }
+    async function showApp(){
+      try {
+        loginPage.style.display='none';
+        appContent.style.display='block';
+        if(currentUser){
+          currentUserDisplay.textContent=`👤 ${currentUser.username}`;
+          applyPermissionsUI();
+        }
+        await refreshClubsList();
+        await refreshLicenceList();
+        if(hasPermission('users')) await refreshUsersList();
+        switchTab('clubsTab');
+        await loadUISettings();
+        updateNumeroPreview();
+      } catch(e) {
+        console.error('Erreur affichage app:', e);
+        alert('Erreur lors du chargement de l\'application. Voir console.');
+      }
+    }
+    function switchTab(panelId){
+      document.querySelectorAll('#mainTabs .nav-link').forEach(l=>l.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('show','active'); p.style.display='none';});
+      const activeLink=document.querySelector(`#mainTabs .nav-link[data-panel="${panelId}"]`);
+      if(activeLink) activeLink.classList.add('active');
+      const activePane=document.querySelector(`.tab-pane[data-panel="${panelId}"]`);
+      if(activePane){activePane.classList.add('show','active'); activePane.style.display='block';}
+    }
+    document.querySelectorAll('#mainTabs .nav-link[data-panel]').forEach(link=>link.addEventListener('click',(e)=>{e.preventDefault(); switchTab(link.dataset.panel);}));
+
+    // ----- Initialisation -----
+    (async function () {
+      try {
+        await openDB();
+        await initAdmin();
+        const savedUser = sessionStorage.getItem('loggedUser');
+        const savedPerms = sessionStorage.getItem('currentPermissions');
+        if(savedUser && savedPerms){
+          currentUser = JSON.parse(savedUser);
+          currentPermissions = JSON.parse(savedPerms);
+          const savedClub = sessionStorage.getItem('currentClub');
+          if(savedClub) currentClub = JSON.parse(savedClub);
+          await showApp();
+        } else {
+          loginPage.style.display='flex';
+          appContent.style.display='none';
+        }
+        // Gestion du formulaire de connexion
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const username = document.getElementById('username').value.trim();
+          const password = document.getElementById('password').value;
+          const ok = await login(username, password);
+          if(!ok) alert('Identifiants incorrects');
+        });
+        document.getElementById('logoutBtn').addEventListener('click', () => { if(confirm('Déconnexion ?')) logout(); });
+        window.updateClubDisplay = async function(){ if(currentClub) sessionStorage.setItem('currentClub',JSON.stringify(currentClub)); else sessionStorage.removeItem('currentClub'); await updateClubDisplay(); };
+      } catch(e) {
+        console.error('Erreur initialisation:', e);
+        alert('Erreur au démarrage : ' + e.message);
+      }
+    })();
+  })();
+</script>
+</body>
+</html>

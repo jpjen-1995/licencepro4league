@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* ========== STYLES (inchangés, mais ajustés pour les nouveaux champs) ========== */
+    /* ========== STYLES AVEC ESPACEMENT RÉDUIT ========== */
     #loginPage {
       display: flex;
       justify-content: center;
@@ -93,11 +93,11 @@
       width: 55mm;
       height: 85mm;
       border: 2px solid #000;
-      padding: 3mm 2mm 2mm 2mm;
+      padding: 1.5mm 1.5mm 1.5mm 1.5mm;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -113,61 +113,61 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-content: flex-start;
-      padding: 3mm 2mm 2mm 2mm;
+      padding: 1.5mm 1.5mm 1.5mm 1.5mm;
     }
     .card-top-header {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.5mm;
+      margin-bottom: 0.8mm;
       width: 100%;
     }
     .extra-text {
-      font-size: 5.5px;
+      font-size: 5px;
       text-align: center;
       flex: 1;
     }
     .federal-logo-header {
       max-height: 5mm;
-      max-width: 9mm;
+      max-width: 8mm;
       object-fit: contain;
-      margin-right: 1.5mm;
+      margin-right: 1mm;
     }
     .card-org-line {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1mm;
+      margin-bottom: 0.6mm;
       width: 100%;
     }
     .org-logo-header {
       max-height: 5mm;
-      max-width: 9mm;
+      max-width: 8mm;
       object-fit: contain;
       margin-right: 1mm;
     }
     .card-header-custom {
       font-weight: bold;
-      font-size: 8px;
+      font-size: 9px;
       text-align: center;
     }
     .photo-qr-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 2mm;
-      margin: 2mm 0 1.5mm 0;
+      gap: 1.5mm;
+      margin: 1.5mm 0 0.8mm 0;
     }
     .card-preview.landscape .photo-qr-row {
-      width: 42%;
+      width: 38%;
       justify-content: space-between;
       gap: 1mm;
       flex-shrink: 0;
       align-items: center;
     }
     .photo-area {
-      width: 22mm;
-      height: 28mm;
+      width: 18mm;
+      height: 24mm;
       border: 1px solid #ccc;
       display: flex;
       align-items: center;
@@ -178,8 +178,8 @@
       border-radius: 2mm;
     }
     .card-preview.landscape .photo-area {
-      width: 19mm;
-      height: 24mm;
+      width: 16mm;
+      height: 20mm;
     }
     .photo-area img.photo {
       width: 100%;
@@ -187,13 +187,13 @@
       object-fit: cover;
     }
     .qr-area {
-      width: 16mm;
-      height: 16mm;
+      width: 12mm;
+      height: 12mm;
       flex-shrink: 0;
     }
     .card-preview.landscape .qr-area {
-      width: 13mm;
-      height: 13mm;
+      width: 10mm;
+      height: 10mm;
     }
     .qr-area canvas, .qr-area img {
       width: 100% !important;
@@ -201,35 +201,37 @@
     }
     .info-area {
       flex: 1;
-      padding: 1mm 1mm 0 1mm;
+      padding: 0.3mm 0.5mm 0 0.5mm;
       font-size: 6.5px;
       line-height: 1.2;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
     }
     .card-preview.landscape .info-area {
-      width: 56%;
-      font-size: 6px;
-      margin-left: 1.5mm;
+      width: 60%;
+      font-size: 6.5px;
+      margin-left: 1mm;
     }
     .info-area strong {
       font-weight: 600;
     }
     .info-area .field {
-      margin-bottom: 0.2mm;
+      margin-bottom: 0.1mm;
       font-size: 6.5px;
+      line-height: 1.2;
     }
     .card-preview.landscape .info-area .field {
-      font-size: 6px;
+      font-size: 6.5px;
     }
     .card-footer {
-      font-size: 4.5px;
+      font-size: 4px;
       text-align: center;
-      margin-top: 1.5mm;
+      margin-top: 0.8mm;
       border-top: 0.5px solid #aaa;
-      padding-top: 0.5mm;
+      padding-top: 0.3mm;
       width: 100%;
+      flex-shrink: 0;
     }
     @media print {
       body * { visibility: hidden; }
@@ -293,6 +295,8 @@
       margin-right: 15px;
       font-weight: normal;
     }
+    .conditional-fields { display: none; }
+    .conditional-fields.show { display: block; }
   </style>
 </head>
 <body>
@@ -335,7 +339,7 @@
 
   <div class="container mt-4">
     <div class="tab-content" id="mainTabsContent">
-      <!-- CLUBS (inchangé) -->
+      <!-- CLUBS -->
       <div class="tab-pane show active" data-panel="clubsTab">
         <h4>🏟️ Clubs</h4>
         <div class="mb-3 d-flex justify-content-between">
@@ -358,7 +362,7 @@
         <div class="table-responsive"><table class="table table-striped" id="clubsTable"><thead class="table-dark"><tr><th>Club</th><th>Saison</th><th>Nb Licences</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
       </div>
 
-      <!-- LICENCES (formulaire modifié) -->
+      <!-- LICENCES -->
       <div class="tab-pane" data-panel="licencesTab" style="display:none;">
         <div id="licenceSection">
           <h4>Nouvelle licence pour <span id="licenceClubName"></span></h4>
@@ -367,21 +371,15 @@
             <div class="col-md-4"><label class="form-label">Nom complet</label><input type="text" class="form-control" id="nom" required></div>
             <div class="col-md-3"><label class="form-label">Date de naissance</label><input type="date" class="form-control" id="dateNaissance" required></div>
             <div class="col-md-3"><label class="form-label">Lieu de naissance</label><input type="text" class="form-control" id="lieu" required></div>
-            
-            <!-- Genre (anciennement Sexe) -->
             <div class="col-md-2"><label class="form-label">Genre</label>
-              <select class="form-select" id="sexe" required>
+              <select class="form-select" id="genre" required>
                 <option value="">Choisir...</option>
-                <option value="M">M</option>
-                <option value="F">F</option>
+                <option value="M">Masculin</option>
+                <option value="F">Féminin</option>
               </select>
             </div>
-            <!-- Nationalité -->
             <div class="col-md-3"><label class="form-label">Nationalité</label><input type="text" class="form-control" id="nationalite" required></div>
-            <!-- Profession -->
             <div class="col-md-3"><label class="form-label">Profession</label><input type="text" class="form-control" id="profession" required></div>
-            
-            <!-- Catégorie -->
             <div class="col-md-3"><label class="form-label">Catégorie</label>
               <select class="form-select" id="categorie" required>
                 <option value="">Choisir...</option>
@@ -392,26 +390,47 @@
                 <option value="Senior">Senior</option>
               </select>
             </div>
-            <!-- Taille -->
             <div class="col-md-2"><label class="form-label">Taille (cm)</label><input type="number" class="form-control" id="taille" step="0.1" required></div>
-            <!-- Poids -->
             <div class="col-md-2"><label class="form-label">Poids (kg)</label><input type="number" class="form-control" id="poids" step="0.1" required></div>
-
-            <!-- Fonction -->
-            <div class="col-md-3"><label class="form-label">Fonction</label>
-              <select class="form-select" id="typeLicence" required>
+            <div class="col-md-3"><label class="form-label">Qualité</label>
+              <select class="form-select" id="qualite" required>
                 <option value="">Choisir...</option>
                 <option value="Joueur">Joueur</option>
-                <option value="Encadreur">Encadreur</option>
+                <option value="Médecin">Médecin</option>
+                <option value="Dirigeant">Dirigeant</option>
+                <option value="Entraineur">Entraineur</option>
+                <option value="KINE">KINE</option>
+                <option value="Autre">Autre</option>
               </select>
             </div>
-            <!-- CNI/Passeport -->
+            <div class="col-md-3 conditional-fields" id="autrePrecisionField">
+              <label class="form-label">Précision (si Autre)</label>
+              <input type="text" class="form-control" id="autrePrecision" placeholder="Précisez">
+            </div>
+            <div class="col-12 conditional-fields" id="encadreurFields">
+              <div class="row g-3">
+                <div class="col-md-6"><label class="form-label">Niveau CMR</label>
+                  <select class="form-select" id="niveauCMR">
+                    <option value="">Non précisé</option>
+                    <option value="Niveau 1">Niveau 1</option>
+                    <option value="Niveau 2">Niveau 2</option>
+                    <option value="Niveau 3">Niveau 3</option>
+                    <option value="Niveau 4">Niveau 4</option>
+                    <option value="Niveau 5">Niveau 5</option>
+                  </select>
+                </div>
+                <div class="col-md-6"><label class="form-label">Licence IHF</label><input type="text" class="form-control" id="licenceIHF" placeholder="Numéro licence IHF"></div>
+              </div>
+            </div>
+            <div class="col-md-3"><label class="form-label">Ancien club</label><input type="text" class="form-control" id="ancienClub"></div>
+            <div class="col-md-3"><label class="form-label">Date d'arrivée dans le club</label><input type="date" class="form-control" id="dateArrivee"></div>
+            <div class="col-md-3"><label class="form-label">Ligue régionale</label><input type="text" class="form-control" id="ligueRegionale"></div>
+            <div class="col-md-3"><label class="form-label">Ligue départementale</label><input type="text" class="form-control" id="ligueDepartementale"></div>
+            <div class="col-md-3"><label class="form-label">Niveau</label><input type="text" class="form-control" id="niveau"></div>
             <div class="col-md-3"><label class="form-label">CNI/Passeport N°</label><input type="text" class="form-control" id="cniNum" required></div>
             <div class="col-md-3"><label class="form-label">Date de délivrance</label><input type="date" class="form-control" id="cniDate" required></div>
             <div class="col-md-3"><label class="form-label">Lieu de délivrance</label><input type="text" class="form-control" id="cniLieu" required></div>
-            <!-- Photo -->
             <div class="col-md-4"><label class="form-label">Photo</label><input type="file" class="form-control" id="photoInput" accept="image/*" required></div>
-            <!-- N° Licence (auto) -->
             <div class="col-md-4"><label class="form-label">N° Licence (auto)</label><input type="text" class="form-control" id="numeroPreview" readonly></div>
             <div class="col-12"><button type="submit" class="btn btn-primary" id="btnGenerateLicence">Générer la licence</button></div>
           </form>
@@ -423,22 +442,22 @@
           <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Portrait">🖨️ Planche A4 (Portrait)</button>
           <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Landscape">🖨️ Planche A4 (Paysage)</button>
         </div>
-        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Catégorie</th><th>Fonction</th><th>Genre</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Catégorie</th><th>Qualité</th><th>Genre</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
       </div>
 
-      <!-- IMPORT CSV (adapté) -->
+      <!-- IMPORT CSV -->
       <div class="tab-pane" data-panel="importTab" style="display:none;">
         <h4>Importer pour <span id="importClubName"></span></h4>
-        <p>Fichier CSV (colonnes : Nom,DateNaissance,Lieu,Genre,Nationalité,Profession,Catégorie,Taille,Poids,Fonction,CNI_N°,CNI_Date,CNI_Lieu)</p>
+        <p>Fichier CSV (colonnes : Nom,DateNaissance,Lieu,Genre,Nationalité,Profession,Catégorie,Taille,Poids,Qualité,NiveauCMR,LicenceIHF,AncienClub,DateArrivee,LigueRegionale,LigueDepartementale,Niveau,CNI_N°,CNI_Date,CNI_Lieu)</p>
         <input type="file" id="csvFile" accept=".csv" class="form-control mb-3">
         <div id="importPreview" class="d-none">
           <h5>Aperçu</h5>
-          <div class="table-responsive"><table class="table table-sm" id="importTable"><thead class="table-dark"><tr><th>Nom</th><th>Né le</th><th>Genre</th><th>Catégorie</th><th>Fonction</th><th>Photo</th></tr></thead><tbody></tbody></table></div>
+          <div class="table-responsive"><table class="table table-sm" id="importTable"><thead class="table-dark"><tr><th>Nom</th><th>Né le</th><th>Genre</th><th>Catégorie</th><th>Qualité</th><th>Photo</th></tr></thead><tbody></tbody></table></div>
           <button class="btn btn-success" id="btnGenerateAll">Générer toutes les licences</button>
         </div>
       </div>
 
-      <!-- PARAMÈTRES (inchangé) -->
+      <!-- PARAMÈTRES -->
       <div class="tab-pane" data-panel="settingsTab" style="display:none;">
         <h4>Paramètres graphiques des cartes</h4>
         <div class="settings-block" id="portraitBlock">
@@ -484,7 +503,7 @@
         <hr><h5>⚙️ Configuration seule</h5><div class="row"><div class="col-md-4"><button class="btn btn-outline-secondary w-100" id="btnExportSettingsOnly">📤 Exporter les paramètres</button></div><div class="col-md-8"><label>📥 Importer des paramètres</label><input type="file" id="importSettingsFile" accept=".json" class="form-control"><button class="btn btn-outline-secondary mt-2 w-100" id="btnImportSettingsOnly">Remplacer les paramètres</button></div></div>
       </div>
 
-      <!-- UTILISATEURS (inchangé) -->
+      <!-- UTILISATEURS -->
       <div class="tab-pane" data-panel="usersTab" style="display:none;">
         <h4>Gestion des utilisateurs</h4>
         <div class="row">
@@ -524,7 +543,7 @@
   </div>
 </div>
 
-<!-- MODAL aperçu carte (inchangé) -->
+<!-- MODAL aperçu carte -->
 <div class="modal fade" id="cardModal" tabindex="-1">
   <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Aperçu de la carte</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body text-center">
     <div class="mb-3 no-print">
@@ -540,14 +559,17 @@
   </div></div></div>
 </div>
 
-<!-- MODAL modification licence (modifié) -->
+<!-- MODAL modification licence -->
 <div class="modal fade" id="editLicenceModal" tabindex="-1">
   <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modifier la licence</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="editLicenceForm" class="row g-3" novalidate>
     <input type="hidden" id="editLicenceId">
     <div class="col-md-4"><label>Nom complet</label><input type="text" class="form-control" id="editNom" required></div>
     <div class="col-md-3"><label>Date de naissance</label><input type="date" class="form-control" id="editDateNaissance" required></div>
     <div class="col-md-3"><label>Lieu</label><input type="text" class="form-control" id="editLieu" required></div>
-    <div class="col-md-2"><label>Genre</label><select class="form-select" id="editSexe" required><option value="M">M</option><option value="F">F</option></select></div>
+    <div class="col-md-2"><label>Genre</label><select class="form-select" id="editGenre" required>
+      <option value="M">Masculin</option>
+      <option value="F">Féminin</option>
+    </select></div>
     <div class="col-md-3"><label>Nationalité</label><input type="text" class="form-control" id="editNationalite" required></div>
     <div class="col-md-3"><label>Profession</label><input type="text" class="form-control" id="editProfession" required></div>
     <div class="col-md-3"><label>Catégorie</label>
@@ -561,7 +583,40 @@
     </div>
     <div class="col-md-2"><label>Taille (cm)</label><input type="number" class="form-control" id="editTaille" step="0.1" required></div>
     <div class="col-md-2"><label>Poids (kg)</label><input type="number" class="form-control" id="editPoids" step="0.1" required></div>
-    <div class="col-md-3"><label>Fonction</label><select class="form-select" id="editTypeLicence" required><option value="Joueur">Joueur</option><option value="Encadreur">Encadreur</option></select></div>
+    <div class="col-md-3"><label>Qualité</label>
+      <select class="form-select" id="editQualite" required>
+        <option value="Joueur">Joueur</option>
+        <option value="Médecin">Médecin</option>
+        <option value="Dirigeant">Dirigeant</option>
+        <option value="Entraineur">Entraineur</option>
+        <option value="KINE">KINE</option>
+        <option value="Autre">Autre</option>
+      </select>
+    </div>
+    <div class="col-md-3 conditional-fields" id="editAutrePrecisionField">
+      <label>Précision (si Autre)</label>
+      <input type="text" class="form-control" id="editAutrePrecision">
+    </div>
+    <div class="col-12 conditional-fields" id="editEncadreurFields">
+      <div class="row g-3">
+        <div class="col-md-6"><label>Niveau CMR</label>
+          <select class="form-select" id="editNiveauCMR">
+            <option value="">Non précisé</option>
+            <option value="Niveau 1">Niveau 1</option>
+            <option value="Niveau 2">Niveau 2</option>
+            <option value="Niveau 3">Niveau 3</option>
+            <option value="Niveau 4">Niveau 4</option>
+            <option value="Niveau 5">Niveau 5</option>
+          </select>
+        </div>
+        <div class="col-md-6"><label>Licence IHF</label><input type="text" class="form-control" id="editLicenceIHF" placeholder="Numéro licence IHF"></div>
+      </div>
+    </div>
+    <div class="col-md-3"><label>Ancien club</label><input type="text" class="form-control" id="editAncienClub"></div>
+    <div class="col-md-3"><label>Date d'arrivée</label><input type="date" class="form-control" id="editDateArrivee"></div>
+    <div class="col-md-3"><label>Ligue régionale</label><input type="text" class="form-control" id="editLigueRegionale"></div>
+    <div class="col-md-3"><label>Ligue départementale</label><input type="text" class="form-control" id="editLigueDepartementale"></div>
+    <div class="col-md-3"><label>Niveau</label><input type="text" class="form-control" id="editNiveau"></div>
     <div class="col-md-3"><label>CNI/Passeport N°</label><input type="text" class="form-control" id="editCniNum" required></div>
     <div class="col-md-3"><label>Date délivrance</label><input type="date" class="form-control" id="editCniDate" required></div>
     <div class="col-md-3"><label>Lieu délivrance</label><input type="text" class="form-control" id="editCniLieu" required></div>
@@ -577,9 +632,9 @@
   (function(){
     'use strict';
 
-    // ---------- IndexedDB (version 5 pour nouveaux champs) ----------
+    // ---------- IndexedDB (version 9 : ajout ligueDepartementale) ----------
     const DB_NAME = 'IDGesDB';
-    const DB_VERSION = 5;
+    const DB_VERSION = 9;
     let db = null;
 
     function openDB() {
@@ -597,8 +652,6 @@
           if (!db.objectStoreNames.contains('licenses')) {
             const store = db.createObjectStore('licenses', { keyPath: 'id', autoIncrement: true });
             store.createIndex('club_saison', ['clubId', 'saison']);
-          } else {
-            // Pour les mises à jour, on ne fait rien car les nouveaux champs seront gérés par défaut
           }
           if (!db.objectStoreNames.contains('users')) {
             db.createObjectStore('users', { keyPath: 'id', autoIncrement: true });
@@ -725,6 +778,37 @@
     const usersTabNav=document.getElementById('usersTabNav');
     const printFrame = document.getElementById('printFrame');
 
+    // ----- Gestion des champs conditionnels -----
+    function toggleEncadreurFields(selectElement, targetContainerId) {
+      const container = document.getElementById(targetContainerId);
+      if (!container) return;
+      const val = selectElement.value;
+      if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(val)) {
+        container.classList.add('show');
+      } else {
+        container.classList.remove('show');
+      }
+    }
+    function toggleAutrePrecision(selectElement, targetInputId) {
+      const input = document.getElementById(targetInputId);
+      if (!input) return;
+      if (selectElement.value === 'Autre') {
+        input.closest('.conditional-fields').classList.add('show');
+      } else {
+        input.closest('.conditional-fields').classList.remove('show');
+        input.value = '';
+      }
+    }
+
+    document.getElementById('qualite').addEventListener('change', function() {
+      toggleAutrePrecision(this, 'autrePrecision');
+      toggleEncadreurFields(this, 'encadreurFields');
+    });
+    document.getElementById('editQualite').addEventListener('change', function() {
+      toggleAutrePrecision(this, 'editAutrePrecision');
+      toggleEncadreurFields(this, 'editEncadreurFields');
+    });
+
     function hasPermission(perm) {
       return currentPermissions && currentPermissions[perm] === true;
     }
@@ -749,7 +833,7 @@
       if(btnPlancheLandscape) btnPlancheLandscape.style.display = hasPermission('print') ? 'inline-block' : 'none';
     }
 
-    // ----- Affichage du club -----
+    // ----- Affichage club -----
     async function updateClubDisplay() {
       if(currentClub && currentClub.name){
         currentClubDisplay.innerHTML=`🏟️ <strong>${currentClub.name}</strong> (${currentClub.saison})`;
@@ -768,7 +852,7 @@
       }
     }
 
-    // ----- Rafraîchir liste clubs -----
+    // ----- Rafraîchir clubs (inchangé) -----
     async function refreshClubsList() {
       const clubs=await loadClubs();
       const licences=await loadLicences();
@@ -815,7 +899,6 @@
       }
     }
 
-    // ----- Événements clubs -----
     document.getElementById('btnAddClub').onclick=()=>{ if(hasPermission('clubs_edit')) { document.getElementById('addClubForm').style.display='block'; document.getElementById('renameClubForm').style.display='none'; } };
     document.getElementById('btnCancelAddClub').onclick=()=>document.getElementById('addClubForm').style.display='none';
     document.getElementById('btnSaveClub').onclick=async()=>{
@@ -877,20 +960,31 @@
       const nom = document.getElementById('nom').value.trim();
       const dateNais = document.getElementById('dateNaissance').value;
       const lieu = document.getElementById('lieu').value.trim();
-      const sexe = document.getElementById('sexe').value; // genre
+      const genre = document.getElementById('genre').value;
       const nationalite = document.getElementById('nationalite').value.trim();
       const profession = document.getElementById('profession').value.trim();
       const categorie = document.getElementById('categorie').value;
       const taille = parseFloat(document.getElementById('taille').value);
       const poids = parseFloat(document.getElementById('poids').value);
-      const type = document.getElementById('typeLicence').value;
+      const qualite = document.getElementById('qualite').value;
+      const autrePrecision = (qualite === 'Autre') ? document.getElementById('autrePrecision').value.trim() : '';
+      const niveauCMR = document.getElementById('niveauCMR').value;
+      const licenceIHF = document.getElementById('licenceIHF').value.trim();
+      const ancienClub = document.getElementById('ancienClub').value.trim();
+      const dateArrivee = document.getElementById('dateArrivee').value;
+      const ligueRegionale = document.getElementById('ligueRegionale').value.trim();
+      const ligueDepartementale = document.getElementById('ligueDepartementale').value.trim();
+      const niveau = document.getElementById('niveau').value.trim();
       const cniNum = document.getElementById('cniNum').value.trim();
       const cniDate = document.getElementById('cniDate').value;
       const cniLieu = document.getElementById('cniLieu').value.trim();
       const photoFile = document.getElementById('photoInput').files[0];
 
-      if (!nom || !dateNais || !lieu || !sexe || !nationalite || !profession || !categorie || !taille || !poids || !type || !cniNum || !cniDate || !cniLieu || !photoFile) {
-        return alert('Tous les champs sont requis');
+      if (!nom || !dateNais || !lieu || !genre || !nationalite || !profession || !categorie || !taille || !poids || !qualite || !cniNum || !cniDate || !cniLieu || !photoFile) {
+        return alert('Tous les champs requis sont obligatoires');
+      }
+      if (qualite === 'Autre' && !autrePrecision) {
+        return alert('Veuillez préciser la qualité "Autre"');
       }
 
       try {
@@ -900,9 +994,14 @@
         const numero = buildNumeroLicence(nom, dateNais, counter);
         const licence = {
           numero, nom, dateNaissance: dateNais, lieu,
-          sexe, // genre
+          sexe: genre,
           nationalite, profession, categorie, taille, poids,
-          type, // fonction
+          qualite,
+          autrePrecision: (qualite === 'Autre') ? autrePrecision : '',
+          niveauCMR: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '',
+          licenceIHF: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '',
+          ancienClub, dateArrivee,
+          ligueRegionale, ligueDepartementale, niveau,
           cniNum, cniDate, cniLieu,
           clubId: currentClub.id, clubName: currentClub.name, saison: currentClub.saison,
           photo, dateCreation: new Date().toISOString().slice(0,10)
@@ -912,6 +1011,8 @@
         document.getElementById('licenceForm').reset();
         document.getElementById('numeroPreview').value = '';
         document.getElementById('photoInput').value = '';
+        document.getElementById('encadreurFields').classList.remove('show');
+        document.getElementById('autrePrecisionField').classList.remove('show');
         await refreshLicenceList();
         await refreshClubsList();
         if (hasPermission('print')) {
@@ -923,7 +1024,7 @@
       }
     });
 
-    // ----- Rafraîchir liste licences (tableau) -----
+    // ----- Rafraîchir liste licences (CORRIGÉ : tr est défini) -----
     async function refreshLicenceList(){
       if(!currentClub){
         document.getElementById('licenceCount').innerText='0';
@@ -947,8 +1048,9 @@
         let actions = '';
         if(hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> `;
         if(hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button>`;
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie || ''}</td><td>${l.type || ''}</td><td>${l.sexe || ''}</td><td>${actions}</td>`;
+        const tr = document.createElement('tr');
+        const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
+        tr.innerHTML=`<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie || ''}</td><td>${l.qualite || ''}</td><td>${genreDisplay}</td><td>${actions}</td>`;
         tbody.appendChild(tr);
       }
       document.querySelectorAll('.view-btn').forEach(btn=>btn.onclick=async()=>{
@@ -969,20 +1071,41 @@
       }
     }
 
-    // ----- Édition licence (avec nouveaux champs) -----
+    // ----- Édition licence (adaptée) -----
     async function openEditModal(licence){
       if(!hasPermission('licences_edit')) return;
       document.getElementById('editLicenceId').value=licence.id;
       document.getElementById('editNom').value=licence.nom;
       document.getElementById('editDateNaissance').value=licence.dateNaissance;
       document.getElementById('editLieu').value=licence.lieu;
-      document.getElementById('editSexe').value=licence.sexe || 'M';
+      document.getElementById('editGenre').value=licence.sexe || 'M';
       document.getElementById('editNationalite').value=licence.nationalite || '';
       document.getElementById('editProfession').value=licence.profession || '';
       document.getElementById('editCategorie').value=licence.categorie || 'Minime';
       document.getElementById('editTaille').value=licence.taille || '';
       document.getElementById('editPoids').value=licence.poids || '';
-      document.getElementById('editTypeLicence').value=licence.type || 'Joueur';
+      document.getElementById('editQualite').value=licence.qualite || 'Joueur';
+      // Autre précision
+      if (licence.qualite === 'Autre') {
+        document.getElementById('editAutrePrecisionField').classList.add('show');
+        document.getElementById('editAutrePrecision').value = licence.autrePrecision || '';
+      } else {
+        document.getElementById('editAutrePrecisionField').classList.remove('show');
+        document.getElementById('editAutrePrecision').value = '';
+      }
+      // Encadreur
+      if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(licence.qualite)) {
+        document.getElementById('editEncadreurFields').classList.add('show');
+      } else {
+        document.getElementById('editEncadreurFields').classList.remove('show');
+      }
+      document.getElementById('editNiveauCMR').value = licence.niveauCMR || '';
+      document.getElementById('editLicenceIHF').value = licence.licenceIHF || '';
+      document.getElementById('editAncienClub').value = licence.ancienClub || '';
+      document.getElementById('editDateArrivee').value = licence.dateArrivee || '';
+      document.getElementById('editLigueRegionale').value = licence.ligueRegionale || '';
+      document.getElementById('editLigueDepartementale').value = licence.ligueDepartementale || '';
+      document.getElementById('editNiveau').value = licence.niveau || '';
       document.getElementById('editCniNum').value=licence.cniNum || '';
       document.getElementById('editCniDate').value=licence.cniDate || '';
       document.getElementById('editCniLieu').value=licence.cniLieu || '';
@@ -996,13 +1119,21 @@
       const nom=document.getElementById('editNom').value.trim();
       const dateNais=document.getElementById('editDateNaissance').value;
       const lieu=document.getElementById('editLieu').value.trim();
-      const sexe=document.getElementById('editSexe').value;
+      const genre=document.getElementById('editGenre').value;
       const nationalite=document.getElementById('editNationalite').value.trim();
       const profession=document.getElementById('editProfession').value.trim();
       const categorie=document.getElementById('editCategorie').value;
       const taille=parseFloat(document.getElementById('editTaille').value);
       const poids=parseFloat(document.getElementById('editPoids').value);
-      const type=document.getElementById('editTypeLicence').value;
+      const qualite=document.getElementById('editQualite').value;
+      const autrePrecision = (qualite === 'Autre') ? document.getElementById('editAutrePrecision').value.trim() : '';
+      const niveauCMR = document.getElementById('editNiveauCMR').value;
+      const licenceIHF = document.getElementById('editLicenceIHF').value.trim();
+      const ancienClub = document.getElementById('editAncienClub').value.trim();
+      const dateArrivee = document.getElementById('editDateArrivee').value;
+      const ligueRegionale = document.getElementById('editLigueRegionale').value.trim();
+      const ligueDepartementale = document.getElementById('editLigueDepartementale').value.trim();
+      const niveau = document.getElementById('editNiveau').value.trim();
       const cniNum=document.getElementById('editCniNum').value.trim();
       const cniDate=document.getElementById('editCniDate').value;
       const cniLieu=document.getElementById('editCniLieu').value.trim();
@@ -1022,9 +1153,18 @@
         licence.numero = buildNumeroLicence(nom, dateNais, counter);
       }
       licence.nom=nom; licence.dateNaissance=dateNais; licence.lieu=lieu;
-      licence.sexe=sexe; licence.nationalite=nationalite; licence.profession=profession;
+      licence.sexe=genre;
+      licence.nationalite=nationalite; licence.profession=profession;
       licence.categorie=categorie; licence.taille=taille; licence.poids=poids;
-      licence.type=type;
+      licence.qualite=qualite;
+      licence.autrePrecision = (qualite === 'Autre') ? autrePrecision : '';
+      licence.niveauCMR = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '';
+      licence.licenceIHF = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '';
+      licence.ancienClub = ancienClub;
+      licence.dateArrivee = dateArrivee;
+      licence.ligueRegionale = ligueRegionale;
+      licence.ligueDepartementale = ligueDepartementale;
+      licence.niveau = niveau;
       licence.cniNum=cniNum; licence.cniDate=cniDate; licence.cniLieu=cniLieu;
       licence.photo=photo;
       await updateLicence(licence);
@@ -1033,7 +1173,7 @@
       await refreshClubsList();
     });
 
-    // ----- Bordereau (ajout des nouveaux champs) -----
+    // ----- Bordereau (adapté) -----
     document.getElementById('btnBordereau').addEventListener('click',async()=>{
       if(!hasPermission('print')) return alert('Permission insuffisante');
       if(!currentClub) return;
@@ -1042,13 +1182,16 @@
       if(!filtered.length) return alert('Aucune licence');
       const settings=await loadSettings();
       const logoHtml=settings.portrait.logoFederal?`<img src="${settings.portrait.logoFederal}" style="max-height:30px;vertical-align:middle;margin-right:10px;">`:'';
-      let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau ${currentClub.name}</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} Bordereau - ${currentClub.name} (${currentClub.saison})</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr><th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Genre</th><th>Nationalité</th><th>Catégorie</th><th>Fonction</th><th>CNI</th><th>Saison</th></tr></thead><tbody>`;
-      filtered.forEach(l=>html+=`<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${l.sexe}</td><td>${l.nationalite||''}</td><td>${l.categorie||''}</td><td>${l.type||''}</td><td>${l.cniNum||''}</td><td>${l.saison}</td></tr>`);
+      let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau ${currentClub.name}</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} Bordereau - ${currentClub.name} (${currentClub.saison})</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr><th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Genre</th><th>Nationalité</th><th>Catégorie</th><th>Qualité</th><th>Ancien Club</th><th>Date Arrivée</th><th>Ligue régionale</th><th>Ligue départementale</th><th>Niveau</th><th>CNI</th><th>Saison</th></tr></thead><tbody>`;
+      filtered.forEach(l=>{
+        const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
+        html+=`<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${genreDisplay}</td><td>${l.nationalite||''}</td><td>${l.categorie||''}</td><td>${l.qualite||''}</td><td>${l.ancienClub||''}</td><td>${l.dateArrivee||''}</td><td>${l.ligueRegionale||''}</td><td>${l.ligueDepartementale||''}</td><td>${l.niveau||''}</td><td>${l.cniNum||''}</td><td>${l.saison}</td></tr>`;
+      });
       html+=`</tbody></table><p style="text-align:center">Généré par ID LICENCE 4 PRO LEAGUE</p></body></html>`;
       const w=window.open('','_blank'); w.document.write(html); w.document.close(); w.print();
     });
 
-    // ----- Générateur HTML de carte (avec nouveaux champs, regroupés) -----
+    // ----- Générateur carte (avec champs regroupés sur une même ligne) -----
     function genererCarteHTML(licence, orientation, settings) {
       const photoHtml = licence.photo ? `<img src="${licence.photo}" class="photo">` : 'Photo';
       const orgLogoHtml = settings.logo ? `<img src="${settings.logo}" class="org-logo-header">` : '';
@@ -1056,21 +1199,49 @@
       const extraTextHtml = settings.extraText ? `<span class="extra-text">${settings.extraText.replace(/\n/g,'<br>')}</span>` : '';
       const headerOrgHtml = settings.headerText || 'FÉDÉRATION SPORTIVE';
       
-      // Regroupement des champs pour gagner de la place
-      const fields = [
-        {l:'N°', v:licence.numero},
+      const genreText = licence.sexe === 'M' ? 'Masculin' : (licence.sexe === 'F' ? 'Féminin' : '');
+      let qualiteDisplay = licence.qualite || '';
+      if (licence.qualite === 'Autre' && licence.autrePrecision) {
+        qualiteDisplay += ' (' + licence.autrePrecision + ')';
+      }
+
+      const line1 = `Genre : ${genreText} · Nationalité : ${licence.nationalite || ''}`;
+      const line2 = `Profession : ${licence.profession || ''} · Catégorie : ${licence.categorie || ''}`;
+      const line3 = `Taille : ${licence.taille || ''} cm · Poids : ${licence.poids || ''} kg`;
+      const line4 = `Saison : ${licence.saison} · N° : ${licence.numero}`;
+
+      let fields = [
         {l:'Nom', v:licence.nom},
         {l:'Né(e) le', v:licence.dateNaissance + ' à ' + licence.lieu},
-        {l:'Genre · Nationalité', v: (licence.sexe || '') + ' · ' + (licence.nationalite || '')},
-        {l:'Profession', v:licence.profession || ''},
-        {l:'Catégorie · Taille/Poids', v: (licence.categorie || '') + ' · ' + (licence.taille || '') + 'cm/' + (licence.poids || '') + 'kg'},
-        {l:'Fonction', v:licence.type || ''},
+        {l:'', v:line1},
+        {l:'', v:line2},
+        {l:'', v:line3},
+        {l:'Qualité', v:qualiteDisplay}
+      ];
+      if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(licence.qualite)) {
+        fields.push({l:'Niveau CMR', v:licence.niveauCMR || ''});
+        fields.push({l:'Licence IHF', v:licence.licenceIHF || ''});
+      }
+      fields.push(
+        {l:'Ancien club', v:licence.ancienClub || ''},
+        {l:'Date arrivée', v:licence.dateArrivee || ''},
+        {l:'Nouveau club', v:licence.clubName},
+        {l:'Ligue régionale', v:licence.ligueRegionale || ''},
+        {l:'Ligue départementale', v:licence.ligueDepartementale || ''},
+        {l:'Niveau', v:licence.niveau || ''},
         {l:'CNI/Passeport', v:licence.cniNum || ''},
         {l:'Délivré le', v:(licence.cniDate||'') + ' à ' + (licence.cniLieu||'')},
-        {l:'Club', v:licence.clubName},
-        {l:'Saison', v:licence.saison}
-      ];
-      const infoLines = fields.map(f => `<div class="field"><strong>${f.l} :</strong> ${f.v}</div>`).join('');
+        {l:'', v:line4}
+      );
+
+      const infoLines = fields.map(f => {
+        if (f.l === '') {
+          return `<div class="field">${f.v}</div>`;
+        } else {
+          return `<div class="field"><strong>${f.l} :</strong> ${f.v}</div>`;
+        }
+      }).join('');
+
       const bgStyle = (settings.bgType === 'image' && settings.bgImage) ? `background-image: url('${settings.bgImage}'); background-size: cover;` : `background-color: ${settings.bgColor || '#ffffff'};`;
       const cardClass = orientation === 'landscape' ? 'card-preview landscape' : 'card-preview';
       const qrId = `qr-${Date.now()}-${Math.random().toString(36).substr(2,6)}`;
@@ -1106,7 +1277,7 @@
       });
     }
 
-    // ----- Planche A4 (inchangé, mais la fonction genererCarteHTML est mise à jour) -----
+    // ----- Planche A4 -----
     async function genererPlancheA4(orientation) {
       if(!hasPermission('print')) return alert('Permission insuffisante');
       if (!currentClub) { alert('Aucun club sélectionné'); return; }
@@ -1131,28 +1302,28 @@
       <html>
       <head><meta charset="UTF-8"><title>Planche A4 - ${orientation === 'portrait' ? 'Portrait' : 'Paysage'}</title>
       <style>
-        .card-preview { width: 55mm; height: 85mm; border: 2px solid #000; padding: 3mm 2mm 2mm 2mm; margin: 0; display: flex; flex-direction: column; justify-content: space-between; background-size: cover; background-position: center; background-repeat: no-repeat; color: #000; box-sizing: border-box; border-radius: 4mm; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
-        .card-preview.landscape { width: 85mm; height: 55mm; flex-direction: row; flex-wrap: wrap; align-content: flex-start; padding: 3mm 2mm 2mm 2mm; }
-        .card-top-header { display: flex; align-items: center; justify-content: center; margin-bottom: 1.5mm; width: 100%; }
-        .extra-text { font-size: 5.5px; text-align: center; flex: 1; }
-        .federal-logo-header { max-height: 5mm; max-width: 9mm; object-fit: contain; margin-right: 1.5mm; }
-        .card-org-line { display: flex; align-items: center; justify-content: center; margin-bottom: 1mm; width: 100%; }
-        .org-logo-header { max-height: 5mm; max-width: 9mm; object-fit: contain; margin-right: 1mm; }
-        .card-header-custom { font-weight: bold; font-size: 8px; text-align: center; }
-        .photo-qr-row { display: flex; align-items: center; justify-content: center; gap: 2mm; margin: 2mm 0 1.5mm 0; }
-        .card-preview.landscape .photo-qr-row { width: 42%; justify-content: space-between; gap: 1mm; flex-shrink: 0; align-items: center; }
-        .photo-area { width: 22mm; height: 28mm; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; flex-shrink: 0; border-radius: 2mm; }
-        .card-preview.landscape .photo-area { width: 19mm; height: 24mm; }
+        .card-preview { width: 55mm; height: 85mm; border: 2px solid #000; padding: 1.5mm 1.5mm 1.5mm 1.5mm; margin: 0; display: flex; flex-direction: column; justify-content: flex-start; background-size: cover; background-position: center; background-repeat: no-repeat; color: #000; box-sizing: border-box; border-radius: 4mm; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
+        .card-preview.landscape { width: 85mm; height: 55mm; flex-direction: row; flex-wrap: wrap; align-content: flex-start; padding: 1.5mm 1.5mm 1.5mm 1.5mm; }
+        .card-top-header { display: flex; align-items: center; justify-content: center; margin-bottom: 0.8mm; width: 100%; }
+        .extra-text { font-size: 5px; text-align: center; flex: 1; }
+        .federal-logo-header { max-height: 5mm; max-width: 8mm; object-fit: contain; margin-right: 1mm; }
+        .card-org-line { display: flex; align-items: center; justify-content: center; margin-bottom: 0.6mm; width: 100%; }
+        .org-logo-header { max-height: 5mm; max-width: 8mm; object-fit: contain; margin-right: 1mm; }
+        .card-header-custom { font-weight: bold; font-size: 9px; text-align: center; }
+        .photo-qr-row { display: flex; align-items: center; justify-content: center; gap: 1.5mm; margin: 1.5mm 0 0.8mm 0; }
+        .card-preview.landscape .photo-qr-row { width: 38%; justify-content: space-between; gap: 1mm; flex-shrink: 0; align-items: center; }
+        .photo-area { width: 18mm; height: 24mm; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; flex-shrink: 0; border-radius: 2mm; }
+        .card-preview.landscape .photo-area { width: 16mm; height: 20mm; }
         .photo-area img { width: 100%; height: 100%; object-fit: cover; }
-        .qr-area { width: 16mm; height: 16mm; flex-shrink: 0; }
-        .card-preview.landscape .qr-area { width: 13mm; height: 13mm; }
+        .qr-area { width: 12mm; height: 12mm; flex-shrink: 0; }
+        .card-preview.landscape .qr-area { width: 10mm; height: 10mm; }
         .qr-area canvas, .qr-area img { width: 100% !important; height: 100% !important; }
-        .info-area { flex: 1; padding: 1mm 1mm 0 1mm; font-size: 6.5px; line-height: 1.2; display: flex; flex-direction: column; justify-content: center; }
-        .card-preview.landscape .info-area { width: 56%; font-size: 6px; margin-left: 1.5mm; }
+        .info-area { flex: 1; padding: 0.3mm 0.5mm 0 0.5mm; font-size: 6.5px; line-height: 1.2; display: flex; flex-direction: column; justify-content: flex-start; }
+        .card-preview.landscape .info-area { width: 60%; font-size: 6.5px; margin-left: 1mm; }
         .info-area strong { font-weight: 600; }
-        .info-area .field { margin-bottom: 0.2mm; font-size: 6.5px; }
-        .card-preview.landscape .info-area .field { font-size: 6px; }
-        .card-footer { font-size: 4.5px; text-align: center; margin-top: 1.5mm; border-top: 0.5px solid #aaa; padding-top: 0.5mm; width: 100%; }
+        .info-area .field { margin-bottom: 0.1mm; font-size: 6.5px; line-height: 1.2; }
+        .card-preview.landscape .info-area .field { font-size: 6.5px; }
+        .card-footer { font-size: 4px; text-align: center; margin-top: 0.8mm; border-top: 0.5px solid #aaa; padding-top: 0.3mm; width: 100%; flex-shrink: 0; }
         @page { size: A4 ${pageSize}; margin: 10mm; }
         body { margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 5mm; background: white; }
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 5mm; }
@@ -1176,12 +1347,19 @@
                 sexe: item.licence.sexe,
                 clubName: item.licence.clubName,
                 saison: item.licence.saison,
-                type: item.licence.type || '',
+                qualite: item.licence.qualite || '',
                 categorie: item.licence.categorie || '',
                 nationalite: item.licence.nationalite || '',
                 profession: item.licence.profession || '',
                 taille: item.licence.taille || '',
                 poids: item.licence.poids || '',
+                niveauCMR: item.licence.niveauCMR || '',
+                licenceIHF: item.licence.licenceIHF || '',
+                ancienClub: item.licence.ancienClub || '',
+                dateArrivee: item.licence.dateArrivee || '',
+                ligueRegionale: item.licence.ligueRegionale || '',
+                ligueDepartementale: item.licence.ligueDepartementale || '',
+                niveau: item.licence.niveau || '',
                 cniNum: item.licence.cniNum || ''
               };
               signData.hash = CryptoJS.SHA256(JSON.stringify(signData)).toString();
@@ -1197,7 +1375,7 @@
     document.getElementById('btnPlancheA4Portrait').onclick = () => genererPlancheA4('portrait');
     document.getElementById('btnPlancheA4Landscape').onclick = () => genererPlancheA4('landscape');
 
-    // ----- Aperçu carte et téléchargement JPEG (inchangé) -----
+    // ----- Aperçu carte et téléchargement JPEG -----
     async function showCardPreview(licence) {
       if(!hasPermission('print')) return;
       const allSettings = await loadSettings();
@@ -1222,12 +1400,19 @@
               sexe: licence.sexe,
               clubName: licence.clubName,
               saison: licence.saison,
-              type: licence.type || '',
+              qualite: licence.qualite || '',
               categorie: licence.categorie || '',
               nationalite: licence.nationalite || '',
               profession: licence.profession || '',
               taille: licence.taille || '',
               poids: licence.poids || '',
+              niveauCMR: licence.niveauCMR || '',
+              licenceIHF: licence.licenceIHF || '',
+              ancienClub: licence.ancienClub || '',
+              dateArrivee: licence.dateArrivee || '',
+              ligueRegionale: licence.ligueRegionale || '',
+              ligueDepartementale: licence.ligueDepartementale || '',
+              niveau: licence.niveau || '',
               cniNum: licence.cniNum || ''
             };
             signData.hash = hashObj(signData);
@@ -1244,7 +1429,7 @@
         const cardHtml = genererCarteHTML(licence, chosen, settings);
         const qrId = `qr-print-${Date.now()}`;
         let finalHtml = cardHtml.replace(/id="([^"]+)"/, `id="${qrId}"`);
-        const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', clubName: '${licence.clubName}', saison: '${licence.saison}', type: '${licence.type||''}', categorie: '${licence.categorie||''}', nationalite: '${licence.nationalite||''}', profession: '${licence.profession||''}', taille: '${licence.taille||''}', poids: '${licence.poids||''}', cniNum: '${licence.cniNum||''}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, clubName: licence.clubName, saison: licence.saison, type: licence.type||'', categorie: licence.categorie||'', nationalite: licence.nationalite||'', profession: licence.profession||'', taille: licence.taille||'', poids: licence.poids||'', cniNum: licence.cniNum||''})}'}), width: 100, height: 100});<\/script></body></html>`;
+        const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', clubName: '${licence.clubName}', saison: '${licence.saison}', qualite: '${licence.qualite||''}', categorie: '${licence.categorie||''}', nationalite: '${licence.nationalite||''}', profession: '${licence.profession||''}', taille: '${licence.taille||''}', poids: '${licence.poids||''}', niveauCMR: '${licence.niveauCMR||''}', licenceIHF: '${licence.licenceIHF||''}', ancienClub: '${licence.ancienClub||''}', dateArrivee: '${licence.dateArrivee||''}', ligueRegionale: '${licence.ligueRegionale||''}', ligueDepartementale: '${licence.ligueDepartementale||''}', niveau: '${licence.niveau||''}', cniNum: '${licence.cniNum||''}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, clubName: licence.clubName, saison: licence.saison, qualite: licence.qualite||'', categorie: licence.categorie||'', nationalite: licence.nationalite||'', profession: licence.profession||'', taille: licence.taille||'', poids: licence.poids||'', niveauCMR: licence.niveauCMR||'', licenceIHF: licence.licenceIHF||'', ancienClub: licence.ancienClub||'', dateArrivee: licence.dateArrivee||'', ligueRegionale: licence.ligueRegionale||'', ligueDepartementale: licence.ligueDepartementale||'', niveau: licence.niveau||'', cniNum: licence.cniNum||''})}'}), width: 100, height: 100});<\/script></body></html>`;
         try { await printHTML(printDoc); } catch(e) { alert("Erreur impression : " + e.message); }
       };
 
@@ -1259,7 +1444,7 @@
         clone.style.boxShadow = 'none';
         clone.style.backgroundColor = '#ffffff';
         clone.style.margin = '0';
-        clone.style.padding = '2mm';
+        clone.style.padding = '1.5mm';
         clone.style.boxSizing = 'border-box';
 
         const container = document.createElement('div');
@@ -1272,7 +1457,7 @@
         container.style.display = 'flex';
         container.style.alignItems = 'center';
         container.style.justifyContent = 'center';
-        container.style.padding = '2px';
+        container.style.padding = '1px';
         clone.style.width = '100%';
         clone.style.height = '100%';
         container.appendChild(clone);
@@ -1303,7 +1488,7 @@
       new bootstrap.Modal(document.getElementById('cardModal')).show();
     }
 
-    // ----- Import CSV (adapté) -----
+    // ----- Import CSV (adapté avec 20 colonnes) -----
     let csvData = [];
     document.getElementById('csvFile').addEventListener('change', function(e) {
       if(!hasPermission('import')) return;
@@ -1314,24 +1499,30 @@
         const text = ev.target.result;
         const lines = text.split(/\r?\n/);
         csvData = [];
-        // Colonnes attendues : Nom,DateNaissance,Lieu,Genre,Nationalité,Profession,Catégorie,Taille,Poids,Fonction,CNI_N°,CNI_Date,CNI_Lieu
         for (let i = 0; i < lines.length; i++) {
           const cols = lines[i].split(',');
-          if (cols.length >= 13 && cols[0].trim() !== '') {
+          if (cols.length >= 20 && cols[0].trim() !== '') {
             csvData.push({
               nom: cols[0].trim(),
               dateNaissance: cols[1].trim(),
               lieu: cols[2].trim(),
-              sexe: cols[3].trim(), // genre
+              sexe: cols[3].trim(),
               nationalite: cols[4].trim(),
               profession: cols[5].trim(),
               categorie: cols[6].trim(),
               taille: parseFloat(cols[7].trim()) || 0,
               poids: parseFloat(cols[8].trim()) || 0,
-              type: cols[9].trim(),
-              cniNum: cols[10].trim(),
-              cniDate: cols[11].trim(),
-              cniLieu: cols[12].trim()
+              qualite: cols[9].trim(),
+              niveauCMR: cols[10].trim(),
+              licenceIHF: cols[11].trim(),
+              ancienClub: cols[12].trim(),
+              dateArrivee: cols[13].trim(),
+              ligueRegionale: cols[14].trim(),
+              ligueDepartementale: cols[15].trim(),
+              niveau: cols[16].trim(),
+              cniNum: cols[17].trim(),
+              cniDate: cols[18].trim(),
+              cniLieu: cols[19].trim()
             });
           }
         }
@@ -1341,7 +1532,7 @@
         tbody.innerHTML = '';
         csvData.forEach(row => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${row.nom}</td><td>${row.dateNaissance}</td><td>${row.sexe}</td><td>${row.categorie}</td><td>${row.type}</td><td><span class="text-muted">(photo par défaut)</span></td>`;
+          tr.innerHTML = `<td>${row.nom}</td><td>${row.dateNaissance}</td><td>${row.sexe}</td><td>${row.categorie}</td><td>${row.qualite}</td><td><span class="text-muted">(photo par défaut)</span></td>`;
           tbody.appendChild(tr);
         });
       };
@@ -1369,7 +1560,14 @@
             categorie: row.categorie,
             taille: row.taille,
             poids: row.poids,
-            type: row.type,
+            qualite: row.qualite,
+            niveauCMR: row.niveauCMR,
+            licenceIHF: row.licenceIHF,
+            ancienClub: row.ancienClub,
+            dateArrivee: row.dateArrivee,
+            ligueRegionale: row.ligueRegionale,
+            ligueDepartementale: row.ligueDepartementale,
+            niveau: row.niveau,
             cniNum: row.cniNum,
             cniDate: row.cniDate,
             cniLieu: row.cniLieu,
@@ -1480,7 +1678,14 @@
           poids: 75,
           clubName: 'Club test',
           saison: '2025-2026',
-          type: 'Joueur',
+          qualite: 'Joueur',
+          niveauCMR: '',
+          licenceIHF: '',
+          ancienClub: 'Ancien club',
+          dateArrivee: '2025-01-01',
+          ligueRegionale: 'Ligue 1',
+          ligueDepartementale: 'Ligue 2',
+          niveau: 'National',
           cniNum: 'ABC123',
           cniDate: '2025-01-01',
           cniLieu: 'Ville',
@@ -1597,7 +1802,7 @@
       if (el) el.addEventListener('input', () => updateSettingsPreview('landscape'));
     });
 
-    // ----- Export / Import -----
+    // ----- Export / Import (inchangé) -----
     async function getAllData() {
       const settings = await loadSettings();
       return { users: await loadUsers(), licences: await loadLicences(), clubs: await loadClubs(), settings };

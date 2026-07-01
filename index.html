@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* ========== STYLES FINAUX ========== */
+    /* ========== STYLES (inchangés) ========== */
     #loginPage {
       display: flex;
       justify-content: center;
@@ -327,6 +327,53 @@
     }
     .conditional-fields { display: none; }
     .conditional-fields.show { display: block; }
+    /* Écran de choix */
+    #choiceScreen {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+      background: #f5f7fa;
+    }
+    .choice-card {
+      max-width: 600px;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .choice-card .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .choice-card .btn-group .btn {
+      min-width: 180px;
+      padding: 1rem;
+      font-weight: bold;
+    }
+    .choice-card .btn-group .btn img {
+      max-width: 40px;
+      display: block;
+      margin: 0 auto 0.5rem;
+    }
+    .choice-card .btn-group .btn-primary {
+      background-color: #1a6b4a;
+      border-color: #1a6b4a;
+    }
+    .choice-card .btn-group .btn-primary:hover {
+      background-color: #0f4f35;
+    }
+    .choice-card .btn-group .btn-warning {
+      background-color: #d4a017;
+      border-color: #d4a017;
+      color: #fff;
+    }
+    .choice-card .btn-group .btn-warning:hover {
+      background-color: #b58912;
+    }
   </style>
 </head>
 <body>
@@ -341,6 +388,27 @@
       <button type="submit" class="btn btn-primary w-100">Se connecter</button>
     </form>
     <p class="text-muted small mt-3 text-center">admin / idges2025</p>
+  </div>
+</div>
+
+<!-- ========== ÉCRAN DE CHOIX DU TYPE DE LICENCE ========== -->
+<div id="choiceScreen">
+  <div class="choice-card">
+    <h2>🏅 Choisissez le type de licence</h2>
+    <p>Sélectionnez la catégorie pour laquelle vous souhaitez créer une licence.</p>
+    <div class="btn-group">
+      <button class="btn btn-primary" id="choiceClub">
+        <span style="font-size:2rem;">🏟️</span><br>
+        Licence Club<br>
+        <small>Joueur / Entraineur / Dirigeant / Autre</small>
+      </button>
+      <button class="btn btn-warning" id="choiceOfficiel">
+        <span style="font-size:2rem;">⚽</span><br>
+        Licence Officiel Technique<br>
+        <small>Arbitre / Secrétaire / Délégué</small>
+      </button>
+    </div>
+    <p class="mt-3 text-muted" style="font-size:0.9rem;">Vous pourrez changer de type à tout moment via le bouton "Changer de type" dans l'onglet Licences.</p>
   </div>
 </div>
 
@@ -369,7 +437,7 @@
 
   <div class="container mt-4">
     <div class="tab-content" id="mainTabsContent">
-      <!-- CLUBS -->
+      <!-- CLUBS (inchangé) -->
       <div class="tab-pane show active" data-panel="clubsTab">
         <h4>🏟️ Clubs</h4>
         <div class="mb-3 d-flex justify-content-between">
@@ -392,11 +460,16 @@
         <div class="table-responsive"><table class="table table-striped" id="clubsTable"><thead class="table-dark"><tr><th>Club</th><th>Saison</th><th>Nb Licences</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
       </div>
 
-      <!-- LICENCES -->
+      <!-- LICENCES (formulaire dynamique) -->
       <div class="tab-pane" data-panel="licencesTab" style="display:none;">
-        <div id="licenceSection">
-          <h4>Nouvelle licence pour <span id="licenceClubName"></span></h4>
+        <div id="licenceHeader">
+          <h4>Nouvelle licence (<span id="licenceTypeLabel">Club</span>)</h4>
+          <button class="btn btn-sm btn-outline-secondary mb-2" id="btnChangeLicenseType">🔄 Changer de type</button>
           <p id="noClubAlert" class="text-danger" style="display:none;">⚠️ Aucun club sélectionné.</p>
+        </div>
+
+        <!-- FORMULAIRE CLUB -->
+        <div id="clubLicenceForm" class="licence-form">
           <form id="licenceForm" class="row g-3" novalidate>
             <div class="col-md-4"><label class="form-label">Nom complet</label><input type="text" class="form-control" id="nom" required></div>
             <div class="col-md-3"><label class="form-label">Date de naissance</label><input type="date" class="form-control" id="dateNaissance" required></div>
@@ -453,30 +526,80 @@
               </div>
             </div>
             <div class="col-md-3"><label class="form-label">Ancien club</label><input type="text" class="form-control" id="ancienClub"></div>
-            <div class="col-md-3"><label class="form-label">Date de départ de l'ancien club</label><input type="date" class="form-control" id="dateDepartAncienClub"></div>
-            <div class="col-md-3"><label class="form-label">Date d'arrivée dans le club actuel</label><input type="date" class="form-control" id="dateArrivee"></div>
-            <div class="col-md-3"><label class="form-label">Ligue régionale</label><input type="text" class="form-control" id="ligueRegionale"></div>
-            <div class="col-md-3"><label class="form-label">Ligue départementale</label><input type="text" class="form-control" id="ligueDepartementale"></div>
-            <div class="col-md-3"><label class="form-label">Niveau</label><input type="text" class="form-control" id="niveau"></div>
+            <div class="col-md-3"><label class="form-label">Date départ ancien Club</label><input type="date" class="form-control" id="dateDepartAncienClub"></div>
+            <div class="col-md-3"><label class="form-label">Date arrivée nouveau club</label><input type="date" class="form-control" id="dateArrivee"></div>
+            <div class="col-md-3"><label class="form-label">Ligue d'appartenance</label><input type="text" class="form-control" id="ligueAppartenance"></div>
+            <div class="col-md-3"><label class="form-label">Niveau de Compétition</label><input type="text" class="form-control" id="niveau"></div>
             <div class="col-md-4"><label class="form-label">Photo</label><input type="file" class="form-control" id="photoInput" accept="image/*" required></div>
             <div class="col-md-4"><label class="form-label">N° Licence (auto)</label><input type="text" class="form-control" id="numeroPreview" readonly></div>
             <div class="col-12"><button type="submit" class="btn btn-primary" id="btnGenerateLicence">Générer la licence</button></div>
           </form>
         </div>
+
+        <!-- FORMULAIRE OFFICIEL TECHNIQUE -->
+        <div id="officielLicenceForm" class="licence-form" style="display:none;">
+          <form id="officielForm" class="row g-3" novalidate>
+            <div class="col-md-4"><label class="form-label">Nom</label><input type="text" class="form-control" id="officielNom" required></div>
+            <div class="col-md-4"><label class="form-label">Prénom</label><input type="text" class="form-control" id="officielPrenom" required></div>
+            <div class="col-md-4"><label class="form-label">Date de naissance</label><input type="date" class="form-control" id="officielDateNaissance" required></div>
+            <div class="col-md-4"><label class="form-label">Lieu de naissance</label><input type="text" class="form-control" id="officielLieu" required></div>
+            <div class="col-md-2"><label class="form-label">Genre</label>
+              <select class="form-select" id="officielGenre" required>
+                <option value="">Choisir...</option>
+                <option value="M">Masculin</option>
+                <option value="F">Féminin</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label class="form-label">Nationalité</label><input type="text" class="form-control" id="officielNationalite" required></div>
+            <div class="col-md-3"><label class="form-label">Type officiel</label>
+              <select class="form-select" id="officielType" required>
+                <option value="">Choisir...</option>
+                <option value="ARBITRE">ARBITRE</option>
+                <option value="SECRETAIRE/CHRONOMETREUR">SECRETAIRE/CHRONOMETREUR</option>
+                <option value="DELEGUE TECHNIQUE">DELEGUE TECHNIQUE</option>
+                <option value="DELEGUE EVENT">DELEGUE EVENT</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label class="form-label">Niveau CMR</label>
+              <select class="form-select" id="officielNiveauCMR">
+                <option value="">Non précisé</option>
+                <option value="Niveau 1">Niveau 1</option>
+                <option value="Niveau 2">Niveau 2</option>
+                <option value="Niveau 3">Niveau 3</option>
+                <option value="Niveau 4">Niveau 4</option>
+                <option value="Niveau 5">Niveau 5</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label class="form-label">Niveau International</label>
+              <select class="form-select" id="officielNiveauInt">
+                <option value="">Non précisé</option>
+                <option value="International">International</option>
+                <option value="National">National</option>
+                <option value="Régional">Régional</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label class="form-label">Profession</label><input type="text" class="form-control" id="officielProfession" required></div>
+            <div class="col-md-4"><label class="form-label">CNI/Passeport N°</label><input type="text" class="form-control" id="officielCniNum" required></div>
+            <div class="col-md-4"><label class="form-label">Photo</label><input type="file" class="form-control" id="officielPhotoInput" accept="image/*" required></div>
+            <div class="col-md-4"><label class="form-label">N° Licence (auto)</label><input type="text" class="form-control" id="officielNumeroPreview" readonly></div>
+            <div class="col-12"><button type="submit" class="btn btn-primary" id="btnGenerateOfficiel">Générer la licence</button></div>
+          </form>
+        </div>
+
         <hr>
-        <h5>Licences du club <span id="listClubName"></span> <small>(<span id="licenceCount">0</span>)</small></h5>
+        <h5>Liste des licences <span id="licenceListTypeLabel"></span></h5>
         <div class="d-flex gap-2 mb-2">
           <button class="btn btn-outline-primary btn-sm" id="btnBordereau">📄 Bordereau</button>
           <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Portrait">🖨️ Planche A4 (Portrait)</button>
           <button class="btn btn-outline-success btn-sm" id="btnPlancheA4Landscape">🖨️ Planche A4 (Paysage)</button>
         </div>
-        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Catégorie</th><th>Qualité</th><th>Genre</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+        <div class="table-responsive"><table class="table table-striped" id="licencesTable"><thead class="table-dark"><tr><th>N° Licence</th><th>Nom</th><th>Type</th><th>Catégorie/Qualité</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
       </div>
 
       <!-- IMPORT CSV -->
       <div class="tab-pane" data-panel="importTab" style="display:none;">
         <h4>Importer pour <span id="importClubName"></span></h4>
-        <p>Fichier CSV (colonnes : Nom,DateNaissance,Lieu,Genre,Nationalité,Profession,Catégorie,Taille,Poids,Qualité,NiveauCMR,LicenceIHF,AncienClub,DateDepartAncienClub,DateArrivee,LigueRegionale,LigueDepartementale,Niveau)</p>
+        <p>Fichier CSV (colonnes : Nom, DateNaissance, Lieu, Genre, Nationalité, Profession, Catégorie, Taille, Poids, Qualité, NiveauCMR, LicenceIHF, AncienClub, DateDepartAncienClub, DateArrivee, LigueAppartenance, NiveauCompetition)</p>
         <input type="file" id="csvFile" accept=".csv" class="form-control mb-3">
         <div id="importPreview" class="d-none">
           <h5>Aperçu</h5>
@@ -606,34 +729,7 @@
 <!-- MODAL modification licence -->
 <div class="modal fade" id="editLicenceModal" tabindex="-1">
   <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modifier la licence</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">
-    <form id="editLicenceForm" class="row g-3" novalidate>
-      <input type="hidden" id="editLicenceId">
-      <div class="col-md-4"><label>Nom complet</label><input type="text" class="form-control" id="editNom" required></div>
-      <div class="col-md-3"><label>Date de naissance</label><input type="date" class="form-control" id="editDateNaissance" required></div>
-      <div class="col-md-3"><label>Lieu</label><input type="text" class="form-control" id="editLieu" required></div>
-      <div class="col-md-2"><label>Genre</label><select class="form-select" id="editGenre" required><option value="M">Masculin</option><option value="F">Féminin</option></select></div>
-      <div class="col-md-3"><label>Nationalité</label><input type="text" class="form-control" id="editNationalite" required></div>
-      <div class="col-md-3"><label>Profession</label><input type="text" class="form-control" id="editProfession" required></div>
-      <div class="col-md-3"><label>Catégorie</label><select class="form-select" id="editCategorie" required><option value="Minime">Minime</option><option value="Cadet(te)">Cadet(te)</option><option value="Junior">Junior</option><option value="Espoir">Espoir</option><option value="Senior">Senior</option></select></div>
-      <div class="col-md-2"><label>Taille (cm)</label><input type="number" class="form-control" id="editTaille" step="0.1" required></div>
-      <div class="col-md-2"><label>Poids (kg)</label><input type="number" class="form-control" id="editPoids" step="0.1" required></div>
-      <div class="col-md-3"><label>Qualité</label><select class="form-select" id="editQualite" required><option value="Joueur">Joueur</option><option value="Médecin">Médecin</option><option value="Dirigeant">Dirigeant</option><option value="Entraineur">Entraineur</option><option value="KINE">KINE</option><option value="Autre">Autre</option></select></div>
-      <div class="col-md-3 conditional-fields" id="editAutrePrecisionField"><label>Précision (si Autre)</label><input type="text" class="form-control" id="editAutrePrecision"></div>
-      <div class="col-12 conditional-fields" id="editEncadreurFields">
-        <div class="row g-3">
-          <div class="col-md-6"><label>Niveau CMR</label><select class="form-select" id="editNiveauCMR"><option value="">Non précisé</option><option value="Niveau 1">Niveau 1</option><option value="Niveau 2">Niveau 2</option><option value="Niveau 3">Niveau 3</option><option value="Niveau 4">Niveau 4</option><option value="Niveau 5">Niveau 5</option></select></div>
-          <div class="col-md-6"><label>Licence IHF</label><input type="text" class="form-control" id="editLicenceIHF" placeholder="Numéro licence IHF"></div>
-        </div>
-      </div>
-      <div class="col-md-3"><label>Ancien club</label><input type="text" class="form-control" id="editAncienClub"></div>
-      <div class="col-md-3"><label>Date de départ de l'ancien club</label><input type="date" class="form-control" id="editDateDepartAncienClub"></div>
-      <div class="col-md-3"><label>Date d'arrivée dans le club actuel</label><input type="date" class="form-control" id="editDateArrivee"></div>
-      <div class="col-md-3"><label>Ligue régionale</label><input type="text" class="form-control" id="editLigueRegionale"></div>
-      <div class="col-md-3"><label>Ligue départementale</label><input type="text" class="form-control" id="editLigueDepartementale"></div>
-      <div class="col-md-3"><label>Niveau</label><input type="text" class="form-control" id="editNiveau"></div>
-      <div class="col-md-4"><label>Nouvelle photo (optionnel)</label><input type="file" class="form-control" id="editPhotoInput" accept="image/*"></div>
-      <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Annuler</button></div>
-    </form>
+    <div id="editLicenceContainer"></div>
   </div></div>
 </div>
 
@@ -651,9 +747,9 @@
       return el;
     }
 
-    // ========== INDEXEDDB ==========
+    // ========== INDEXEDDB (version 12 pour nouveau champ ligueAppartenance) ==========
     const DB_NAME = 'IDGesDB';
-    const DB_VERSION = 10;
+    const DB_VERSION = 12;
     let db = null;
 
     function openDB() {
@@ -671,6 +767,7 @@
           if (!db.objectStoreNames.contains('licenses')) {
             const store = db.createObjectStore('licenses', { keyPath: 'id', autoIncrement: true });
             store.createIndex('club_saison', ['clubId', 'saison']);
+            store.createIndex('categorieLicence', 'categorieLicence');
           }
           if (!db.objectStoreNames.contains('users')) {
             db.createObjectStore('users', { keyPath: 'id', autoIncrement: true });
@@ -782,7 +879,17 @@
         fr.readAsDataURL(file);
       });
     }
-    function buildNumeroLicence(nom, dateNaissance, counter) {
+
+    function buildNumeroLicenceOfficiel(nom, prenom, dateNaissance, counter) {
+      const prefix = (nom.substring(0,1) + prenom.substring(0,1)).toUpperCase();
+      const d = new Date(dateNaissance);
+      const year = d.getFullYear();
+      const month = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return 'OFF' + year + month + day + prefix + String(counter).padStart(3,'0');
+    }
+
+    function buildNumeroLicenceClub(nom, dateNaissance, counter) {
       const prefix = nom.trim().substring(0,2).toUpperCase();
       const d = new Date(dateNaissance);
       const year = d.getFullYear();
@@ -796,38 +903,65 @@
     let currentClub=null;
     let currentPermissions = null;
     let appSettings = { taillePolice: 'medium' };
+    let currentLicenseType = 'club'; // 'club' ou 'officiel'
     const loginPage = safeId('loginPage');
+    const choiceScreen = safeId('choiceScreen');
     const appContent = safeId('appContent');
     const currentUserDisplay = safeId('currentUserDisplay');
     const currentClubDisplay = safeId('currentClubDisplay');
     const usersTabNav = safeId('usersTabNav');
     const printFrame = safeId('printFrame');
 
-    // ----- Dictionnaire des libellés bilingues -----
+    // ----- Gestion du type de licence -----
+    function setLicenseType(type) {
+      currentLicenseType = type;
+      const clubForm = safeId('clubLicenceForm');
+      const officielForm = safeId('officielLicenceForm');
+      const label = safeId('licenceTypeLabel');
+      if (type === 'club') {
+        if (clubForm) clubForm.style.display = 'block';
+        if (officielForm) officielForm.style.display = 'none';
+        if (label) label.textContent = 'Club';
+        const noClubAlert = safeId('noClubAlert');
+        if (noClubAlert) noClubAlert.style.display = currentClub ? 'none' : 'block';
+        document.querySelectorAll('#clubLicenceForm input, #clubLicenceForm select').forEach(el => el.disabled = !currentClub);
+      } else {
+        if (clubForm) clubForm.style.display = 'none';
+        if (officielForm) officielForm.style.display = 'block';
+        if (label) label.textContent = 'Officiel Technique';
+      }
+      const listLabel = safeId('licenceListTypeLabel');
+      if (listLabel) listLabel.textContent = type === 'club' ? '(Club)' : '(Officiels)';
+      refreshLicenceList();
+    }
+
+    // ========== Dictionnaire des libellés bilingues (mis à jour) ==========
     const labels = {
       fr: {
-        numero: 'N°', saison: 'Saison', nom: 'Nom', ne_le: 'Né(e) le',
+        numero: 'N°', saison: 'Saison', nom: 'Nom', prenom: 'Prénom', ne_le: 'Né(e) le',
         genre: 'Genre', nationalite: 'Nationalité', profession: 'Profession',
         categorie: 'Catégorie', taille_poids: 'Taille / Poids', qualite: 'Qualité',
-        niveauCMR: 'Niveau CMR', licenceIHF: 'Licence IHF',
-        ancienClub: 'Ancien club', dateDepart: 'Date départ',
-        nouveauClub: 'Nouveau club', dateArrivee: 'Date arrivée',
-        ligueRegionale: 'Ligue régionale', ligueDepartementale: 'Ligue départementale',
-        niveau: 'Niveau'
+        niveauCMR: 'Niveau CMR', niveauInt: 'Niveau Int.', licenceIHF: 'Licence IHF',
+        ancienClub: 'Ancien club', dateDepart: 'Date départ ancien Club',
+        nouveauClub: 'Nouveau club', dateArrivee: 'Date arrivée nouveau club',
+        ligueAppartenance: "Ligue d'appartenance",
+        niveau: 'Niveau de Compétition',
+        typeOfficiel: 'Type officiel', cni: 'CNI/Passeport'
       },
       en: {
-        numero: 'ID', saison: 'Season', nom: 'Name', ne_le: 'Born on',
+        numero: 'ID', saison: 'Season', nom: 'Surname', prenom: 'First name', ne_le: 'Born on',
         genre: 'Gender', nationalite: 'Nationality', profession: 'Occupation',
         categorie: 'Category', taille_poids: 'Height / Weight', qualite: 'Role',
-        niveauCMR: 'CMR Level', licenceIHF: 'IHF License',
-        ancienClub: 'Former club', dateDepart: 'Departure date',
-        nouveauClub: 'New club', dateArrivee: 'Arrival date',
-        ligueRegionale: 'Regional league', ligueDepartementale: 'Departmental league',
-        niveau: 'Level'
+        niveauCMR: 'CMR Level', niveauInt: 'Int. Level', licenceIHF: 'IHF License',
+        ancienClub: 'Former club', dateDepart: 'Departure date (former club)',
+        nouveauClub: 'New club', dateArrivee: 'Arrival date (new club)',
+        ligueAppartenance: 'Affiliation league',
+        niveau: 'Competition Level',
+        typeOfficiel: 'Official type', cni: 'ID/Passport'
       }
     };
 
-    // ----- Gestion des champs conditionnels -----
+    // ----- Gestion des champs conditionnels (club) -----
     function toggleEncadreurFields(selectElement, targetContainerId) {
       const container = safeId(targetContainerId);
       if (!container) return;
@@ -856,14 +990,8 @@
         toggleEncadreurFields(this, 'encadreurFields');
       });
     }
-    const editQualiteEl = safeId('editQualite');
-    if (editQualiteEl) {
-      editQualiteEl.addEventListener('change', function() {
-        toggleAutrePrecision(this, 'editAutrePrecision');
-        toggleEncadreurFields(this, 'editEncadreurFields');
-      });
-    }
 
+    // ----- Permissions -----
     function hasPermission(perm) {
       return currentPermissions && currentPermissions[perm] === true;
     }
@@ -871,10 +999,10 @@
     function applyPermissionsUI() {
       const btnAddClub = safeId('btnAddClub');
       if (btnAddClub) btnAddClub.style.display = hasPermission('clubs_edit') ? 'inline-block' : 'none';
-      const btnGenerateLicence = safeId('btnGenerateLicence');
-      if (btnGenerateLicence) btnGenerateLicence.disabled = !hasPermission('licences_edit');
-      const licenceFormInputs = document.querySelectorAll('#licenceForm input, #licenceForm select');
-      licenceFormInputs.forEach(inp => inp.disabled = !hasPermission('licences_edit'));
+      const btnGenerate = safeId('btnGenerateLicence');
+      if (btnGenerate) btnGenerate.disabled = !hasPermission('licences_edit');
+      const btnGenerateOfficiel = safeId('btnGenerateOfficiel');
+      if (btnGenerateOfficiel) btnGenerateOfficiel.disabled = !hasPermission('licences_edit');
       const importTab = document.querySelector('[data-panel="importTab"]');
       if (importTab) importTab.style.display = hasPermission('import') ? 'block' : 'none';
       const settingsTab = document.querySelector('[data-panel="settingsTab"]');
@@ -913,6 +1041,9 @@
         const noClubAlert = safeId('noClubAlert');
         if (noClubAlert) noClubAlert.style.display = 'block';
       }
+      if (currentLicenseType === 'club') {
+        document.querySelectorAll('#clubLicenceForm input, #clubLicenceForm select').forEach(el => el.disabled = !currentClub);
+      }
     }
 
     // ----- Rafraîchir clubs -----
@@ -941,6 +1072,9 @@
           btn.onclick = async () => {
             currentClub = { id: parseInt(btn.dataset.id), name: btn.dataset.name, saison: btn.dataset.saison };
             await updateClubDisplay();
+            if (currentLicenseType === 'club') {
+              document.querySelectorAll('#clubLicenceForm input, #clubLicenceForm select').forEach(el => el.disabled = false);
+            }
             await refreshLicenceList();
             updateNumeroPreview();
             switchTab('licencesTab');
@@ -1039,7 +1173,7 @@
     const btnCancelRename = safeId('btnCancelRename');
     if (btnCancelRename) btnCancelRename.onclick = () => { const el = safeId('renameClubForm'); if (el) el.style.display = 'none'; };
 
-    // ----- Aperçu numéro licence -----
+    // ----- Aperçu numéro licence (club) -----
     function updateNumeroPreview() {
       const nom = safeId('nom')?.value || '';
       const date = safeId('dateNaissance')?.value || '';
@@ -1057,13 +1191,35 @@
     if (nomEl) nomEl.addEventListener('input', updateNumeroPreview);
     if (dateNaissanceEl) dateNaissanceEl.addEventListener('input', updateNumeroPreview);
 
-    // ----- Création licence -----
+    // Aperçu numéro pour officiel
+    function updateOfficielNumeroPreview() {
+      const nom = safeId('officielNom')?.value || '';
+      const prenom = safeId('officielPrenom')?.value || '';
+      const date = safeId('officielDateNaissance')?.value || '';
+      const preview = safeId('officielNumeroPreview');
+      if (nom && prenom && date && preview) {
+        const prefix = (nom.substring(0,1) + prenom.substring(0,1)).toUpperCase();
+        const d = new Date(date);
+        preview.value = 'OFF' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + prefix + "000";
+      } else if (preview) {
+        preview.value = '';
+      }
+    }
+    const officielNomEl = safeId('officielNom');
+    const officielPrenomEl = safeId('officielPrenom');
+    const officielDateEl = safeId('officielDateNaissance');
+    if (officielNomEl) officielNomEl.addEventListener('input', updateOfficielNumeroPreview);
+    if (officielPrenomEl) officielPrenomEl.addEventListener('input', updateOfficielNumeroPreview);
+    if (officielDateEl) officielDateEl.addEventListener('input', updateOfficielNumeroPreview);
+
+    // ----- Création licence club (mis à jour) -----
     const licenceForm = safeId('licenceForm');
     if (licenceForm) {
       licenceForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!hasPermission('licences_edit')) return alert('Permission insuffisante');
         if (!currentClub) return alert('Sélectionnez un club');
+        if (currentLicenseType !== 'club') return;
 
         const nom = safeId('nom')?.value?.trim() || '';
         const dateNais = safeId('dateNaissance')?.value || '';
@@ -1081,8 +1237,7 @@
         const ancienClub = safeId('ancienClub')?.value?.trim() || '';
         const dateDepartAncienClub = safeId('dateDepartAncienClub')?.value || '';
         const dateArrivee = safeId('dateArrivee')?.value || '';
-        const ligueRegionale = safeId('ligueRegionale')?.value?.trim() || '';
-        const ligueDepartementale = safeId('ligueDepartementale')?.value?.trim() || '';
+        const ligueAppartenance = safeId('ligueAppartenance')?.value?.trim() || '';
         const niveau = safeId('niveau')?.value?.trim() || '';
         const photoFile = safeId('photoInput')?.files?.[0] || null;
 
@@ -1097,7 +1252,7 @@
           const photo = await fileToDataURL(photoFile);
           if (!currentClub) throw new Error('Club perdu');
           const counter = await getLicenseCounter();
-          const numero = buildNumeroLicence(nom, dateNais, counter);
+          const numero = buildNumeroLicenceClub(nom, dateNais, counter);
           const licence = {
             numero, nom, dateNaissance: dateNais, lieu,
             sexe: genre,
@@ -1107,9 +1262,11 @@
             niveauCMR: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '',
             licenceIHF: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '',
             ancienClub, dateDepartAncienClub, dateArrivee,
-            ligueRegionale, ligueDepartementale, niveau,
+            ligueAppartenance,
+            niveau,
             clubId: currentClub.id, clubName: currentClub.name, saison: currentClub.saison,
-            photo, dateCreation: new Date().toISOString().slice(0,10)
+            photo, dateCreation: new Date().toISOString().slice(0,10),
+            categorieLicence: 'club'
           };
           await saveLicence(licence);
           alert('Licence créée : ' + numero);
@@ -1134,26 +1291,97 @@
       });
     }
 
-    // ----- Rafraîchir liste licences -----
+    // ----- Création licence officiel (inchangé) -----
+    const officielForm = safeId('officielForm');
+    if (officielForm) {
+      officielForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!hasPermission('licences_edit')) return alert('Permission insuffisante');
+        if (currentLicenseType !== 'officiel') return;
+
+        const nom = safeId('officielNom')?.value?.trim() || '';
+        const prenom = safeId('officielPrenom')?.value?.trim() || '';
+        const dateNais = safeId('officielDateNaissance')?.value || '';
+        const lieu = safeId('officielLieu')?.value?.trim() || '';
+        const genre = safeId('officielGenre')?.value || '';
+        const nationalite = safeId('officielNationalite')?.value?.trim() || '';
+        const typeOfficiel = safeId('officielType')?.value || '';
+        const niveauCMR = safeId('officielNiveauCMR')?.value || '';
+        const niveauInt = safeId('officielNiveauInt')?.value || '';
+        const profession = safeId('officielProfession')?.value?.trim() || '';
+        const cniNum = safeId('officielCniNum')?.value?.trim() || '';
+        const photoFile = safeId('officielPhotoInput')?.files?.[0] || null;
+
+        if (!nom || !prenom || !dateNais || !lieu || !genre || !nationalite || !typeOfficiel || !profession || !cniNum || !photoFile) {
+          return alert('Tous les champs requis sont obligatoires');
+        }
+
+        try {
+          const photo = await fileToDataURL(photoFile);
+          const counter = await getLicenseCounter();
+          const numero = buildNumeroLicenceOfficiel(nom, prenom, dateNais, counter);
+          const licence = {
+            numero,
+            nom, prenom,
+            dateNaissance: dateNais,
+            lieu,
+            sexe: genre,
+            nationalite,
+            typeOfficiel,
+            niveauCMR,
+            niveauInt,
+            profession,
+            cniNum,
+            photo,
+            dateCreation: new Date().toISOString().slice(0,10),
+            categorieLicence: 'officiel',
+            clubId: null,
+            clubName: null,
+            saison: null,
+            qualite: null,
+            autrePrecision: null,
+            licenceIHF: null,
+            ancienClub: null,
+            dateDepartAncienClub: null,
+            dateArrivee: null,
+            ligueAppartenance: null,
+            niveau: null,
+            categorie: null,
+            taille: null,
+            poids: null,
+            profession: profession
+          };
+          await saveLicence(licence);
+          alert('Licence officielle créée : ' + numero);
+          if (officielForm) officielForm.reset();
+          const preview = safeId('officielNumeroPreview');
+          if (preview) preview.value = '';
+          const photoInput = safeId('officielPhotoInput');
+          if (photoInput) photoInput.value = '';
+          await refreshLicenceList();
+          if (hasPermission('print')) {
+            showCardPreview(licence);
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Erreur lors de la création : ' + (err.message || 'Veuillez réessayer'));
+        }
+      });
+    }
+
+    // ----- Rafraîchir liste licences (adapté) -----
     async function refreshLicenceList() {
       try {
-        if (!currentClub) {
-          const licenceCount = safeId('licenceCount');
-          if (licenceCount) licenceCount.innerText = '0';
-          const tbody = document.querySelector('#licencesTable tbody');
-          if (tbody) tbody.innerHTML = '<tr><td colspan="6">Aucun club sélectionné</td></tr>';
-          return;
-        }
-        let licences = await loadLicences();
-        const clubs = await loadClubs();
-        licences = licences.map(l => {
-          if (!l.clubName && l.clubId) {
-            const c = clubs.find(c => c.id === l.clubId);
-            if (c) l.clubName = c.name;
+        const allLicences = await loadLicences();
+        let filtered;
+        if (currentLicenseType === 'club') {
+          filtered = allLicences.filter(l => l.categorieLicence === 'club' || !l.categorieLicence);
+          if (currentClub) {
+            filtered = filtered.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
           }
-          return l;
-        });
-        const filtered = licences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
+        } else {
+          filtered = allLicences.filter(l => l.categorieLicence === 'officiel');
+        }
         const licenceCount = safeId('licenceCount');
         if (licenceCount) licenceCount.innerText = filtered.length;
         const tbody = document.querySelector('#licencesTable tbody');
@@ -1164,8 +1392,16 @@
           if (hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> `;
           if (hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button>`;
           const tr = document.createElement('tr');
-          const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
-          tr.innerHTML = `<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie || ''}</td><td>${l.qualite || ''}</td><td>${genreDisplay}</td><td>${actions}</td>`;
+          let typeDisplay = '';
+          let nomDisplay = '';
+          if (l.categorieLicence === 'officiel') {
+            typeDisplay = 'Officiel';
+            nomDisplay = l.nom + ' ' + (l.prenom || '');
+          } else {
+            typeDisplay = 'Club';
+            nomDisplay = l.nom || '';
+          }
+          tr.innerHTML = `<td>${l.numero}</td><td>${nomDisplay}</td><td>${typeDisplay}</td><td>${l.qualite || l.typeOfficiel || ''}</td><td>${actions}</td>`;
           tbody.appendChild(tr);
         }
         document.querySelectorAll('.view-btn').forEach(btn => {
@@ -1186,155 +1422,283 @@
               if (!confirm('Supprimer cette licence ?')) return;
               await deleteLicence(parseInt(btn.dataset.id));
               await refreshLicenceList();
-              await refreshClubsList();
+              if (currentLicenseType === 'club') await refreshClubsList();
             };
           });
         }
       } catch (e) { console.error('refreshLicenceList:', e); }
     }
 
-    // ----- Édition licence -----
+    // ----- Édition licence (adapté) -----
     async function openEditModal(licence) {
       if (!hasPermission('licences_edit')) return;
-      const editLicenceId = safeId('editLicenceId');
-      if (editLicenceId) editLicenceId.value = licence.id;
-      const editNom = safeId('editNom');
-      if (editNom) editNom.value = licence.nom;
-      const editDateNaissance = safeId('editDateNaissance');
-      if (editDateNaissance) editDateNaissance.value = licence.dateNaissance;
-      const editLieu = safeId('editLieu');
-      if (editLieu) editLieu.value = licence.lieu;
-      const editGenre = safeId('editGenre');
-      if (editGenre) editGenre.value = licence.sexe || 'M';
-      const editNationalite = safeId('editNationalite');
-      if (editNationalite) editNationalite.value = licence.nationalite || '';
-      const editProfession = safeId('editProfession');
-      if (editProfession) editProfession.value = licence.profession || '';
-      const editCategorie = safeId('editCategorie');
-      if (editCategorie) editCategorie.value = licence.categorie || 'Minime';
-      const editTaille = safeId('editTaille');
-      if (editTaille) editTaille.value = licence.taille || '';
-      const editPoids = safeId('editPoids');
-      if (editPoids) editPoids.value = licence.poids || '';
-      const editQualite = safeId('editQualite');
-      if (editQualite) editQualite.value = licence.qualite || 'Joueur';
-      // Autre précision
-      if (licence.qualite === 'Autre') {
-        const editAutrePrecisionField = safeId('editAutrePrecisionField');
-        if (editAutrePrecisionField) editAutrePrecisionField.classList.add('show');
-        const editAutrePrecision = safeId('editAutrePrecision');
-        if (editAutrePrecision) editAutrePrecision.value = licence.autrePrecision || '';
+      const container = safeId('editLicenceContainer');
+      if (!container) return;
+      let html = '';
+      if (licence.categorieLicence === 'officiel') {
+        html = `
+          <form id="editOfficielForm" class="row g-3">
+            <input type="hidden" id="editLicenceId" value="${licence.id}">
+            <div class="col-md-4"><label>Nom</label><input type="text" class="form-control" id="editOfficielNom" value="${licence.nom||''}" required></div>
+            <div class="col-md-4"><label>Prénom</label><input type="text" class="form-control" id="editOfficielPrenom" value="${licence.prenom||''}" required></div>
+            <div class="col-md-4"><label>Date de naissance</label><input type="date" class="form-control" id="editOfficielDateNaissance" value="${licence.dateNaissance||''}" required></div>
+            <div class="col-md-4"><label>Lieu de naissance</label><input type="text" class="form-control" id="editOfficielLieu" value="${licence.lieu||''}" required></div>
+            <div class="col-md-2"><label>Genre</label>
+              <select class="form-select" id="editOfficielGenre" required>
+                <option value="M" ${licence.sexe==='M'?'selected':''}>Masculin</option>
+                <option value="F" ${licence.sexe==='F'?'selected':''}>Féminin</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label>Nationalité</label><input type="text" class="form-control" id="editOfficielNationalite" value="${licence.nationalite||''}" required></div>
+            <div class="col-md-3"><label>Type officiel</label>
+              <select class="form-select" id="editOfficielType" required>
+                <option value="ARBITRE" ${licence.typeOfficiel==='ARBITRE'?'selected':''}>ARBITRE</option>
+                <option value="SECRETAIRE/CHRONOMETREUR" ${licence.typeOfficiel==='SECRETAIRE/CHRONOMETREUR'?'selected':''}>SECRETAIRE/CHRONOMETREUR</option>
+                <option value="DELEGUE TECHNIQUE" ${licence.typeOfficiel==='DELEGUE TECHNIQUE'?'selected':''}>DELEGUE TECHNIQUE</option>
+                <option value="DELEGUE EVENT" ${licence.typeOfficiel==='DELEGUE EVENT'?'selected':''}>DELEGUE EVENT</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label>Niveau CMR</label>
+              <select class="form-select" id="editOfficielNiveauCMR">
+                <option value="">Non précisé</option>
+                <option value="Niveau 1" ${licence.niveauCMR==='Niveau 1'?'selected':''}>Niveau 1</option>
+                <option value="Niveau 2" ${licence.niveauCMR==='Niveau 2'?'selected':''}>Niveau 2</option>
+                <option value="Niveau 3" ${licence.niveauCMR==='Niveau 3'?'selected':''}>Niveau 3</option>
+                <option value="Niveau 4" ${licence.niveauCMR==='Niveau 4'?'selected':''}>Niveau 4</option>
+                <option value="Niveau 5" ${licence.niveauCMR==='Niveau 5'?'selected':''}>Niveau 5</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label>Niveau International</label>
+              <select class="form-select" id="editOfficielNiveauInt">
+                <option value="">Non précisé</option>
+                <option value="International" ${licence.niveauInt==='International'?'selected':''}>International</option>
+                <option value="National" ${licence.niveauInt==='National'?'selected':''}>National</option>
+                <option value="Régional" ${licence.niveauInt==='Régional'?'selected':''}>Régional</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label>Profession</label><input type="text" class="form-control" id="editOfficielProfession" value="${licence.profession||''}" required></div>
+            <div class="col-md-4"><label>CNI/Passeport N°</label><input type="text" class="form-control" id="editOfficielCniNum" value="${licence.cniNum||''}" required></div>
+            <div class="col-md-4"><label>Nouvelle photo (optionnel)</label><input type="file" class="form-control" id="editOfficielPhotoInput" accept="image/*"></div>
+            <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Annuler</button></div>
+          </form>
+        `;
       } else {
-        const editAutrePrecisionField = safeId('editAutrePrecisionField');
-        if (editAutrePrecisionField) editAutrePrecisionField.classList.remove('show');
-        const editAutrePrecision = safeId('editAutrePrecision');
-        if (editAutrePrecision) editAutrePrecision.value = '';
+        html = `
+          <form id="editClubForm" class="row g-3">
+            <input type="hidden" id="editLicenceId" value="${licence.id}">
+            <div class="col-md-4"><label>Nom complet</label><input type="text" class="form-control" id="editNom" value="${licence.nom||''}" required></div>
+            <div class="col-md-3"><label>Date de naissance</label><input type="date" class="form-control" id="editDateNaissance" value="${licence.dateNaissance||''}" required></div>
+            <div class="col-md-3"><label>Lieu</label><input type="text" class="form-control" id="editLieu" value="${licence.lieu||''}" required></div>
+            <div class="col-md-2"><label>Genre</label>
+              <select class="form-select" id="editGenre" required>
+                <option value="M" ${licence.sexe==='M'?'selected':''}>Masculin</option>
+                <option value="F" ${licence.sexe==='F'?'selected':''}>Féminin</option>
+              </select>
+            </div>
+            <div class="col-md-3"><label>Nationalité</label><input type="text" class="form-control" id="editNationalite" value="${licence.nationalite||''}" required></div>
+            <div class="col-md-3"><label>Profession</label><input type="text" class="form-control" id="editProfession" value="${licence.profession||''}" required></div>
+            <div class="col-md-3"><label>Catégorie</label>
+              <select class="form-select" id="editCategorie" required>
+                <option value="Minime" ${licence.categorie==='Minime'?'selected':''}>Minime</option>
+                <option value="Cadet(te)" ${licence.categorie==='Cadet(te)'?'selected':''}>Cadet(te)</option>
+                <option value="Junior" ${licence.categorie==='Junior'?'selected':''}>Junior</option>
+                <option value="Espoir" ${licence.categorie==='Espoir'?'selected':''}>Espoir</option>
+                <option value="Senior" ${licence.categorie==='Senior'?'selected':''}>Senior</option>
+              </select>
+            </div>
+            <div class="col-md-2"><label>Taille (cm)</label><input type="number" class="form-control" id="editTaille" step="0.1" value="${licence.taille||''}" required></div>
+            <div class="col-md-2"><label>Poids (kg)</label><input type="number" class="form-control" id="editPoids" step="0.1" value="${licence.poids||''}" required></div>
+            <div class="col-md-3"><label>Qualité</label>
+              <select class="form-select" id="editQualite" required>
+                <option value="Joueur" ${licence.qualite==='Joueur'?'selected':''}>Joueur</option>
+                <option value="Médecin" ${licence.qualite==='Médecin'?'selected':''}>Médecin</option>
+                <option value="Dirigeant" ${licence.qualite==='Dirigeant'?'selected':''}>Dirigeant</option>
+                <option value="Entraineur" ${licence.qualite==='Entraineur'?'selected':''}>Entraineur</option>
+                <option value="KINE" ${licence.qualite==='KINE'?'selected':''}>KINE</option>
+                <option value="Autre" ${licence.qualite==='Autre'?'selected':''}>Autre</option>
+              </select>
+            </div>
+            <div class="col-md-3 conditional-fields" id="editAutrePrecisionField"><label>Précision (si Autre)</label><input type="text" class="form-control" id="editAutrePrecision" value="${licence.autrePrecision||''}"></div>
+            <div class="col-12 conditional-fields" id="editEncadreurFields">
+              <div class="row g-3">
+                <div class="col-md-6"><label>Niveau CMR</label>
+                  <select class="form-select" id="editNiveauCMR">
+                    <option value="">Non précisé</option>
+                    <option value="Niveau 1" ${licence.niveauCMR==='Niveau 1'?'selected':''}>Niveau 1</option>
+                    <option value="Niveau 2" ${licence.niveauCMR==='Niveau 2'?'selected':''}>Niveau 2</option>
+                    <option value="Niveau 3" ${licence.niveauCMR==='Niveau 3'?'selected':''}>Niveau 3</option>
+                    <option value="Niveau 4" ${licence.niveauCMR==='Niveau 4'?'selected':''}>Niveau 4</option>
+                    <option value="Niveau 5" ${licence.niveauCMR==='Niveau 5'?'selected':''}>Niveau 5</option>
+                  </select>
+                </div>
+                <div class="col-md-6"><label>Licence IHF</label><input type="text" class="form-control" id="editLicenceIHF" value="${licence.licenceIHF||''}"></div>
+              </div>
+            </div>
+            <div class="col-md-3"><label>Ancien club</label><input type="text" class="form-control" id="editAncienClub" value="${licence.ancienClub||''}"></div>
+            <div class="col-md-3"><label>Date départ ancien Club</label><input type="date" class="form-control" id="editDateDepartAncienClub" value="${licence.dateDepartAncienClub||''}"></div>
+            <div class="col-md-3"><label>Date arrivée nouveau club</label><input type="date" class="form-control" id="editDateArrivee" value="${licence.dateArrivee||''}"></div>
+            <div class="col-md-3"><label>Ligue d'appartenance</label><input type="text" class="form-control" id="editLigueAppartenance" value="${licence.ligueAppartenance||''}"></div>
+            <div class="col-md-3"><label>Niveau de Compétition</label><input type="text" class="form-control" id="editNiveau" value="${licence.niveau||''}"></div>
+            <div class="col-md-4"><label>Nouvelle photo (optionnel)</label><input type="file" class="form-control" id="editPhotoInput" accept="image/*"></div>
+            <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Annuler</button></div>
+          </form>
+        `;
       }
-      // Encadreur
-      if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(licence.qualite)) {
-        const editEncadreurFields = safeId('editEncadreurFields');
-        if (editEncadreurFields) editEncadreurFields.classList.add('show');
+      container.innerHTML = html;
+      if (licence.categorieLicence !== 'officiel') {
+        const editQualite = safeId('editQualite');
+        if (editQualite) {
+          editQualite.addEventListener('change', function() {
+            const val = this.value;
+            const precisionField = safeId('editAutrePrecisionField');
+            const encadreurField = safeId('editEncadreurFields');
+            if (precisionField) {
+              if (val === 'Autre') precisionField.classList.add('show');
+              else precisionField.classList.remove('show');
+            }
+            if (encadreurField) {
+              if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(val)) encadreurField.classList.add('show');
+              else encadreurField.classList.remove('show');
+            }
+          });
+          editQualite.dispatchEvent(new Event('change'));
+        }
+        const editClubForm = safeId('editClubForm');
+        if (editClubForm) {
+          editClubForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!hasPermission('licences_edit')) return;
+            const id = parseInt(safeId('editLicenceId')?.value);
+            const nom = safeId('editNom')?.value?.trim() || '';
+            const dateNais = safeId('editDateNaissance')?.value || '';
+            const lieu = safeId('editLieu')?.value?.trim() || '';
+            const genre = safeId('editGenre')?.value || '';
+            const nationalite = safeId('editNationalite')?.value?.trim() || '';
+            const profession = safeId('editProfession')?.value?.trim() || '';
+            const categorie = safeId('editCategorie')?.value || '';
+            const taille = parseFloat(safeId('editTaille')?.value) || 0;
+            const poids = parseFloat(safeId('editPoids')?.value) || 0;
+            const qualite = safeId('editQualite')?.value || '';
+            const autrePrecision = (qualite === 'Autre') ? (safeId('editAutrePrecision')?.value?.trim() || '') : '';
+            const niveauCMR = safeId('editNiveauCMR')?.value || '';
+            const licenceIHF = safeId('editLicenceIHF')?.value?.trim() || '';
+            const ancienClub = safeId('editAncienClub')?.value?.trim() || '';
+            const dateDepartAncienClub = safeId('editDateDepartAncienClub')?.value || '';
+            const dateArrivee = safeId('editDateArrivee')?.value || '';
+            const ligueAppartenance = safeId('editLigueAppartenance')?.value?.trim() || '';
+            const niveau = safeId('editNiveau')?.value?.trim() || '';
+            const photoFile = safeId('editPhotoInput')?.files?.[0] || null;
+            const licences = await loadLicences();
+            const idx = licences.findIndex(l => l.id === id);
+            if (idx === -1) return alert('Licence introuvable');
+            let licence = licences[idx];
+            let photo = licence.photo;
+            if (photoFile) {
+              try { photo = await fileToDataURL(photoFile); } catch (err) { alert('Erreur lecture photo'); return; }
+            }
+            licence.nom = nom;
+            licence.dateNaissance = dateNais;
+            licence.lieu = lieu;
+            licence.sexe = genre;
+            licence.nationalite = nationalite;
+            licence.profession = profession;
+            licence.categorie = categorie;
+            licence.taille = taille;
+            licence.poids = poids;
+            licence.qualite = qualite;
+            licence.autrePrecision = (qualite === 'Autre') ? autrePrecision : '';
+            licence.niveauCMR = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '';
+            licence.licenceIHF = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '';
+            licence.ancienClub = ancienClub;
+            licence.dateDepartAncienClub = dateDepartAncienClub;
+            licence.dateArrivee = dateArrivee;
+            licence.ligueAppartenance = ligueAppartenance;
+            licence.niveau = niveau;
+            licence.photo = photo;
+            await updateLicence(licence);
+            bootstrap.Modal.getInstance(document.getElementById('editLicenceModal')).hide();
+            await refreshLicenceList();
+            await refreshClubsList();
+          });
+        }
       } else {
-        const editEncadreurFields = safeId('editEncadreurFields');
-        if (editEncadreurFields) editEncadreurFields.classList.remove('show');
+        const editOfficielForm = safeId('editOfficielForm');
+        if (editOfficielForm) {
+          editOfficielForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!hasPermission('licences_edit')) return;
+            const id = parseInt(safeId('editLicenceId')?.value);
+            const nom = safeId('editOfficielNom')?.value?.trim() || '';
+            const prenom = safeId('editOfficielPrenom')?.value?.trim() || '';
+            const dateNais = safeId('editOfficielDateNaissance')?.value || '';
+            const lieu = safeId('editOfficielLieu')?.value?.trim() || '';
+            const genre = safeId('editOfficielGenre')?.value || '';
+            const nationalite = safeId('editOfficielNationalite')?.value?.trim() || '';
+            const typeOfficiel = safeId('editOfficielType')?.value || '';
+            const niveauCMR = safeId('editOfficielNiveauCMR')?.value || '';
+            const niveauInt = safeId('editOfficielNiveauInt')?.value || '';
+            const profession = safeId('editOfficielProfession')?.value?.trim() || '';
+            const cniNum = safeId('editOfficielCniNum')?.value?.trim() || '';
+            const photoFile = safeId('editOfficielPhotoInput')?.files?.[0] || null;
+            const licences = await loadLicences();
+            const idx = licences.findIndex(l => l.id === id);
+            if (idx === -1) return alert('Licence introuvable');
+            let licence = licences[idx];
+            let photo = licence.photo;
+            if (photoFile) {
+              try { photo = await fileToDataURL(photoFile); } catch (err) { alert('Erreur lecture photo'); return; }
+            }
+            licence.nom = nom;
+            licence.prenom = prenom;
+            licence.dateNaissance = dateNais;
+            licence.lieu = lieu;
+            licence.sexe = genre;
+            licence.nationalite = nationalite;
+            licence.typeOfficiel = typeOfficiel;
+            licence.niveauCMR = niveauCMR;
+            licence.niveauInt = niveauInt;
+            licence.profession = profession;
+            licence.cniNum = cniNum;
+            licence.photo = photo;
+            await updateLicence(licence);
+            bootstrap.Modal.getInstance(document.getElementById('editLicenceModal')).hide();
+            await refreshLicenceList();
+          });
+        }
       }
-      const editNiveauCMR = safeId('editNiveauCMR');
-      if (editNiveauCMR) editNiveauCMR.value = licence.niveauCMR || '';
-      const editLicenceIHF = safeId('editLicenceIHF');
-      if (editLicenceIHF) editLicenceIHF.value = licence.licenceIHF || '';
-      const editAncienClub = safeId('editAncienClub');
-      if (editAncienClub) editAncienClub.value = licence.ancienClub || '';
-      const editDateDepartAncienClub = safeId('editDateDepartAncienClub');
-      if (editDateDepartAncienClub) editDateDepartAncienClub.value = licence.dateDepartAncienClub || '';
-      const editDateArrivee = safeId('editDateArrivee');
-      if (editDateArrivee) editDateArrivee.value = licence.dateArrivee || '';
-      const editLigueRegionale = safeId('editLigueRegionale');
-      if (editLigueRegionale) editLigueRegionale.value = licence.ligueRegionale || '';
-      const editLigueDepartementale = safeId('editLigueDepartementale');
-      if (editLigueDepartementale) editLigueDepartementale.value = licence.ligueDepartementale || '';
-      const editNiveau = safeId('editNiveau');
-      if (editNiveau) editNiveau.value = licence.niveau || '';
-      const editPhotoInput = safeId('editPhotoInput');
-      if (editPhotoInput) editPhotoInput.value = '';
       new bootstrap.Modal(document.getElementById('editLicenceModal')).show();
     }
-    const editLicenceForm = safeId('editLicenceForm');
-    if (editLicenceForm) {
-      editLicenceForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (!hasPermission('licences_edit')) return;
-        const id = parseInt((safeId('editLicenceId')?.value) || 0);
-        const nom = safeId('editNom')?.value?.trim() || '';
-        const dateNais = safeId('editDateNaissance')?.value || '';
-        const lieu = safeId('editLieu')?.value?.trim() || '';
-        const genre = safeId('editGenre')?.value || '';
-        const nationalite = safeId('editNationalite')?.value?.trim() || '';
-        const profession = safeId('editProfession')?.value?.trim() || '';
-        const categorie = safeId('editCategorie')?.value || '';
-        const taille = parseFloat(safeId('editTaille')?.value) || 0;
-        const poids = parseFloat(safeId('editPoids')?.value) || 0;
-        const qualite = safeId('editQualite')?.value || '';
-        const autrePrecision = (qualite === 'Autre') ? (safeId('editAutrePrecision')?.value?.trim() || '') : '';
-        const niveauCMR = safeId('editNiveauCMR')?.value || '';
-        const licenceIHF = safeId('editLicenceIHF')?.value?.trim() || '';
-        const ancienClub = safeId('editAncienClub')?.value?.trim() || '';
-        const dateDepartAncienClub = safeId('editDateDepartAncienClub')?.value || '';
-        const dateArrivee = safeId('editDateArrivee')?.value || '';
-        const ligueRegionale = safeId('editLigueRegionale')?.value?.trim() || '';
-        const ligueDepartementale = safeId('editLigueDepartementale')?.value?.trim() || '';
-        const niveau = safeId('editNiveau')?.value?.trim() || '';
-        const photoFile = safeId('editPhotoInput')?.files?.[0] || null;
-        const licences = await loadLicences();
-        const idx = licences.findIndex(l => l.id === id);
-        if (idx === -1) return alert('Licence introuvable');
-        let licence = licences[idx];
-        let photo = licence.photo;
-        if (photoFile) {
-          try { photo = await fileToDataURL(photoFile); } catch (err) { alert('Erreur lecture photo'); return; }
-        }
-        if (nom !== licence.nom || dateNais !== licence.dateNaissance) {
-          const oldNum = licence.numero;
-          const control = oldNum.slice(-3);
-          const counter = parseInt(control, 10);
-          licence.numero = buildNumeroLicence(nom, dateNais, counter);
-        }
-        licence.nom = nom; licence.dateNaissance = dateNais; licence.lieu = lieu;
-        licence.sexe = genre;
-        licence.nationalite = nationalite; licence.profession = profession;
-        licence.categorie = categorie; licence.taille = taille; licence.poids = poids;
-        licence.qualite = qualite;
-        licence.autrePrecision = (qualite === 'Autre') ? autrePrecision : '';
-        licence.niveauCMR = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '';
-        licence.licenceIHF = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '';
-        licence.ancienClub = ancienClub;
-        licence.dateDepartAncienClub = dateDepartAncienClub;
-        licence.dateArrivee = dateArrivee;
-        licence.ligueRegionale = ligueRegionale;
-        licence.ligueDepartementale = ligueDepartementale;
-        licence.niveau = niveau;
-        licence.photo = photo;
-        await updateLicence(licence);
-        bootstrap.Modal.getInstance(document.getElementById('editLicenceModal')).hide();
-        await refreshLicenceList();
-        await refreshClubsList();
-      });
-    }
 
-    // ----- Bordereau -----
+    // ----- Bordereau (adapté) -----
     const btnBordereau = safeId('btnBordereau');
     if (btnBordereau) {
       btnBordereau.addEventListener('click', async () => {
         if (!hasPermission('print')) return alert('Permission insuffisante');
-        if (!currentClub) return;
-        const licences = await loadLicences();
-        const filtered = licences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
+        const allLicences = await loadLicences();
+        let filtered;
+        if (currentLicenseType === 'club') {
+          if (!currentClub) return alert('Sélectionnez un club');
+          filtered = allLicences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison && (l.categorieLicence === 'club' || !l.categorieLicence));
+        } else {
+          filtered = allLicences.filter(l => l.categorieLicence === 'officiel');
+        }
         if (!filtered.length) return alert('Aucune licence');
         const settings = await loadSettings();
         const logoHtml = settings.portrait.logoFederal ? `<img src="${settings.portrait.logoFederal}" style="max-height:30px;vertical-align:middle;margin-right:10px;">` : '';
-        let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau ${currentClub.name}</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} Bordereau - ${currentClub.name} (${currentClub.saison})</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr><th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Genre</th><th>Nationalité</th><th>Catégorie</th><th>Qualité</th><th>Ancien Club</th><th>Date départ</th><th>Date arrivée</th><th>Ligue régionale</th><th>Ligue départementale</th><th>Niveau</th><th>Saison</th></tr></thead><tbody>`;
+        let title = currentLicenseType === 'club' ? `Bordereau ${currentClub.name} (${currentClub.saison})` : 'Bordereau Officiels Techniques';
+        let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} ${title}</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr>`;
+        if (currentLicenseType === 'club') {
+          html += `<th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Genre</th><th>Nationalité</th><th>Catégorie</th><th>Qualité</th><th>Ligue appartenance</th><th>Niveau compétition</th><th>Saison</th>`;
+        } else {
+          html += `<th>N°</th><th>Nom</th><th>Prénom</th><th>Né le</th><th>Lieu</th><th>Genre</th><th>Nationalité</th><th>Type</th><th>Niveau CMR</th><th>Niveau Int.</th>`;
+        }
+        html += `</tr></thead><tbody>`;
         filtered.forEach(l => {
-          const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
-          html += `<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${genreDisplay}</td><td>${l.nationalite||''}</td><td>${l.categorie||''}</td><td>${l.qualite||''}</td><td>${l.ancienClub||''}</td><td>${l.dateDepartAncienClub||''}</td><td>${l.dateArrivee||''}</td><td>${l.ligueRegionale||''}</td><td>${l.ligueDepartementale||''}</td><td>${l.niveau||''}</td><td>${l.saison}</td></tr>`;
+          if (currentLicenseType === 'club') {
+            html += `<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${l.sexe}</td><td>${l.nationalite||''}</td><td>${l.categorie||''}</td><td>${l.qualite||''}</td><td>${l.ligueAppartenance||''}</td><td>${l.niveau||''}</td><td>${l.saison}</td></tr>`;
+          } else {
+            html += `<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.prenom||''}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${l.sexe}</td><td>${l.nationalite||''}</td><td>${l.typeOfficiel||''}</td><td>${l.niveauCMR||''}</td><td>${l.niveauInt||''}</td></tr>`;
+          }
         });
         html += `</tbody></table><p style="text-align:center">Généré par ID LICENCE 4 PRO LEAGUE</p></body></html>`;
         const w = window.open('', '_blank');
@@ -1342,7 +1706,7 @@
       });
     }
 
-    // ====== FONCTION GENERER CARTE (avec N° sous titre, Saison au-dessus du QR) ======
+    // ====== FONCTION GENERER CARTE (adaptée) ======
     function genererCarteHTML(licence, orientation, settings, appSettings) {
       appSettings = appSettings || { taillePolice: 'medium' };
       const photoHtml = licence.photo ? `<img src="${licence.photo}" class="photo">` : 'Photo';
@@ -1356,66 +1720,93 @@
       const en = labels.en;
 
       const genreText = licence.sexe === 'M' ? 'Masculin' : (licence.sexe === 'F' ? 'Féminin' : '');
-      let qualiteDisplay = licence.qualite || '';
-      if (licence.qualite === 'Autre' && licence.autrePrecision) {
-        qualiteDisplay += ' (' + licence.autrePrecision + ')';
-      }
+      const nomDisplay = licence.categorieLicence === 'officiel' ? (licence.nom + ' ' + (licence.prenom || '')) : licence.nom;
 
-      // Champs (sans N° ni Saison)
-      const singleFields = [
-        { fr: t.nom, en: en.nom, val: licence.nom },
-        { fr: t.ne_le, en: en.ne_le, val: licence.dateNaissance + ' à ' + licence.lieu },
-        { fr: t.genre, en: en.genre, val: genreText },
-        { fr: t.nationalite, en: en.nationalite, val: licence.nationalite || '' },
-        { fr: t.profession, en: en.profession, val: licence.profession || '' },
-        { fr: t.categorie, en: en.categorie, val: licence.categorie || '' },
-        { fr: t.taille_poids, en: en.taille_poids, val: (licence.taille||'') + ' cm / ' + (licence.poids||'') + ' kg' },
-        { fr: t.qualite, en: en.qualite, val: qualiteDisplay }
-      ];
-      if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(licence.qualite)) {
-        singleFields.push({ fr: t.niveauCMR, en: en.niveauCMR, val: licence.niveauCMR || '' });
-        singleFields.push({ fr: t.licenceIHF, en: en.licenceIHF, val: licence.licenceIHF || '' });
-      }
-      singleFields.push(
-        { fr: t.ancienClub, en: en.ancienClub, val: licence.ancienClub || '' },
-        { fr: t.dateDepart, en: en.dateDepart, val: licence.dateDepartAncienClub || '' },
-        { fr: t.nouveauClub, en: en.nouveauClub, val: licence.clubName },
-        { fr: t.dateArrivee, en: en.dateArrivee, val: licence.dateArrivee || '' },
-        { fr: t.ligueRegionale, en: en.ligueRegionale, val: licence.ligueRegionale || '' },
-        { fr: t.ligueDepartementale, en: en.ligueDepartementale, val: licence.ligueDepartementale || '' },
-        { fr: t.niveau, en: en.niveau, val: licence.niveau || '' }
-      );
-
-      // Générer les lignes d'info
       let infoHtml = '';
-      singleFields.forEach(f => {
-        infoHtml += `<div class="field-row"><span class="label">${f.fr}</span><span class="en"> / ${f.en}</span><span class="value"> : ${f.val}</span></div>`;
-      });
 
-      // Saison au-dessus du QR
-      const saisonHtml = `<div class="saison-label">${t.saison} / ${en.saison} : ${licence.saison}</div>`;
-
-      const bgStyle = (settings.bgType === 'image' && settings.bgImage) ? `background-image: url('${settings.bgImage}'); background-size: cover;` : `background-color: ${settings.bgColor || '#ffffff'};`;
-      const cardClass = orientation === 'landscape' ? 'card-preview landscape' : 'card-preview';
-      const qrId = `qr-${Date.now()}-${Math.random().toString(36).substr(2,6)}`;
-
-      return `<div class="${cardClass}" style="${bgStyle}">
-        <div class="card-top-header">${federalLogoHtml}${extraTextHtml}</div>
-        <div class="card-org-line">
-          <div>${orgLogoHtml}</div>
-          <span class="card-header-custom">${headerOrgHtml}</span>
-          <div class="card-numero">${t.numero} / ${en.numero} : ${licence.numero}</div>
-        </div>
-        <div class="photo-qr-row">
-          <div class="photo-area">${photoHtml}</div>
-          <div style="display:flex; flex-direction:column; align-items:center;">
-            ${saisonHtml}
-            <div class="qr-area" id="${qrId}"></div>
+      if (licence.categorieLicence === 'officiel') {
+        const fields = [
+          { fr: t.nom + ' / ' + t.prenom, en: en.nom + ' / ' + en.prenom, val: nomDisplay },
+          { fr: t.ne_le, en: en.ne_le, val: licence.dateNaissance + ' à ' + licence.lieu },
+          { fr: t.genre, en: en.genre, val: genreText },
+          { fr: t.nationalite, en: en.nationalite, val: licence.nationalite || '' },
+          { fr: t.typeOfficiel, en: en.typeOfficiel, val: licence.typeOfficiel || '' },
+          { fr: t.niveauCMR, en: en.niveauCMR, val: licence.niveauCMR || '' },
+          { fr: t.niveauInt, en: en.niveauInt, val: licence.niveauInt || '' },
+          { fr: t.profession, en: en.profession, val: licence.profession || '' },
+          { fr: t.cni, en: en.cni, val: licence.cniNum || '' }
+        ];
+        fields.forEach(f => {
+          infoHtml += `<div class="field-row"><span class="label">${f.fr}</span><span class="en"> / ${f.en}</span><span class="value"> : ${f.val}</span></div>`;
+        });
+        const bgStyle = (settings.bgType === 'image' && settings.bgImage) ? `background-image: url('${settings.bgImage}'); background-size: cover;` : `background-color: ${settings.bgColor || '#ffffff'};`;
+        const cardClass = orientation === 'landscape' ? 'card-preview landscape' : 'card-preview';
+        const qrId = `qr-${Date.now()}-${Math.random().toString(36).substr(2,6)}`;
+        return `<div class="${cardClass}" style="${bgStyle}">
+          <div class="card-top-header">${federalLogoHtml}${extraTextHtml}</div>
+          <div class="card-org-line">
+            <div>${orgLogoHtml}</div>
+            <span class="card-header-custom">${headerOrgHtml}</span>
+            <div class="card-numero">${t.numero} / ${en.numero} : ${licence.numero}</div>
           </div>
-        </div>
-        <div class="info-area ${sizeClass}">${infoHtml}</div>
-        <div class="card-footer">Créé le ${licence.dateCreation} · ID LICENCE 4 PRO LEAGUE</div>
-      </div>`;
+          <div class="photo-qr-row">
+            <div class="photo-area">${photoHtml}</div>
+            <div style="display:flex; flex-direction:column; align-items:center;">
+              <div class="qr-area" id="${qrId}"></div>
+            </div>
+          </div>
+          <div class="info-area ${sizeClass}">${infoHtml}</div>
+          <div class="card-footer">Créé le ${licence.dateCreation} · ID LICENCE 4 PRO LEAGUE</div>
+        </div>`;
+      } else {
+        const qualiteDisplay = licence.qualite || '';
+        const saisonHtml = `<div class="saison-label">${t.saison} / ${en.saison} : ${licence.saison}</div>`;
+        const fields = [
+          { fr: t.nom, en: en.nom, val: licence.nom },
+          { fr: t.ne_le, en: en.ne_le, val: licence.dateNaissance + ' à ' + licence.lieu },
+          { fr: t.genre, en: en.genre, val: genreText },
+          { fr: t.nationalite, en: en.nationalite, val: licence.nationalite || '' },
+          { fr: t.profession, en: en.profession, val: licence.profession || '' },
+          { fr: t.categorie, en: en.categorie, val: licence.categorie || '' },
+          { fr: t.taille_poids, en: en.taille_poids, val: (licence.taille||'') + ' cm / ' + (licence.poids||'') + ' kg' },
+          { fr: t.qualite, en: en.qualite, val: qualiteDisplay }
+        ];
+        if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(licence.qualite)) {
+          fields.push({ fr: t.niveauCMR, en: en.niveauCMR, val: licence.niveauCMR || '' });
+          fields.push({ fr: t.licenceIHF, en: en.licenceIHF, val: licence.licenceIHF || '' });
+        }
+        fields.push(
+          { fr: t.ancienClub, en: en.ancienClub, val: licence.ancienClub || '' },
+          { fr: t.dateDepart, en: en.dateDepart, val: licence.dateDepartAncienClub || '' },
+          { fr: t.nouveauClub, en: en.nouveauClub, val: licence.clubName },
+          { fr: t.dateArrivee, en: en.dateArrivee, val: licence.dateArrivee || '' },
+          { fr: t.ligueAppartenance, en: en.ligueAppartenance, val: licence.ligueAppartenance || '' },
+          { fr: t.niveau, en: en.niveau, val: licence.niveau || '' }
+        );
+        fields.forEach(f => {
+          infoHtml += `<div class="field-row"><span class="label">${f.fr}</span><span class="en"> / ${f.en}</span><span class="value"> : ${f.val}</span></div>`;
+        });
+        const bgStyle = (settings.bgType === 'image' && settings.bgImage) ? `background-image: url('${settings.bgImage}'); background-size: cover;` : `background-color: ${settings.bgColor || '#ffffff'};`;
+        const cardClass = orientation === 'landscape' ? 'card-preview landscape' : 'card-preview';
+        const qrId = `qr-${Date.now()}-${Math.random().toString(36).substr(2,6)}`;
+        return `<div class="${cardClass}" style="${bgStyle}">
+          <div class="card-top-header">${federalLogoHtml}${extraTextHtml}</div>
+          <div class="card-org-line">
+            <div>${orgLogoHtml}</div>
+            <span class="card-header-custom">${headerOrgHtml}</span>
+            <div class="card-numero">${t.numero} / ${en.numero} : ${licence.numero}</div>
+          </div>
+          <div class="photo-qr-row">
+            <div class="photo-area">${photoHtml}</div>
+            <div style="display:flex; flex-direction:column; align-items:center;">
+              ${saisonHtml}
+              <div class="qr-area" id="${qrId}"></div>
+            </div>
+          </div>
+          <div class="info-area ${sizeClass}">${infoHtml}</div>
+          <div class="card-footer">Créé le ${licence.dateCreation} · ID LICENCE 4 PRO LEAGUE</div>
+        </div>`;
+      }
     }
 
     function printHTML(contentHtml) {
@@ -1439,13 +1830,18 @@
       });
     }
 
-    // ----- Planche A4 -----
+    // ----- Planche A4 (adaptée) -----
     async function genererPlancheA4(orientation) {
       if (!hasPermission('print')) return alert('Permission insuffisante');
-      if (!currentClub) { alert('Aucun club sélectionné'); return; }
-      const licences = await loadLicences();
-      const filtered = licences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
-      if (!filtered.length) { alert('Aucune licence pour ce club'); return; }
+      const allLicences = await loadLicences();
+      let filtered;
+      if (currentLicenseType === 'club') {
+        if (!currentClub) { alert('Aucun club sélectionné'); return; }
+        filtered = allLicences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison && (l.categorieLicence === 'club' || !l.categorieLicence));
+      } else {
+        filtered = allLicences.filter(l => l.categorieLicence === 'officiel');
+      }
+      if (!filtered.length) { alert('Aucune licence pour ce type'); return; }
       const allSettings = await loadSettings();
       const settings = orientation === 'portrait' ? allSettings.portrait : allSettings.landscape;
       const app = allSettings.app || { taillePolice: 'medium' };
@@ -1521,8 +1917,8 @@
                 dateNaissance: item.licence.dateNaissance,
                 lieu: item.licence.lieu,
                 sexe: item.licence.sexe,
-                clubName: item.licence.clubName,
-                saison: item.licence.saison,
+                clubName: item.licence.clubName || '',
+                saison: item.licence.saison || '',
                 qualite: item.licence.qualite || '',
                 categorie: item.licence.categorie || '',
                 nationalite: item.licence.nationalite || '',
@@ -1534,9 +1930,12 @@
                 ancienClub: item.licence.ancienClub || '',
                 dateDepartAncienClub: item.licence.dateDepartAncienClub || '',
                 dateArrivee: item.licence.dateArrivee || '',
-                ligueRegionale: item.licence.ligueRegionale || '',
-                ligueDepartementale: item.licence.ligueDepartementale || '',
-                niveau: item.licence.niveau || ''
+                ligueAppartenance: item.licence.ligueAppartenance || '',
+                niveau: item.licence.niveau || '',
+                typeOfficiel: item.licence.typeOfficiel || '',
+                niveauInt: item.licence.niveauInt || '',
+                cniNum: item.licence.cniNum || '',
+                prenom: item.licence.prenom || ''
               };
               signData.hash = CryptoJS.SHA256(JSON.stringify(signData)).toString();
               new QRCode(container, { text: JSON.stringify(signData), width: 100, height: 100 });
@@ -1553,7 +1952,7 @@
     if (btnPlanchePortrait) btnPlanchePortrait.onclick = () => genererPlancheA4('portrait');
     if (btnPlancheLandscape) btnPlancheLandscape.onclick = () => genererPlancheA4('landscape');
 
-    // ----- Aperçu carte et téléchargement JPEG -----
+    // ----- Aperçu carte et téléchargement JPEG (adapté) -----
     async function showCardPreview(licence) {
       if (!hasPermission('print')) return;
       const allSettings = await loadSettings();
@@ -1578,8 +1977,8 @@
               dateNaissance: licence.dateNaissance,
               lieu: licence.lieu,
               sexe: licence.sexe,
-              clubName: licence.clubName,
-              saison: licence.saison,
+              clubName: licence.clubName || '',
+              saison: licence.saison || '',
               qualite: licence.qualite || '',
               categorie: licence.categorie || '',
               nationalite: licence.nationalite || '',
@@ -1591,9 +1990,12 @@
               ancienClub: licence.ancienClub || '',
               dateDepartAncienClub: licence.dateDepartAncienClub || '',
               dateArrivee: licence.dateArrivee || '',
-              ligueRegionale: licence.ligueRegionale || '',
-              ligueDepartementale: licence.ligueDepartementale || '',
-              niveau: licence.niveau || ''
+              ligueAppartenance: licence.ligueAppartenance || '',
+              niveau: licence.niveau || '',
+              typeOfficiel: licence.typeOfficiel || '',
+              niveauInt: licence.niveauInt || '',
+              cniNum: licence.cniNum || '',
+              prenom: licence.prenom || ''
             };
             signData.hash = hashObj(signData);
             new QRCode(container, { text: JSON.stringify(signData), width: 100, height: 100 });
@@ -1614,7 +2016,7 @@
           const cardHtml = genererCarteHTML(licence, chosen, settings, app);
           const qrId = `qr-print-${Date.now()}`;
           let finalHtml = cardHtml.replace(/id="([^"]+)"/, `id="${qrId}"`);
-          const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', clubName: '${licence.clubName}', saison: '${licence.saison}', qualite: '${licence.qualite||''}', categorie: '${licence.categorie||''}', nationalite: '${licence.nationalite||''}', profession: '${licence.profession||''}', taille: '${licence.taille||''}', poids: '${licence.poids||''}', niveauCMR: '${licence.niveauCMR||''}', licenceIHF: '${licence.licenceIHF||''}', ancienClub: '${licence.ancienClub||''}', dateDepartAncienClub: '${licence.dateDepartAncienClub||''}', dateArrivee: '${licence.dateArrivee||''}', ligueRegionale: '${licence.ligueRegionale||''}', ligueDepartementale: '${licence.ligueDepartementale||''}', niveau: '${licence.niveau||''}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, clubName: licence.clubName, saison: licence.saison, qualite: licence.qualite||'', categorie: licence.categorie||'', nationalite: licence.nationalite||'', profession: licence.profession||'', taille: licence.taille||'', poids: licence.poids||'', niveauCMR: licence.niveauCMR||'', licenceIHF: licence.licenceIHF||'', ancienClub: licence.ancienClub||'', dateDepartAncienClub: licence.dateDepartAncienClub||'', dateArrivee: licence.dateArrivee||'', ligueRegionale: licence.ligueRegionale||'', ligueDepartementale: licence.ligueDepartementale||'', niveau: licence.niveau||''})}'}), width: 100, height: 100});<\/script></body></html>`;
+          const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', clubName: '${licence.clubName||''}', saison: '${licence.saison||''}', qualite: '${licence.qualite||''}', categorie: '${licence.categorie||''}', nationalite: '${licence.nationalite||''}', profession: '${licence.profession||''}', taille: '${licence.taille||''}', poids: '${licence.poids||''}', niveauCMR: '${licence.niveauCMR||''}', licenceIHF: '${licence.licenceIHF||''}', ancienClub: '${licence.ancienClub||''}', dateDepartAncienClub: '${licence.dateDepartAncienClub||''}', dateArrivee: '${licence.dateArrivee||''}', ligueAppartenance: '${licence.ligueAppartenance||''}', niveau: '${licence.niveau||''}', typeOfficiel: '${licence.typeOfficiel||''}', niveauInt: '${licence.niveauInt||''}', cniNum: '${licence.cniNum||''}', prenom: '${licence.prenom||''}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, clubName: licence.clubName||'', saison: licence.saison||'', qualite: licence.qualite||'', categorie: licence.categorie||'', nationalite: licence.nationalite||'', profession: licence.profession||'', taille: licence.taille||'', poids: licence.poids||'', niveauCMR: licence.niveauCMR||'', licenceIHF: licence.licenceIHF||'', ancienClub: licence.ancienClub||'', dateDepartAncienClub: licence.dateDepartAncienClub||'', dateArrivee: licence.dateArrivee||'', ligueAppartenance: licence.ligueAppartenance||'', niveau: licence.niveau||'', typeOfficiel: licence.typeOfficiel||'', niveauInt: licence.niveauInt||'', cniNum: licence.cniNum||'', prenom: licence.prenom||''})}'}), width: 100, height: 100});<\/script></body></html>`;
           try { await printHTML(printDoc); } catch(e) { alert('Erreur impression : ' + e.message); }
         };
       }
@@ -1677,7 +2079,7 @@
       new bootstrap.Modal(document.getElementById('cardModal')).show();
     }
 
-    // ----- Import CSV -----
+    // ----- Import CSV (adapté) -----
     let csvData = [];
     const csvFile = safeId('csvFile');
     if (csvFile) {
@@ -1692,7 +2094,8 @@
           csvData = [];
           for (let i = 0; i < lines.length; i++) {
             const cols = lines[i].split(',');
-            if (cols.length >= 18 && cols[0].trim() !== '') {
+            // Colonnes : 0 Nom, 1 DateNaissance, 2 Lieu, 3 Genre, 4 Nationalité, 5 Profession, 6 Catégorie, 7 Taille, 8 Poids, 9 Qualité, 10 NiveauCMR, 11 LicenceIHF, 12 AncienClub, 13 DateDepartAncienClub, 14 DateArrivee, 15 LigueAppartenance, 16 Niveau
+            if (cols.length >= 17 && cols[0].trim() !== '') {
               csvData.push({
                 nom: cols[0].trim(),
                 dateNaissance: cols[1].trim(),
@@ -1709,9 +2112,8 @@
                 ancienClub: cols[12].trim(),
                 dateDepartAncienClub: cols[13].trim(),
                 dateArrivee: cols[14].trim(),
-                ligueRegionale: cols[15].trim(),
-                ligueDepartementale: cols[16].trim(),
-                niveau: cols[17].trim()
+                ligueAppartenance: cols[15].trim(),
+                niveau: cols[16].trim()
               });
             }
           }
@@ -1742,7 +2144,7 @@
           try {
             const defaultPhoto = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
             const counter = await getLicenseCounter();
-            const numero = buildNumeroLicence(row.nom, row.dateNaissance, counter);
+            const numero = buildNumeroLicenceClub(row.nom, row.dateNaissance, counter);
             const licence = {
               numero,
               nom: row.nom,
@@ -1760,14 +2162,14 @@
               ancienClub: row.ancienClub,
               dateDepartAncienClub: row.dateDepartAncienClub,
               dateArrivee: row.dateArrivee,
-              ligueRegionale: row.ligueRegionale,
-              ligueDepartementale: row.ligueDepartementale,
+              ligueAppartenance: row.ligueAppartenance,
               niveau: row.niveau,
               clubId: currentClub.id,
               clubName: currentClub.name,
               saison: currentClub.saison,
               photo: defaultPhoto,
-              dateCreation: new Date().toISOString().slice(0,10)
+              dateCreation: new Date().toISOString().slice(0,10),
+              categorieLicence: 'club'
             };
             await saveLicence(licence);
             created++;
@@ -1779,7 +2181,7 @@
       });
     }
 
-    // ----- Paramètres UI -----
+    // ----- Paramètres UI (inchangé) -----
     async function loadUISettings() {
       try {
         const settings = await loadSettings();
@@ -1881,11 +2283,11 @@
           ancienClub: 'Ancien club',
           dateDepartAncienClub: '2024-12-31',
           dateArrivee: '2025-01-01',
-          ligueRegionale: 'Ligue 1',
-          ligueDepartementale: 'Ligue 2',
+          ligueAppartenance: 'Ligue 1',
           niveau: 'National',
           photo: null,
-          dateCreation: '2025-01-01'
+          dateCreation: '2025-01-01',
+          categorieLicence: 'club'
         };
         const app = appOverride || settings.app || { taillePolice: 'medium' };
         const cardHtml = genererCarteHTML(dummyLicence, orient, { headerText, extraText, logo, logoFederal: fed, bgType, bgColor, bgImage: bg }, app);
@@ -2079,10 +2481,12 @@
       }
       for (const old of (data.licences || [])) {
         const newC = oldToNew.get(old.clubId);
-        if (!newC) continue;
+        if (!newC && old.categorieLicence !== 'officiel') continue;
         const { id, ...l } = old;
-        l.clubId = newC.id;
-        l.clubName = newC.name;
+        if (l.categorieLicence === 'club' && newC) {
+          l.clubId = newC.id;
+          l.clubName = newC.name;
+        }
         await saveLicence(l);
       }
       for (const old of (data.users || [])) {
@@ -2137,7 +2541,7 @@
       btnImportSettingsOnly.onclick = async () => { if (!importSettingsContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer la configuration ?')) return; try { const ns = JSON.parse(importSettingsContent); if (!ns.portrait || !ns.landscape) throw new Error(); await savePortraitSettings(ns.portrait); await saveLandscapeSettings(ns.landscape); if(ns.app) await saveAppSettings(ns.app); alert('Paramètres importés'); await loadUISettings(); } catch (e) { alert('Erreur'); } };
     }
 
-    // ----- Utilisateurs -----
+    // ----- Utilisateurs (inchangé) -----
     function permsToCheckboxes(perms) {
       const ids = ['perm_clubs_view','perm_clubs_edit','perm_licences_view','perm_licences_edit','perm_import','perm_print','perm_settings','perm_users'];
       ids.forEach(id => { const el = safeId(id); if (el) el.checked = perms[id.replace('perm_','')] || false; });
@@ -2246,7 +2650,7 @@
       };
     }
 
-    // ----- Authentification -----
+    // ----- Authentification + choix -----
     async function initAdmin() {
       const users = await loadUsers();
       if (!users.some(u => u.username === 'admin')) {
@@ -2273,7 +2677,9 @@
           sessionStorage.setItem('currentPermissions', JSON.stringify(currentPermissions));
           const saved = sessionStorage.getItem('currentClub');
           if (saved) currentClub = JSON.parse(saved);
-          await showApp();
+          if (loginPage) loginPage.style.display = 'none';
+          if (choiceScreen) choiceScreen.style.display = 'flex';
+          if (appContent) appContent.style.display = 'none';
           return true;
         }
         return false;
@@ -2282,33 +2688,65 @@
         return false;
       }
     }
+
+    async function enterApp(type) {
+      currentLicenseType = type;
+      if (choiceScreen) choiceScreen.style.display = 'none';
+      if (appContent) appContent.style.display = 'block';
+      if (currentUser && currentUserDisplay) {
+        currentUserDisplay.textContent = `👤 ${currentUser.username}`;
+        applyPermissionsUI();
+      }
+      await refreshClubsList();
+      await refreshLicenceList();
+      if (hasPermission('users')) await refreshUsersList();
+      switchTab('clubsTab');
+      await loadUISettings();
+      updateNumeroPreview();
+      setLicenseType(type);
+      if (type === 'officiel') {
+        const noClubAlert = safeId('noClubAlert');
+        if (noClubAlert) noClubAlert.style.display = 'none';
+      }
+    }
+
+    const choiceClub = safeId('choiceClub');
+    const choiceOfficiel = safeId('choiceOfficiel');
+    if (choiceClub) {
+      choiceClub.addEventListener('click', () => enterApp('club'));
+    }
+    if (choiceOfficiel) {
+      choiceOfficiel.addEventListener('click', () => enterApp('officiel'));
+    }
+
+    const btnChangeType = safeId('btnChangeLicenseType');
+    if (btnChangeType) {
+      btnChangeType.addEventListener('click', () => {
+        if (appContent) appContent.style.display = 'none';
+        if (choiceScreen) choiceScreen.style.display = 'flex';
+        const clubForm = safeId('clubLicenceForm');
+        const officielForm = safeId('officielLicenceForm');
+        if (clubForm) clubForm.style.display = 'none';
+        if (officielForm) officielForm.style.display = 'none';
+      });
+    }
+
     function logout() {
       sessionStorage.removeItem('loggedUser');
       sessionStorage.removeItem('currentPermissions');
       sessionStorage.removeItem('currentClub');
       currentUser = null; currentClub = null; currentPermissions = null;
       if (loginPage) loginPage.style.display = 'flex';
+      if (choiceScreen) choiceScreen.style.display = 'none';
       if (appContent) appContent.style.display = 'none';
     }
-    async function showApp() {
-      try {
-        if (loginPage) loginPage.style.display = 'none';
-        if (appContent) appContent.style.display = 'block';
-        if (currentUser && currentUserDisplay) {
-          currentUserDisplay.textContent = `👤 ${currentUser.username}`;
-          applyPermissionsUI();
-        }
-        await refreshClubsList();
-        await refreshLicenceList();
-        if (hasPermission('users')) await refreshUsersList();
-        switchTab('clubsTab');
-        await loadUISettings();
-        updateNumeroPreview();
-      } catch (e) {
-        console.error('Erreur affichage app:', e);
-        alert('Erreur lors du chargement de l\'application. Voir console.');
-      }
+
+    async function showAppAfterReconnect() {
+      if (loginPage) loginPage.style.display = 'none';
+      if (choiceScreen) choiceScreen.style.display = 'flex';
+      if (appContent) appContent.style.display = 'none';
     }
+
     function switchTab(panelId) {
       document.querySelectorAll('#mainTabs .nav-link').forEach(l => l.classList.remove('active'));
       document.querySelectorAll('.tab-pane').forEach(p => { p.classList.remove('show', 'active'); p.style.display = 'none'; });
@@ -2317,6 +2755,7 @@
       const activePane = document.querySelector(`.tab-pane[data-panel="${panelId}"]`);
       if (activePane) { activePane.classList.add('show', 'active'); activePane.style.display = 'block'; }
     }
+
     document.querySelectorAll('#mainTabs .nav-link[data-panel]').forEach(link => {
       link.addEventListener('click', (e) => { e.preventDefault(); switchTab(link.dataset.panel); });
     });
@@ -2333,9 +2772,13 @@
           currentPermissions = JSON.parse(savedPerms);
           const savedClub = sessionStorage.getItem('currentClub');
           if (savedClub) currentClub = JSON.parse(savedClub);
-          await showApp();
+          if (loginPage) loginPage.style.display = 'none';
+          if (choiceScreen) choiceScreen.style.display = 'flex';
+          if (appContent) appContent.style.display = 'none';
+          applyPermissionsUI();
         } else {
           if (loginPage) loginPage.style.display = 'flex';
+          if (choiceScreen) choiceScreen.style.display = 'none';
           if (appContent) appContent.style.display = 'none';
         }
         const loginForm = safeId('loginForm');
@@ -2352,16 +2795,14 @@
         if (logoutBtn) {
           logoutBtn.addEventListener('click', () => { if (confirm('Déconnexion ?')) logout(); });
         }
-        window.updateClubDisplay = async function() {
-          if (currentClub) sessionStorage.setItem('currentClub', JSON.stringify(currentClub));
-          else sessionStorage.removeItem('currentClub');
-          await updateClubDisplay();
-        };
+        setLicenseType('club');
+        if (currentClub) await updateClubDisplay();
       } catch (e) {
         console.error('Erreur initialisation:', e);
         alert('Erreur au démarrage : ' + e.message);
       }
     })();
+
   })();
 </script>
 </body>

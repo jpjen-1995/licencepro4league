@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* ========== STYLES AVEC ESPACEMENT RÉDUIT ========== */
+    /* ========== STYLES FINAUX ========== */
     #loginPage {
       display: flex;
       justify-content: center;
@@ -119,11 +119,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 0.8mm;
+      margin-bottom: 0.6mm;
       width: 100%;
     }
     .extra-text {
-      font-size: 5px;
+      font-size: 4.5px;
       text-align: center;
       flex: 1;
     }
@@ -135,6 +135,7 @@
     }
     .card-org-line {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       margin-bottom: 0.6mm;
@@ -151,12 +152,17 @@
       font-size: 9px;
       text-align: center;
     }
+    .card-numero {
+      font-weight: bold;
+      font-size: 8px;
+      text-align: center;
+    }
     .photo-qr-row {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 1.5mm;
-      margin: 1.5mm 0 0.8mm 0;
+      margin: 1mm 0 0.6mm 0;
     }
     .card-preview.landscape .photo-qr-row {
       width: 38%;
@@ -166,8 +172,8 @@
       align-items: center;
     }
     .photo-area {
-      width: 18mm;
-      height: 24mm;
+      width: 17mm;
+      height: 22mm;
       border: 1px solid #ccc;
       display: flex;
       align-items: center;
@@ -178,8 +184,8 @@
       border-radius: 2mm;
     }
     .card-preview.landscape .photo-area {
-      width: 16mm;
-      height: 20mm;
+      width: 14mm;
+      height: 18mm;
     }
     .photo-area img.photo {
       width: 100%;
@@ -199,33 +205,57 @@
       width: 100% !important;
       height: 100% !important;
     }
+    .saison-label {
+      font-size: 6px;
+      text-align: center;
+      font-weight: 500;
+      margin-bottom: 0.2mm;
+    }
     .info-area {
       flex: 1;
       padding: 0.3mm 0.5mm 0 0.5mm;
-      font-size: 6.5px;
-      line-height: 1.2;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
     }
     .card-preview.landscape .info-area {
       width: 60%;
-      font-size: 6.5px;
       margin-left: 1mm;
     }
-    .info-area strong {
+    .info-area .field-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 0.15mm;
+      font-size: 7.5px;
+      line-height: 1.15;
+    }
+    .info-area .field-row .label {
       font-weight: 600;
+      margin-right: 2px;
     }
-    .info-area .field {
-      margin-bottom: 0.1mm;
-      font-size: 6.5px;
-      line-height: 1.2;
+    .info-area .field-row .en {
+      font-style: italic;
+      font-size: 0.65em;
+      color: #555;
+      margin-left: 2px;
+      margin-right: 4px;
     }
-    .card-preview.landscape .info-area .field {
-      font-size: 6.5px;
+    .info-area .field-row .value {
+      font-weight: normal;
+      word-break: break-word;
     }
+    .info-area.size-small .field-row { font-size: 6px; }
+    .info-area.size-small .field-row .en { font-size: 0.65em; }
+    .info-area.size-medium .field-row { font-size: 7.5px; }
+    .info-area.size-medium .field-row .en { font-size: 0.65em; }
+    .info-area.size-large .field-row { font-size: 9.5px; }
+    .info-area.size-large .field-row .en { font-size: 0.65em; }
+    .card-preview.landscape .info-area .field-row { font-size: 7.5px; }
+    .card-preview.landscape .info-area.size-small .field-row { font-size: 6px; }
+    .card-preview.landscape .info-area.size-medium .field-row { font-size: 7.5px; }
+    .card-preview.landscape .info-area.size-large .field-row { font-size: 9.5px; }
     .card-footer {
-      font-size: 4px;
+      font-size: 4.5px;
       text-align: center;
       margin-top: 0.8mm;
       border-top: 0.5px solid #aaa;
@@ -423,13 +453,11 @@
               </div>
             </div>
             <div class="col-md-3"><label class="form-label">Ancien club</label><input type="text" class="form-control" id="ancienClub"></div>
-            <div class="col-md-3"><label class="form-label">Date d'arrivée dans le club</label><input type="date" class="form-control" id="dateArrivee"></div>
+            <div class="col-md-3"><label class="form-label">Date de départ de l'ancien club</label><input type="date" class="form-control" id="dateDepartAncienClub"></div>
+            <div class="col-md-3"><label class="form-label">Date d'arrivée dans le club actuel</label><input type="date" class="form-control" id="dateArrivee"></div>
             <div class="col-md-3"><label class="form-label">Ligue régionale</label><input type="text" class="form-control" id="ligueRegionale"></div>
             <div class="col-md-3"><label class="form-label">Ligue départementale</label><input type="text" class="form-control" id="ligueDepartementale"></div>
             <div class="col-md-3"><label class="form-label">Niveau</label><input type="text" class="form-control" id="niveau"></div>
-            <div class="col-md-3"><label class="form-label">CNI/Passeport N°</label><input type="text" class="form-control" id="cniNum" required></div>
-            <div class="col-md-3"><label class="form-label">Date de délivrance</label><input type="date" class="form-control" id="cniDate" required></div>
-            <div class="col-md-3"><label class="form-label">Lieu de délivrance</label><input type="text" class="form-control" id="cniLieu" required></div>
             <div class="col-md-4"><label class="form-label">Photo</label><input type="file" class="form-control" id="photoInput" accept="image/*" required></div>
             <div class="col-md-4"><label class="form-label">N° Licence (auto)</label><input type="text" class="form-control" id="numeroPreview" readonly></div>
             <div class="col-12"><button type="submit" class="btn btn-primary" id="btnGenerateLicence">Générer la licence</button></div>
@@ -448,7 +476,7 @@
       <!-- IMPORT CSV -->
       <div class="tab-pane" data-panel="importTab" style="display:none;">
         <h4>Importer pour <span id="importClubName"></span></h4>
-        <p>Fichier CSV (colonnes : Nom,DateNaissance,Lieu,Genre,Nationalité,Profession,Catégorie,Taille,Poids,Qualité,NiveauCMR,LicenceIHF,AncienClub,DateArrivee,LigueRegionale,LigueDepartementale,Niveau,CNI_N°,CNI_Date,CNI_Lieu)</p>
+        <p>Fichier CSV (colonnes : Nom,DateNaissance,Lieu,Genre,Nationalité,Profession,Catégorie,Taille,Poids,Qualité,NiveauCMR,LicenceIHF,AncienClub,DateDepartAncienClub,DateArrivee,LigueRegionale,LigueDepartementale,Niveau)</p>
         <input type="file" id="csvFile" accept=".csv" class="form-control mb-3">
         <div id="importPreview" class="d-none">
           <h5>Aperçu</h5>
@@ -459,7 +487,22 @@
 
       <!-- PARAMÈTRES -->
       <div class="tab-pane" data-panel="settingsTab" style="display:none;">
-        <h4>Paramètres graphiques des cartes</h4>
+        <h4>Paramètres généraux</h4>
+        <div class="settings-block">
+          <form id="appSettingsForm" class="row g-3">
+            <div class="col-md-6"><label class="form-label">Taille du texte sur les cartes</label>
+              <select class="form-select" id="appTaillePolice">
+                <option value="small">Petite</option>
+                <option value="medium" selected>Moyenne</option>
+                <option value="large">Grande</option>
+              </select>
+            </div>
+            <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer les paramètres généraux</button></div>
+          </form>
+        </div>
+        <hr>
+        <h4>Paramètres graphiques des cartes (Portrait / Paysage)</h4>
+        <!-- BLOC PORTRAIT -->
         <div class="settings-block" id="portraitBlock">
           <h4>📄 Configuration PORTRAIT (55x85 mm)</h4>
           <form id="portraitSettingsForm" class="row g-3">
@@ -478,6 +521,7 @@
           </form>
           <hr><h5>Aperçu (Portrait)</h5><div class="preview-container"><div class="card-preview" id="portraitPreview"></div></div>
         </div>
+        <!-- BLOC PAYSAGE -->
         <div class="settings-block" id="landscapeBlock">
           <h4>📄 Configuration PAYSAGE (85x55 mm)</h4>
           <form id="landscapeSettingsForm" class="row g-3">
@@ -561,68 +605,36 @@
 
 <!-- MODAL modification licence -->
 <div class="modal fade" id="editLicenceModal" tabindex="-1">
-  <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modifier la licence</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="editLicenceForm" class="row g-3" novalidate>
-    <input type="hidden" id="editLicenceId">
-    <div class="col-md-4"><label>Nom complet</label><input type="text" class="form-control" id="editNom" required></div>
-    <div class="col-md-3"><label>Date de naissance</label><input type="date" class="form-control" id="editDateNaissance" required></div>
-    <div class="col-md-3"><label>Lieu</label><input type="text" class="form-control" id="editLieu" required></div>
-    <div class="col-md-2"><label>Genre</label><select class="form-select" id="editGenre" required>
-      <option value="M">Masculin</option>
-      <option value="F">Féminin</option>
-    </select></div>
-    <div class="col-md-3"><label>Nationalité</label><input type="text" class="form-control" id="editNationalite" required></div>
-    <div class="col-md-3"><label>Profession</label><input type="text" class="form-control" id="editProfession" required></div>
-    <div class="col-md-3"><label>Catégorie</label>
-      <select class="form-select" id="editCategorie" required>
-        <option value="Minime">Minime</option>
-        <option value="Cadet(te)">Cadet(te)</option>
-        <option value="Junior">Junior</option>
-        <option value="Espoir">Espoir</option>
-        <option value="Senior">Senior</option>
-      </select>
-    </div>
-    <div class="col-md-2"><label>Taille (cm)</label><input type="number" class="form-control" id="editTaille" step="0.1" required></div>
-    <div class="col-md-2"><label>Poids (kg)</label><input type="number" class="form-control" id="editPoids" step="0.1" required></div>
-    <div class="col-md-3"><label>Qualité</label>
-      <select class="form-select" id="editQualite" required>
-        <option value="Joueur">Joueur</option>
-        <option value="Médecin">Médecin</option>
-        <option value="Dirigeant">Dirigeant</option>
-        <option value="Entraineur">Entraineur</option>
-        <option value="KINE">KINE</option>
-        <option value="Autre">Autre</option>
-      </select>
-    </div>
-    <div class="col-md-3 conditional-fields" id="editAutrePrecisionField">
-      <label>Précision (si Autre)</label>
-      <input type="text" class="form-control" id="editAutrePrecision">
-    </div>
-    <div class="col-12 conditional-fields" id="editEncadreurFields">
-      <div class="row g-3">
-        <div class="col-md-6"><label>Niveau CMR</label>
-          <select class="form-select" id="editNiveauCMR">
-            <option value="">Non précisé</option>
-            <option value="Niveau 1">Niveau 1</option>
-            <option value="Niveau 2">Niveau 2</option>
-            <option value="Niveau 3">Niveau 3</option>
-            <option value="Niveau 4">Niveau 4</option>
-            <option value="Niveau 5">Niveau 5</option>
-          </select>
+  <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modifier la licence</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">
+    <form id="editLicenceForm" class="row g-3" novalidate>
+      <input type="hidden" id="editLicenceId">
+      <div class="col-md-4"><label>Nom complet</label><input type="text" class="form-control" id="editNom" required></div>
+      <div class="col-md-3"><label>Date de naissance</label><input type="date" class="form-control" id="editDateNaissance" required></div>
+      <div class="col-md-3"><label>Lieu</label><input type="text" class="form-control" id="editLieu" required></div>
+      <div class="col-md-2"><label>Genre</label><select class="form-select" id="editGenre" required><option value="M">Masculin</option><option value="F">Féminin</option></select></div>
+      <div class="col-md-3"><label>Nationalité</label><input type="text" class="form-control" id="editNationalite" required></div>
+      <div class="col-md-3"><label>Profession</label><input type="text" class="form-control" id="editProfession" required></div>
+      <div class="col-md-3"><label>Catégorie</label><select class="form-select" id="editCategorie" required><option value="Minime">Minime</option><option value="Cadet(te)">Cadet(te)</option><option value="Junior">Junior</option><option value="Espoir">Espoir</option><option value="Senior">Senior</option></select></div>
+      <div class="col-md-2"><label>Taille (cm)</label><input type="number" class="form-control" id="editTaille" step="0.1" required></div>
+      <div class="col-md-2"><label>Poids (kg)</label><input type="number" class="form-control" id="editPoids" step="0.1" required></div>
+      <div class="col-md-3"><label>Qualité</label><select class="form-select" id="editQualite" required><option value="Joueur">Joueur</option><option value="Médecin">Médecin</option><option value="Dirigeant">Dirigeant</option><option value="Entraineur">Entraineur</option><option value="KINE">KINE</option><option value="Autre">Autre</option></select></div>
+      <div class="col-md-3 conditional-fields" id="editAutrePrecisionField"><label>Précision (si Autre)</label><input type="text" class="form-control" id="editAutrePrecision"></div>
+      <div class="col-12 conditional-fields" id="editEncadreurFields">
+        <div class="row g-3">
+          <div class="col-md-6"><label>Niveau CMR</label><select class="form-select" id="editNiveauCMR"><option value="">Non précisé</option><option value="Niveau 1">Niveau 1</option><option value="Niveau 2">Niveau 2</option><option value="Niveau 3">Niveau 3</option><option value="Niveau 4">Niveau 4</option><option value="Niveau 5">Niveau 5</option></select></div>
+          <div class="col-md-6"><label>Licence IHF</label><input type="text" class="form-control" id="editLicenceIHF" placeholder="Numéro licence IHF"></div>
         </div>
-        <div class="col-md-6"><label>Licence IHF</label><input type="text" class="form-control" id="editLicenceIHF" placeholder="Numéro licence IHF"></div>
       </div>
-    </div>
-    <div class="col-md-3"><label>Ancien club</label><input type="text" class="form-control" id="editAncienClub"></div>
-    <div class="col-md-3"><label>Date d'arrivée</label><input type="date" class="form-control" id="editDateArrivee"></div>
-    <div class="col-md-3"><label>Ligue régionale</label><input type="text" class="form-control" id="editLigueRegionale"></div>
-    <div class="col-md-3"><label>Ligue départementale</label><input type="text" class="form-control" id="editLigueDepartementale"></div>
-    <div class="col-md-3"><label>Niveau</label><input type="text" class="form-control" id="editNiveau"></div>
-    <div class="col-md-3"><label>CNI/Passeport N°</label><input type="text" class="form-control" id="editCniNum" required></div>
-    <div class="col-md-3"><label>Date délivrance</label><input type="date" class="form-control" id="editCniDate" required></div>
-    <div class="col-md-3"><label>Lieu délivrance</label><input type="text" class="form-control" id="editCniLieu" required></div>
-    <div class="col-md-4"><label>Nouvelle photo (optionnel)</label><input type="file" class="form-control" id="editPhotoInput" accept="image/*"></div>
-    <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Annuler</button></div>
-  </form></div></div></div>
+      <div class="col-md-3"><label>Ancien club</label><input type="text" class="form-control" id="editAncienClub"></div>
+      <div class="col-md-3"><label>Date de départ de l'ancien club</label><input type="date" class="form-control" id="editDateDepartAncienClub"></div>
+      <div class="col-md-3"><label>Date d'arrivée dans le club actuel</label><input type="date" class="form-control" id="editDateArrivee"></div>
+      <div class="col-md-3"><label>Ligue régionale</label><input type="text" class="form-control" id="editLigueRegionale"></div>
+      <div class="col-md-3"><label>Ligue départementale</label><input type="text" class="form-control" id="editLigueDepartementale"></div>
+      <div class="col-md-3"><label>Niveau</label><input type="text" class="form-control" id="editNiveau"></div>
+      <div class="col-md-4"><label>Nouvelle photo (optionnel)</label><input type="file" class="form-control" id="editPhotoInput" accept="image/*"></div>
+      <div class="col-12"><button type="submit" class="btn btn-primary">Enregistrer</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Annuler</button></div>
+    </form>
+  </div></div>
 </div>
 
 <iframe id="printFrame" class="print-iframe"></iframe>
@@ -632,9 +644,16 @@
   (function(){
     'use strict';
 
-    // ---------- IndexedDB (version 9 : ajout ligueDepartementale) ----------
+    // ========== VÉRIFICATION DES ÉLÉMENTS ==========
+    function safeId(id) {
+      const el = document.getElementById(id);
+      if (!el) console.warn('Élément manquant :', id);
+      return el;
+    }
+
+    // ========== INDEXEDDB ==========
     const DB_NAME = 'IDGesDB';
-    const DB_VERSION = 9;
+    const DB_VERSION = 10;
     let db = null;
 
     function openDB() {
@@ -721,17 +740,22 @@
       return new Promise(r=>{
         s.get('portrait').onsuccess = ePort => {
           s.get('landscape').onsuccess = eLand => {
-            const defaultPortrait = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
-            const defaultLandscape = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
-            const portrait = ePort.target.result ? ePort.target.result.value : defaultPortrait;
-            const landscape = eLand.target.result ? eLand.target.result.value : defaultLandscape;
-            r({ portrait, landscape });
+            s.get('app').onsuccess = eApp => {
+              const defaultPortrait = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
+              const defaultLandscape = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
+              const defaultApp = { taillePolice: 'medium' };
+              const portrait = ePort.target.result ? ePort.target.result.value : defaultPortrait;
+              const landscape = eLand.target.result ? eLand.target.result.value : defaultLandscape;
+              const app = eApp.target.result ? eApp.target.result.value : defaultApp;
+              r({ portrait, landscape, app });
+            };
           };
         };
       });
     }
     async function savePortraitSettings(settings) { const s=await getStore('settings','readwrite'); return new Promise(r=>s.put({key:'portrait', value:settings}).onsuccess=r); }
     async function saveLandscapeSettings(settings) { const s=await getStore('settings','readwrite'); return new Promise(r=>s.put({key:'landscape', value:settings}).onsuccess=r); }
+    async function saveAppSettings(settings) { const s=await getStore('settings','readwrite'); return new Promise(r=>s.put({key:'app', value:settings}).onsuccess=r); }
 
     // ----- Counter -----
     async function getLicenseCounter() {
@@ -771,16 +795,41 @@
     let currentUser=null;
     let currentClub=null;
     let currentPermissions = null;
-    const loginPage=document.getElementById('loginPage');
-    const appContent=document.getElementById('appContent');
-    const currentUserDisplay=document.getElementById('currentUserDisplay');
-    const currentClubDisplay=document.getElementById('currentClubDisplay');
-    const usersTabNav=document.getElementById('usersTabNav');
-    const printFrame = document.getElementById('printFrame');
+    let appSettings = { taillePolice: 'medium' };
+    const loginPage = safeId('loginPage');
+    const appContent = safeId('appContent');
+    const currentUserDisplay = safeId('currentUserDisplay');
+    const currentClubDisplay = safeId('currentClubDisplay');
+    const usersTabNav = safeId('usersTabNav');
+    const printFrame = safeId('printFrame');
+
+    // ----- Dictionnaire des libellés bilingues -----
+    const labels = {
+      fr: {
+        numero: 'N°', saison: 'Saison', nom: 'Nom', ne_le: 'Né(e) le',
+        genre: 'Genre', nationalite: 'Nationalité', profession: 'Profession',
+        categorie: 'Catégorie', taille_poids: 'Taille / Poids', qualite: 'Qualité',
+        niveauCMR: 'Niveau CMR', licenceIHF: 'Licence IHF',
+        ancienClub: 'Ancien club', dateDepart: 'Date départ',
+        nouveauClub: 'Nouveau club', dateArrivee: 'Date arrivée',
+        ligueRegionale: 'Ligue régionale', ligueDepartementale: 'Ligue départementale',
+        niveau: 'Niveau'
+      },
+      en: {
+        numero: 'ID', saison: 'Season', nom: 'Name', ne_le: 'Born on',
+        genre: 'Gender', nationalite: 'Nationality', profession: 'Occupation',
+        categorie: 'Category', taille_poids: 'Height / Weight', qualite: 'Role',
+        niveauCMR: 'CMR Level', licenceIHF: 'IHF License',
+        ancienClub: 'Former club', dateDepart: 'Departure date',
+        nouveauClub: 'New club', dateArrivee: 'Arrival date',
+        ligueRegionale: 'Regional league', ligueDepartementale: 'Departmental league',
+        niveau: 'Level'
+      }
+    };
 
     // ----- Gestion des champs conditionnels -----
     function toggleEncadreurFields(selectElement, targetContainerId) {
-      const container = document.getElementById(targetContainerId);
+      const container = safeId(targetContainerId);
       if (!container) return;
       const val = selectElement.value;
       if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(val)) {
@@ -790,7 +839,7 @@
       }
     }
     function toggleAutrePrecision(selectElement, targetInputId) {
-      const input = document.getElementById(targetInputId);
+      const input = safeId(targetInputId);
       if (!input) return;
       if (selectElement.value === 'Autre') {
         input.closest('.conditional-fields').classList.add('show');
@@ -800,459 +849,571 @@
       }
     }
 
-    document.getElementById('qualite').addEventListener('change', function() {
-      toggleAutrePrecision(this, 'autrePrecision');
-      toggleEncadreurFields(this, 'encadreurFields');
-    });
-    document.getElementById('editQualite').addEventListener('change', function() {
-      toggleAutrePrecision(this, 'editAutrePrecision');
-      toggleEncadreurFields(this, 'editEncadreurFields');
-    });
+    const qualiteEl = safeId('qualite');
+    if (qualiteEl) {
+      qualiteEl.addEventListener('change', function() {
+        toggleAutrePrecision(this, 'autrePrecision');
+        toggleEncadreurFields(this, 'encadreurFields');
+      });
+    }
+    const editQualiteEl = safeId('editQualite');
+    if (editQualiteEl) {
+      editQualiteEl.addEventListener('change', function() {
+        toggleAutrePrecision(this, 'editAutrePrecision');
+        toggleEncadreurFields(this, 'editEncadreurFields');
+      });
+    }
 
     function hasPermission(perm) {
       return currentPermissions && currentPermissions[perm] === true;
     }
 
     function applyPermissionsUI() {
-      const btnAddClub = document.getElementById('btnAddClub');
-      if(btnAddClub) btnAddClub.style.display = hasPermission('clubs_edit') ? 'inline-block' : 'none';
-      const btnGenerateLicence = document.getElementById('btnGenerateLicence');
-      if(btnGenerateLicence) btnGenerateLicence.disabled = !hasPermission('licences_edit');
+      const btnAddClub = safeId('btnAddClub');
+      if (btnAddClub) btnAddClub.style.display = hasPermission('clubs_edit') ? 'inline-block' : 'none';
+      const btnGenerateLicence = safeId('btnGenerateLicence');
+      if (btnGenerateLicence) btnGenerateLicence.disabled = !hasPermission('licences_edit');
       const licenceFormInputs = document.querySelectorAll('#licenceForm input, #licenceForm select');
       licenceFormInputs.forEach(inp => inp.disabled = !hasPermission('licences_edit'));
       const importTab = document.querySelector('[data-panel="importTab"]');
-      if(importTab) importTab.style.display = hasPermission('import') ? 'block' : 'none';
+      if (importTab) importTab.style.display = hasPermission('import') ? 'block' : 'none';
       const settingsTab = document.querySelector('[data-panel="settingsTab"]');
-      if(settingsTab) settingsTab.style.display = hasPermission('settings') ? 'block' : 'none';
-      usersTabNav.style.display = hasPermission('users') ? 'block' : 'none';
-      const btnBordereau = document.getElementById('btnBordereau');
-      const btnPlanchePortrait = document.getElementById('btnPlancheA4Portrait');
-      const btnPlancheLandscape = document.getElementById('btnPlancheA4Landscape');
-      if(btnBordereau) btnBordereau.style.display = hasPermission('print') ? 'inline-block' : 'none';
-      if(btnPlanchePortrait) btnPlanchePortrait.style.display = hasPermission('print') ? 'inline-block' : 'none';
-      if(btnPlancheLandscape) btnPlancheLandscape.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      if (settingsTab) settingsTab.style.display = hasPermission('settings') ? 'block' : 'none';
+      if (usersTabNav) usersTabNav.style.display = hasPermission('users') ? 'block' : 'none';
+      const btnBordereau = safeId('btnBordereau');
+      const btnPlanchePortrait = safeId('btnPlancheA4Portrait');
+      const btnPlancheLandscape = safeId('btnPlancheA4Landscape');
+      if (btnBordereau) btnBordereau.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      if (btnPlanchePortrait) btnPlanchePortrait.style.display = hasPermission('print') ? 'inline-block' : 'none';
+      if (btnPlancheLandscape) btnPlancheLandscape.style.display = hasPermission('print') ? 'inline-block' : 'none';
     }
 
     // ----- Affichage club -----
     async function updateClubDisplay() {
-      if(currentClub && currentClub.name){
-        currentClubDisplay.innerHTML=`🏟️ <strong>${currentClub.name}</strong> (${currentClub.saison})`;
-        document.getElementById('clubActifLabel').innerHTML=`${currentClub.name} (${currentClub.saison})`;
-        document.getElementById('licenceClubName').innerText=currentClub.name;
-        document.getElementById('listClubName').innerText=currentClub.name;
-        document.getElementById('importClubName').innerText=currentClub.name;
-        document.getElementById('noClubAlert').style.display='none';
+      if (currentClub && currentClub.name) {
+        if (currentClubDisplay) currentClubDisplay.innerHTML = `🏟️ <strong>${currentClub.name}</strong> (${currentClub.saison})`;
+        const clubActifLabel = safeId('clubActifLabel');
+        if (clubActifLabel) clubActifLabel.innerHTML = `${currentClub.name} (${currentClub.saison})`;
+        const licenceClubName = safeId('licenceClubName');
+        if (licenceClubName) licenceClubName.innerText = currentClub.name;
+        const listClubName = safeId('listClubName');
+        if (listClubName) listClubName.innerText = currentClub.name;
+        const importClubName = safeId('importClubName');
+        if (importClubName) importClubName.innerText = currentClub.name;
+        const noClubAlert = safeId('noClubAlert');
+        if (noClubAlert) noClubAlert.style.display = 'none';
       } else {
-        currentClubDisplay.innerHTML='🏟️ Aucun club';
-        document.getElementById('clubActifLabel').innerHTML='Aucun';
-        document.getElementById('licenceClubName').innerText='?';
-        document.getElementById('listClubName').innerText='?';
-        document.getElementById('importClubName').innerText='?';
-        document.getElementById('noClubAlert').style.display='block';
+        if (currentClubDisplay) currentClubDisplay.innerHTML = '🏟️ Aucun club';
+        const clubActifLabel = safeId('clubActifLabel');
+        if (clubActifLabel) clubActifLabel.innerHTML = 'Aucun';
+        ['licenceClubName','listClubName','importClubName'].forEach(id => {
+          const el = safeId(id);
+          if (el) el.innerText = '?';
+        });
+        const noClubAlert = safeId('noClubAlert');
+        if (noClubAlert) noClubAlert.style.display = 'block';
       }
     }
 
-    // ----- Rafraîchir clubs (inchangé) -----
+    // ----- Rafraîchir clubs -----
     async function refreshClubsList() {
-      const clubs=await loadClubs();
-      const licences=await loadLicences();
-      const tbody=document.querySelector('#clubsTable tbody');
-      tbody.innerHTML='';
-      for(const c of clubs){
-        const nb=licences.filter(l=>l.clubId===c.id && l.saison===c.saison).length;
-        const tr=document.createElement('tr');
-        let actions = '';
-        if(hasPermission('clubs_edit')) {
-          actions = `<button class="btn btn-sm btn-primary select-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>
-                     <button class="btn btn-sm btn-outline-secondary rename-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✏️</button>
-                     <button class="btn btn-sm btn-danger delete-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">🗑️</button>`;
-        } else {
-          actions = `<button class="btn btn-sm btn-primary select-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>`;
+      try {
+        const clubs = await loadClubs();
+        const licences = await loadLicences();
+        const tbody = document.querySelector('#clubsTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        for (const c of clubs) {
+          const nb = licences.filter(l => l.clubId === c.id && l.saison === c.saison).length;
+          const tr = document.createElement('tr');
+          let actions = '';
+          if (hasPermission('clubs_edit')) {
+            actions = `<button class="btn btn-sm btn-primary select-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>
+                       <button class="btn btn-sm btn-outline-secondary rename-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✏️</button>
+                       <button class="btn btn-sm btn-danger delete-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">🗑️</button>`;
+          } else {
+            actions = `<button class="btn btn-sm btn-primary select-club-btn" data-id="${c.id}" data-name="${c.name}" data-saison="${c.saison}">✔️</button>`;
+          }
+          tr.innerHTML = `<td>${c.name}</td><td>${c.saison}</td><td>${nb}</td><td>${actions}</td>`;
+          tbody.appendChild(tr);
         }
-        tr.innerHTML=`<td>${c.name}</td><td>${c.saison}</td><td>${nb}</td><td>${actions}</td>`;
-        tbody.appendChild(tr);
-      }
-      document.querySelectorAll('.select-club-btn').forEach(btn=>btn.onclick=async()=>{
-        currentClub={id:parseInt(btn.dataset.id),name:btn.dataset.name,saison:btn.dataset.saison};
-        await updateClubDisplay();
-        await refreshLicenceList();
-        updateNumeroPreview();
-        switchTab('licencesTab');
-      });
-      if(hasPermission('clubs_edit')) {
-        document.querySelectorAll('.rename-club-btn').forEach(btn=>btn.onclick=()=>{
-          document.getElementById('renameOldId').value=btn.dataset.id;
-          document.getElementById('renameNewName').value=btn.dataset.name;
-          document.getElementById('renameNewSaison').value=btn.dataset.saison;
-          document.getElementById('renameClubForm').style.display='block';
-          document.getElementById('addClubForm').style.display='none';
+        document.querySelectorAll('.select-club-btn').forEach(btn => {
+          btn.onclick = async () => {
+            currentClub = { id: parseInt(btn.dataset.id), name: btn.dataset.name, saison: btn.dataset.saison };
+            await updateClubDisplay();
+            await refreshLicenceList();
+            updateNumeroPreview();
+            switchTab('licencesTab');
+          };
         });
-        document.querySelectorAll('.delete-club-btn').forEach(btn=>btn.onclick=async()=>{
-          const id=parseInt(btn.dataset.id), name=btn.dataset.name, saison=btn.dataset.saison;
-          if(!confirm(`Supprimer le club "${name}" et toutes ses licences ?`)) return;
-          await deleteLicencesByClub(id,saison);
-          await deleteClub(id);
-          if(currentClub?.id===id){ currentClub=null; await updateClubDisplay(); }
-          await refreshClubsList();
-          await refreshLicenceList();
-        });
-      }
+        if (hasPermission('clubs_edit')) {
+          document.querySelectorAll('.rename-club-btn').forEach(btn => {
+            btn.onclick = () => {
+              const renameOldId = safeId('renameOldId');
+              const renameNewName = safeId('renameNewName');
+              const renameNewSaison = safeId('renameNewSaison');
+              const renameClubForm = safeId('renameClubForm');
+              const addClubForm = safeId('addClubForm');
+              if (renameOldId) renameOldId.value = btn.dataset.id;
+              if (renameNewName) renameNewName.value = btn.dataset.name;
+              if (renameNewSaison) renameNewSaison.value = btn.dataset.saison;
+              if (renameClubForm) renameClubForm.style.display = 'block';
+              if (addClubForm) addClubForm.style.display = 'none';
+            };
+          });
+          document.querySelectorAll('.delete-club-btn').forEach(btn => {
+            btn.onclick = async () => {
+              const id = parseInt(btn.dataset.id), name = btn.dataset.name, saison = btn.dataset.saison;
+              if (!confirm(`Supprimer le club "${name}" et toutes ses licences ?`)) return;
+              await deleteLicencesByClub(id, saison);
+              await deleteClub(id);
+              if (currentClub && currentClub.id === id) { currentClub = null; await updateClubDisplay(); }
+              await refreshClubsList();
+              await refreshLicenceList();
+            };
+          });
+        }
+      } catch (e) { console.error('refreshClubsList:', e); }
     }
 
-    document.getElementById('btnAddClub').onclick=()=>{ if(hasPermission('clubs_edit')) { document.getElementById('addClubForm').style.display='block'; document.getElementById('renameClubForm').style.display='none'; } };
-    document.getElementById('btnCancelAddClub').onclick=()=>document.getElementById('addClubForm').style.display='none';
-    document.getElementById('btnSaveClub').onclick=async()=>{
-      if(!hasPermission('clubs_edit')) return;
-      const name=document.getElementById('newClubName').value.trim(), saison=document.getElementById('newClubSaison').value.trim();
-      if(!name||!saison) return alert('Nom et saison requis');
-      const clubs=await loadClubs();
-      if(clubs.some(c=>c.name===name && c.saison===saison)) return alert('Ce club existe déjà');
-      const newId=await saveClub({name,saison});
-      currentClub={id:newId,name,saison};
-      await updateClubDisplay();
-      await refreshClubsList();
-      await refreshLicenceList();
-      document.getElementById('addClubForm').style.display='none';
-      document.getElementById('newClubName').value='';
-      document.getElementById('newClubSaison').value='';
-    };
-    document.getElementById('btnRenameClub').onclick=async()=>{
-      if(!hasPermission('clubs_edit')) return;
-      const id=parseInt(document.getElementById('renameOldId').value), newName=document.getElementById('renameNewName').value.trim(), newSaison=document.getElementById('renameNewSaison').value.trim();
-      if(!newName||!newSaison) return alert('Nom et saison requis');
-      const clubs=await loadClubs();
-      const club=clubs.find(c=>c.id===id);
-      if(!club) return alert('Club introuvable');
-      if(clubs.some(c=>c.name===newName && c.saison===newSaison && c.id!==id)) return alert('Conflit');
-      club.name=newName; club.saison=newSaison;
-      await updateClub(club);
-      const licences=await loadLicences();
-      for(const l of licences.filter(l=>l.clubId===id)){ l.clubName=newName; l.saison=newSaison; await updateLicence(l); }
-      if(currentClub?.id===id) currentClub={...currentClub,name:newName,saison:newSaison};
-      await updateClubDisplay();
-      await refreshClubsList();
-      await refreshLicenceList();
-      document.getElementById('renameClubForm').style.display='none';
-    };
-    document.getElementById('btnCancelRename').onclick=()=>document.getElementById('renameClubForm').style.display='none';
+    // Événements clubs
+    const btnAddClub = safeId('btnAddClub');
+    if (btnAddClub) {
+      btnAddClub.onclick = () => {
+        if (hasPermission('clubs_edit')) {
+          const addClubForm = safeId('addClubForm');
+          const renameClubForm = safeId('renameClubForm');
+          if (addClubForm) addClubForm.style.display = 'block';
+          if (renameClubForm) renameClubForm.style.display = 'none';
+        }
+      };
+    }
+    const btnCancelAddClub = safeId('btnCancelAddClub');
+    if (btnCancelAddClub) btnCancelAddClub.onclick = () => { const el = safeId('addClubForm'); if (el) el.style.display = 'none'; };
+    const btnSaveClub = safeId('btnSaveClub');
+    if (btnSaveClub) {
+      btnSaveClub.onclick = async () => {
+        if (!hasPermission('clubs_edit')) return;
+        const name = (safeId('newClubName')?.value || '').trim();
+        const saison = (safeId('newClubSaison')?.value || '').trim();
+        if (!name || !saison) return alert('Nom et saison requis');
+        const clubs = await loadClubs();
+        if (clubs.some(c => c.name === name && c.saison === saison)) return alert('Ce club existe déjà');
+        const newId = await saveClub({ name, saison });
+        currentClub = { id: newId, name, saison };
+        await updateClubDisplay();
+        await refreshClubsList();
+        await refreshLicenceList();
+        const addClubForm = safeId('addClubForm');
+        if (addClubForm) addClubForm.style.display = 'none';
+        const newClubName = safeId('newClubName');
+        const newClubSaison = safeId('newClubSaison');
+        if (newClubName) newClubName.value = '';
+        if (newClubSaison) newClubSaison.value = '';
+      };
+    }
+    const btnRenameClub = safeId('btnRenameClub');
+    if (btnRenameClub) {
+      btnRenameClub.onclick = async () => {
+        if (!hasPermission('clubs_edit')) return;
+        const id = parseInt((safeId('renameOldId')?.value) || 0);
+        const newName = (safeId('renameNewName')?.value || '').trim();
+        const newSaison = (safeId('renameNewSaison')?.value || '').trim();
+        if (!newName || !newSaison) return alert('Nom et saison requis');
+        const clubs = await loadClubs();
+        const club = clubs.find(c => c.id === id);
+        if (!club) return alert('Club introuvable');
+        if (clubs.some(c => c.name === newName && c.saison === newSaison && c.id !== id)) return alert('Conflit');
+        club.name = newName; club.saison = newSaison;
+        await updateClub(club);
+        const licences = await loadLicences();
+        for (const l of licences.filter(l => l.clubId === id)) { l.clubName = newName; l.saison = newSaison; await updateLicence(l); }
+        if (currentClub && currentClub.id === id) currentClub = { ...currentClub, name: newName, saison: newSaison };
+        await updateClubDisplay();
+        await refreshClubsList();
+        await refreshLicenceList();
+        const renameClubForm = safeId('renameClubForm');
+        if (renameClubForm) renameClubForm.style.display = 'none';
+      };
+    }
+    const btnCancelRename = safeId('btnCancelRename');
+    if (btnCancelRename) btnCancelRename.onclick = () => { const el = safeId('renameClubForm'); if (el) el.style.display = 'none'; };
 
     // ----- Aperçu numéro licence -----
     function updateNumeroPreview() {
-      const nom = document.getElementById('nom').value.trim();
-      const date = document.getElementById('dateNaissance').value;
-      if (nom && date && currentClub) {
+      const nom = safeId('nom')?.value || '';
+      const date = safeId('dateNaissance')?.value || '';
+      const preview = safeId('numeroPreview');
+      if (nom && date && currentClub && preview) {
         const prefix = nom.trim().substring(0,2).toUpperCase();
         const d = new Date(date);
-        document.getElementById('numeroPreview').value = prefix + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + "000";
-      } else {
-        document.getElementById('numeroPreview').value = '';
+        preview.value = prefix + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + "000";
+      } else if (preview) {
+        preview.value = '';
       }
     }
-    document.getElementById('nom').addEventListener('input', updateNumeroPreview);
-    document.getElementById('dateNaissance').addEventListener('input', updateNumeroPreview);
+    const nomEl = safeId('nom');
+    const dateNaissanceEl = safeId('dateNaissance');
+    if (nomEl) nomEl.addEventListener('input', updateNumeroPreview);
+    if (dateNaissanceEl) dateNaissanceEl.addEventListener('input', updateNumeroPreview);
 
-    // ----- Création licence (avec nouveaux champs) -----
-    document.getElementById('licenceForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!hasPermission('licences_edit')) return alert('Permission insuffisante');
-      if (!currentClub) return alert('Sélectionnez un club');
+    // ----- Création licence -----
+    const licenceForm = safeId('licenceForm');
+    if (licenceForm) {
+      licenceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!hasPermission('licences_edit')) return alert('Permission insuffisante');
+        if (!currentClub) return alert('Sélectionnez un club');
 
-      const nom = document.getElementById('nom').value.trim();
-      const dateNais = document.getElementById('dateNaissance').value;
-      const lieu = document.getElementById('lieu').value.trim();
-      const genre = document.getElementById('genre').value;
-      const nationalite = document.getElementById('nationalite').value.trim();
-      const profession = document.getElementById('profession').value.trim();
-      const categorie = document.getElementById('categorie').value;
-      const taille = parseFloat(document.getElementById('taille').value);
-      const poids = parseFloat(document.getElementById('poids').value);
-      const qualite = document.getElementById('qualite').value;
-      const autrePrecision = (qualite === 'Autre') ? document.getElementById('autrePrecision').value.trim() : '';
-      const niveauCMR = document.getElementById('niveauCMR').value;
-      const licenceIHF = document.getElementById('licenceIHF').value.trim();
-      const ancienClub = document.getElementById('ancienClub').value.trim();
-      const dateArrivee = document.getElementById('dateArrivee').value;
-      const ligueRegionale = document.getElementById('ligueRegionale').value.trim();
-      const ligueDepartementale = document.getElementById('ligueDepartementale').value.trim();
-      const niveau = document.getElementById('niveau').value.trim();
-      const cniNum = document.getElementById('cniNum').value.trim();
-      const cniDate = document.getElementById('cniDate').value;
-      const cniLieu = document.getElementById('cniLieu').value.trim();
-      const photoFile = document.getElementById('photoInput').files[0];
+        const nom = safeId('nom')?.value?.trim() || '';
+        const dateNais = safeId('dateNaissance')?.value || '';
+        const lieu = safeId('lieu')?.value?.trim() || '';
+        const genre = safeId('genre')?.value || '';
+        const nationalite = safeId('nationalite')?.value?.trim() || '';
+        const profession = safeId('profession')?.value?.trim() || '';
+        const categorie = safeId('categorie')?.value || '';
+        const taille = parseFloat(safeId('taille')?.value) || 0;
+        const poids = parseFloat(safeId('poids')?.value) || 0;
+        const qualite = safeId('qualite')?.value || '';
+        const autrePrecision = (qualite === 'Autre') ? (safeId('autrePrecision')?.value?.trim() || '') : '';
+        const niveauCMR = safeId('niveauCMR')?.value || '';
+        const licenceIHF = safeId('licenceIHF')?.value?.trim() || '';
+        const ancienClub = safeId('ancienClub')?.value?.trim() || '';
+        const dateDepartAncienClub = safeId('dateDepartAncienClub')?.value || '';
+        const dateArrivee = safeId('dateArrivee')?.value || '';
+        const ligueRegionale = safeId('ligueRegionale')?.value?.trim() || '';
+        const ligueDepartementale = safeId('ligueDepartementale')?.value?.trim() || '';
+        const niveau = safeId('niveau')?.value?.trim() || '';
+        const photoFile = safeId('photoInput')?.files?.[0] || null;
 
-      if (!nom || !dateNais || !lieu || !genre || !nationalite || !profession || !categorie || !taille || !poids || !qualite || !cniNum || !cniDate || !cniLieu || !photoFile) {
-        return alert('Tous les champs requis sont obligatoires');
-      }
-      if (qualite === 'Autre' && !autrePrecision) {
-        return alert('Veuillez préciser la qualité "Autre"');
-      }
-
-      try {
-        const photo = await fileToDataURL(photoFile);
-        if (!currentClub) throw new Error('Club perdu');
-        const counter = await getLicenseCounter();
-        const numero = buildNumeroLicence(nom, dateNais, counter);
-        const licence = {
-          numero, nom, dateNaissance: dateNais, lieu,
-          sexe: genre,
-          nationalite, profession, categorie, taille, poids,
-          qualite,
-          autrePrecision: (qualite === 'Autre') ? autrePrecision : '',
-          niveauCMR: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '',
-          licenceIHF: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '',
-          ancienClub, dateArrivee,
-          ligueRegionale, ligueDepartementale, niveau,
-          cniNum, cniDate, cniLieu,
-          clubId: currentClub.id, clubName: currentClub.name, saison: currentClub.saison,
-          photo, dateCreation: new Date().toISOString().slice(0,10)
-        };
-        await saveLicence(licence);
-        alert('Licence créée : ' + numero);
-        document.getElementById('licenceForm').reset();
-        document.getElementById('numeroPreview').value = '';
-        document.getElementById('photoInput').value = '';
-        document.getElementById('encadreurFields').classList.remove('show');
-        document.getElementById('autrePrecisionField').classList.remove('show');
-        await refreshLicenceList();
-        await refreshClubsList();
-        if (hasPermission('print')) {
-          showCardPreview(licence);
+        if (!nom || !dateNais || !lieu || !genre || !nationalite || !profession || !categorie || !taille || !poids || !qualite || !photoFile) {
+          return alert('Tous les champs requis sont obligatoires');
         }
-      } catch (err) {
-        console.error(err);
-        alert('Erreur lors de la création : ' + (err.message || 'Veuillez réessayer'));
-      }
-    });
-
-    // ----- Rafraîchir liste licences (CORRIGÉ : tr est défini) -----
-    async function refreshLicenceList(){
-      if(!currentClub){
-        document.getElementById('licenceCount').innerText='0';
-        document.querySelector('#licencesTable tbody').innerHTML='<tr><td colspan="6">Aucun club sélectionné</td></tr>';
-        return;
-      }
-      let licences=await loadLicences();
-      const clubs=await loadClubs();
-      licences=licences.map(l=>{
-        if(!l.clubName && l.clubId){
-          const c=clubs.find(c=>c.id===l.clubId);
-          if(c) l.clubName=c.name;
+        if (qualite === 'Autre' && !autrePrecision) {
+          return alert('Veuillez préciser la qualité "Autre"');
         }
-        return l;
-      });
-      const filtered=licences.filter(l=>l.clubId===currentClub.id && l.saison===currentClub.saison);
-      document.getElementById('licenceCount').innerText=filtered.length;
-      const tbody=document.querySelector('#licencesTable tbody');
-      tbody.innerHTML='';
-      for(const l of filtered){
-        let actions = '';
-        if(hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> `;
-        if(hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button>`;
-        const tr = document.createElement('tr');
-        const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
-        tr.innerHTML=`<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie || ''}</td><td>${l.qualite || ''}</td><td>${genreDisplay}</td><td>${actions}</td>`;
-        tbody.appendChild(tr);
-      }
-      document.querySelectorAll('.view-btn').forEach(btn=>btn.onclick=async()=>{
-        const lic=(await loadLicences()).find(l=>l.id===parseInt(btn.dataset.id));
-        if(lic && hasPermission('print')) showCardPreview(lic);
-      });
-      if(hasPermission('licences_edit')) {
-        document.querySelectorAll('.edit-btn').forEach(btn=>btn.onclick=async()=>{
-          const lic=(await loadLicences()).find(l=>l.id===parseInt(btn.dataset.id));
-          if(lic) openEditModal(lic);
-        });
-        document.querySelectorAll('.delete-btn').forEach(btn=>btn.onclick=async()=>{
-          if(!confirm('Supprimer cette licence ?')) return;
-          await deleteLicence(parseInt(btn.dataset.id));
+
+        try {
+          const photo = await fileToDataURL(photoFile);
+          if (!currentClub) throw new Error('Club perdu');
+          const counter = await getLicenseCounter();
+          const numero = buildNumeroLicence(nom, dateNais, counter);
+          const licence = {
+            numero, nom, dateNaissance: dateNais, lieu,
+            sexe: genre,
+            nationalite, profession, categorie, taille, poids,
+            qualite,
+            autrePrecision: (qualite === 'Autre') ? autrePrecision : '',
+            niveauCMR: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '',
+            licenceIHF: (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '',
+            ancienClub, dateDepartAncienClub, dateArrivee,
+            ligueRegionale, ligueDepartementale, niveau,
+            clubId: currentClub.id, clubName: currentClub.name, saison: currentClub.saison,
+            photo, dateCreation: new Date().toISOString().slice(0,10)
+          };
+          await saveLicence(licence);
+          alert('Licence créée : ' + numero);
+          if (licenceForm) licenceForm.reset();
+          const preview = safeId('numeroPreview');
+          if (preview) preview.value = '';
+          const photoInput = safeId('photoInput');
+          if (photoInput) photoInput.value = '';
+          const encadreurFields = safeId('encadreurFields');
+          if (encadreurFields) encadreurFields.classList.remove('show');
+          const autrePrecisionField = safeId('autrePrecisionField');
+          if (autrePrecisionField) autrePrecisionField.classList.remove('show');
           await refreshLicenceList();
           await refreshClubsList();
-        });
-      }
+          if (hasPermission('print')) {
+            showCardPreview(licence);
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Erreur lors de la création : ' + (err.message || 'Veuillez réessayer'));
+        }
+      });
     }
 
-    // ----- Édition licence (adaptée) -----
-    async function openEditModal(licence){
-      if(!hasPermission('licences_edit')) return;
-      document.getElementById('editLicenceId').value=licence.id;
-      document.getElementById('editNom').value=licence.nom;
-      document.getElementById('editDateNaissance').value=licence.dateNaissance;
-      document.getElementById('editLieu').value=licence.lieu;
-      document.getElementById('editGenre').value=licence.sexe || 'M';
-      document.getElementById('editNationalite').value=licence.nationalite || '';
-      document.getElementById('editProfession').value=licence.profession || '';
-      document.getElementById('editCategorie').value=licence.categorie || 'Minime';
-      document.getElementById('editTaille').value=licence.taille || '';
-      document.getElementById('editPoids').value=licence.poids || '';
-      document.getElementById('editQualite').value=licence.qualite || 'Joueur';
+    // ----- Rafraîchir liste licences -----
+    async function refreshLicenceList() {
+      try {
+        if (!currentClub) {
+          const licenceCount = safeId('licenceCount');
+          if (licenceCount) licenceCount.innerText = '0';
+          const tbody = document.querySelector('#licencesTable tbody');
+          if (tbody) tbody.innerHTML = '<tr><td colspan="6">Aucun club sélectionné</td></tr>';
+          return;
+        }
+        let licences = await loadLicences();
+        const clubs = await loadClubs();
+        licences = licences.map(l => {
+          if (!l.clubName && l.clubId) {
+            const c = clubs.find(c => c.id === l.clubId);
+            if (c) l.clubName = c.name;
+          }
+          return l;
+        });
+        const filtered = licences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
+        const licenceCount = safeId('licenceCount');
+        if (licenceCount) licenceCount.innerText = filtered.length;
+        const tbody = document.querySelector('#licencesTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        for (const l of filtered) {
+          let actions = '';
+          if (hasPermission('licences_view')) actions += `<button class="btn btn-sm btn-info view-btn" data-id="${l.id}">👁️</button> `;
+          if (hasPermission('licences_edit')) actions += `<button class="btn btn-sm btn-warning edit-btn" data-id="${l.id}">✏️</button> <button class="btn btn-sm btn-danger delete-btn" data-id="${l.id}">🗑️</button>`;
+          const tr = document.createElement('tr');
+          const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
+          tr.innerHTML = `<td>${l.numero}</td><td>${l.nom}</td><td>${l.categorie || ''}</td><td>${l.qualite || ''}</td><td>${genreDisplay}</td><td>${actions}</td>`;
+          tbody.appendChild(tr);
+        }
+        document.querySelectorAll('.view-btn').forEach(btn => {
+          btn.onclick = async () => {
+            const lic = (await loadLicences()).find(l => l.id === parseInt(btn.dataset.id));
+            if (lic && hasPermission('print')) showCardPreview(lic);
+          };
+        });
+        if (hasPermission('licences_edit')) {
+          document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.onclick = async () => {
+              const lic = (await loadLicences()).find(l => l.id === parseInt(btn.dataset.id));
+              if (lic) openEditModal(lic);
+            };
+          });
+          document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.onclick = async () => {
+              if (!confirm('Supprimer cette licence ?')) return;
+              await deleteLicence(parseInt(btn.dataset.id));
+              await refreshLicenceList();
+              await refreshClubsList();
+            };
+          });
+        }
+      } catch (e) { console.error('refreshLicenceList:', e); }
+    }
+
+    // ----- Édition licence -----
+    async function openEditModal(licence) {
+      if (!hasPermission('licences_edit')) return;
+      const editLicenceId = safeId('editLicenceId');
+      if (editLicenceId) editLicenceId.value = licence.id;
+      const editNom = safeId('editNom');
+      if (editNom) editNom.value = licence.nom;
+      const editDateNaissance = safeId('editDateNaissance');
+      if (editDateNaissance) editDateNaissance.value = licence.dateNaissance;
+      const editLieu = safeId('editLieu');
+      if (editLieu) editLieu.value = licence.lieu;
+      const editGenre = safeId('editGenre');
+      if (editGenre) editGenre.value = licence.sexe || 'M';
+      const editNationalite = safeId('editNationalite');
+      if (editNationalite) editNationalite.value = licence.nationalite || '';
+      const editProfession = safeId('editProfession');
+      if (editProfession) editProfession.value = licence.profession || '';
+      const editCategorie = safeId('editCategorie');
+      if (editCategorie) editCategorie.value = licence.categorie || 'Minime';
+      const editTaille = safeId('editTaille');
+      if (editTaille) editTaille.value = licence.taille || '';
+      const editPoids = safeId('editPoids');
+      if (editPoids) editPoids.value = licence.poids || '';
+      const editQualite = safeId('editQualite');
+      if (editQualite) editQualite.value = licence.qualite || 'Joueur';
       // Autre précision
       if (licence.qualite === 'Autre') {
-        document.getElementById('editAutrePrecisionField').classList.add('show');
-        document.getElementById('editAutrePrecision').value = licence.autrePrecision || '';
+        const editAutrePrecisionField = safeId('editAutrePrecisionField');
+        if (editAutrePrecisionField) editAutrePrecisionField.classList.add('show');
+        const editAutrePrecision = safeId('editAutrePrecision');
+        if (editAutrePrecision) editAutrePrecision.value = licence.autrePrecision || '';
       } else {
-        document.getElementById('editAutrePrecisionField').classList.remove('show');
-        document.getElementById('editAutrePrecision').value = '';
+        const editAutrePrecisionField = safeId('editAutrePrecisionField');
+        if (editAutrePrecisionField) editAutrePrecisionField.classList.remove('show');
+        const editAutrePrecision = safeId('editAutrePrecision');
+        if (editAutrePrecision) editAutrePrecision.value = '';
       }
       // Encadreur
       if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(licence.qualite)) {
-        document.getElementById('editEncadreurFields').classList.add('show');
+        const editEncadreurFields = safeId('editEncadreurFields');
+        if (editEncadreurFields) editEncadreurFields.classList.add('show');
       } else {
-        document.getElementById('editEncadreurFields').classList.remove('show');
+        const editEncadreurFields = safeId('editEncadreurFields');
+        if (editEncadreurFields) editEncadreurFields.classList.remove('show');
       }
-      document.getElementById('editNiveauCMR').value = licence.niveauCMR || '';
-      document.getElementById('editLicenceIHF').value = licence.licenceIHF || '';
-      document.getElementById('editAncienClub').value = licence.ancienClub || '';
-      document.getElementById('editDateArrivee').value = licence.dateArrivee || '';
-      document.getElementById('editLigueRegionale').value = licence.ligueRegionale || '';
-      document.getElementById('editLigueDepartementale').value = licence.ligueDepartementale || '';
-      document.getElementById('editNiveau').value = licence.niveau || '';
-      document.getElementById('editCniNum').value=licence.cniNum || '';
-      document.getElementById('editCniDate').value=licence.cniDate || '';
-      document.getElementById('editCniLieu').value=licence.cniLieu || '';
-      document.getElementById('editPhotoInput').value='';
+      const editNiveauCMR = safeId('editNiveauCMR');
+      if (editNiveauCMR) editNiveauCMR.value = licence.niveauCMR || '';
+      const editLicenceIHF = safeId('editLicenceIHF');
+      if (editLicenceIHF) editLicenceIHF.value = licence.licenceIHF || '';
+      const editAncienClub = safeId('editAncienClub');
+      if (editAncienClub) editAncienClub.value = licence.ancienClub || '';
+      const editDateDepartAncienClub = safeId('editDateDepartAncienClub');
+      if (editDateDepartAncienClub) editDateDepartAncienClub.value = licence.dateDepartAncienClub || '';
+      const editDateArrivee = safeId('editDateArrivee');
+      if (editDateArrivee) editDateArrivee.value = licence.dateArrivee || '';
+      const editLigueRegionale = safeId('editLigueRegionale');
+      if (editLigueRegionale) editLigueRegionale.value = licence.ligueRegionale || '';
+      const editLigueDepartementale = safeId('editLigueDepartementale');
+      if (editLigueDepartementale) editLigueDepartementale.value = licence.ligueDepartementale || '';
+      const editNiveau = safeId('editNiveau');
+      if (editNiveau) editNiveau.value = licence.niveau || '';
+      const editPhotoInput = safeId('editPhotoInput');
+      if (editPhotoInput) editPhotoInput.value = '';
       new bootstrap.Modal(document.getElementById('editLicenceModal')).show();
     }
-    document.getElementById('editLicenceForm').addEventListener('submit',async(e)=>{
-      e.preventDefault();
-      if(!hasPermission('licences_edit')) return;
-      const id=parseInt(document.getElementById('editLicenceId').value);
-      const nom=document.getElementById('editNom').value.trim();
-      const dateNais=document.getElementById('editDateNaissance').value;
-      const lieu=document.getElementById('editLieu').value.trim();
-      const genre=document.getElementById('editGenre').value;
-      const nationalite=document.getElementById('editNationalite').value.trim();
-      const profession=document.getElementById('editProfession').value.trim();
-      const categorie=document.getElementById('editCategorie').value;
-      const taille=parseFloat(document.getElementById('editTaille').value);
-      const poids=parseFloat(document.getElementById('editPoids').value);
-      const qualite=document.getElementById('editQualite').value;
-      const autrePrecision = (qualite === 'Autre') ? document.getElementById('editAutrePrecision').value.trim() : '';
-      const niveauCMR = document.getElementById('editNiveauCMR').value;
-      const licenceIHF = document.getElementById('editLicenceIHF').value.trim();
-      const ancienClub = document.getElementById('editAncienClub').value.trim();
-      const dateArrivee = document.getElementById('editDateArrivee').value;
-      const ligueRegionale = document.getElementById('editLigueRegionale').value.trim();
-      const ligueDepartementale = document.getElementById('editLigueDepartementale').value.trim();
-      const niveau = document.getElementById('editNiveau').value.trim();
-      const cniNum=document.getElementById('editCniNum').value.trim();
-      const cniDate=document.getElementById('editCniDate').value;
-      const cniLieu=document.getElementById('editCniLieu').value.trim();
-      const photoFile=document.getElementById('editPhotoInput').files[0];
-      const licences=await loadLicences();
-      const idx=licences.findIndex(l=>l.id===id);
-      if(idx===-1) return alert('Licence introuvable');
-      let licence=licences[idx];
-      let photo=licence.photo;
-      if(photoFile) {
-        try { photo = await fileToDataURL(photoFile); } catch(err) { alert('Erreur lecture photo'); return; }
-      }
-      if (nom !== licence.nom || dateNais !== licence.dateNaissance) {
-        const oldNum = licence.numero;
-        const control = oldNum.slice(-3);
-        const counter = parseInt(control, 10);
-        licence.numero = buildNumeroLicence(nom, dateNais, counter);
-      }
-      licence.nom=nom; licence.dateNaissance=dateNais; licence.lieu=lieu;
-      licence.sexe=genre;
-      licence.nationalite=nationalite; licence.profession=profession;
-      licence.categorie=categorie; licence.taille=taille; licence.poids=poids;
-      licence.qualite=qualite;
-      licence.autrePrecision = (qualite === 'Autre') ? autrePrecision : '';
-      licence.niveauCMR = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '';
-      licence.licenceIHF = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '';
-      licence.ancienClub = ancienClub;
-      licence.dateArrivee = dateArrivee;
-      licence.ligueRegionale = ligueRegionale;
-      licence.ligueDepartementale = ligueDepartementale;
-      licence.niveau = niveau;
-      licence.cniNum=cniNum; licence.cniDate=cniDate; licence.cniLieu=cniLieu;
-      licence.photo=photo;
-      await updateLicence(licence);
-      bootstrap.Modal.getInstance(document.getElementById('editLicenceModal')).hide();
-      await refreshLicenceList();
-      await refreshClubsList();
-    });
-
-    // ----- Bordereau (adapté) -----
-    document.getElementById('btnBordereau').addEventListener('click',async()=>{
-      if(!hasPermission('print')) return alert('Permission insuffisante');
-      if(!currentClub) return;
-      const licences=await loadLicences();
-      const filtered=licences.filter(l=>l.clubId===currentClub.id && l.saison===currentClub.saison);
-      if(!filtered.length) return alert('Aucune licence');
-      const settings=await loadSettings();
-      const logoHtml=settings.portrait.logoFederal?`<img src="${settings.portrait.logoFederal}" style="max-height:30px;vertical-align:middle;margin-right:10px;">`:'';
-      let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau ${currentClub.name}</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} Bordereau - ${currentClub.name} (${currentClub.saison})</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr><th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Genre</th><th>Nationalité</th><th>Catégorie</th><th>Qualité</th><th>Ancien Club</th><th>Date Arrivée</th><th>Ligue régionale</th><th>Ligue départementale</th><th>Niveau</th><th>CNI</th><th>Saison</th></tr></thead><tbody>`;
-      filtered.forEach(l=>{
-        const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
-        html+=`<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${genreDisplay}</td><td>${l.nationalite||''}</td><td>${l.categorie||''}</td><td>${l.qualite||''}</td><td>${l.ancienClub||''}</td><td>${l.dateArrivee||''}</td><td>${l.ligueRegionale||''}</td><td>${l.ligueDepartementale||''}</td><td>${l.niveau||''}</td><td>${l.cniNum||''}</td><td>${l.saison}</td></tr>`;
+    const editLicenceForm = safeId('editLicenceForm');
+    if (editLicenceForm) {
+      editLicenceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!hasPermission('licences_edit')) return;
+        const id = parseInt((safeId('editLicenceId')?.value) || 0);
+        const nom = safeId('editNom')?.value?.trim() || '';
+        const dateNais = safeId('editDateNaissance')?.value || '';
+        const lieu = safeId('editLieu')?.value?.trim() || '';
+        const genre = safeId('editGenre')?.value || '';
+        const nationalite = safeId('editNationalite')?.value?.trim() || '';
+        const profession = safeId('editProfession')?.value?.trim() || '';
+        const categorie = safeId('editCategorie')?.value || '';
+        const taille = parseFloat(safeId('editTaille')?.value) || 0;
+        const poids = parseFloat(safeId('editPoids')?.value) || 0;
+        const qualite = safeId('editQualite')?.value || '';
+        const autrePrecision = (qualite === 'Autre') ? (safeId('editAutrePrecision')?.value?.trim() || '') : '';
+        const niveauCMR = safeId('editNiveauCMR')?.value || '';
+        const licenceIHF = safeId('editLicenceIHF')?.value?.trim() || '';
+        const ancienClub = safeId('editAncienClub')?.value?.trim() || '';
+        const dateDepartAncienClub = safeId('editDateDepartAncienClub')?.value || '';
+        const dateArrivee = safeId('editDateArrivee')?.value || '';
+        const ligueRegionale = safeId('editLigueRegionale')?.value?.trim() || '';
+        const ligueDepartementale = safeId('editLigueDepartementale')?.value?.trim() || '';
+        const niveau = safeId('editNiveau')?.value?.trim() || '';
+        const photoFile = safeId('editPhotoInput')?.files?.[0] || null;
+        const licences = await loadLicences();
+        const idx = licences.findIndex(l => l.id === id);
+        if (idx === -1) return alert('Licence introuvable');
+        let licence = licences[idx];
+        let photo = licence.photo;
+        if (photoFile) {
+          try { photo = await fileToDataURL(photoFile); } catch (err) { alert('Erreur lecture photo'); return; }
+        }
+        if (nom !== licence.nom || dateNais !== licence.dateNaissance) {
+          const oldNum = licence.numero;
+          const control = oldNum.slice(-3);
+          const counter = parseInt(control, 10);
+          licence.numero = buildNumeroLicence(nom, dateNais, counter);
+        }
+        licence.nom = nom; licence.dateNaissance = dateNais; licence.lieu = lieu;
+        licence.sexe = genre;
+        licence.nationalite = nationalite; licence.profession = profession;
+        licence.categorie = categorie; licence.taille = taille; licence.poids = poids;
+        licence.qualite = qualite;
+        licence.autrePrecision = (qualite === 'Autre') ? autrePrecision : '';
+        licence.niveauCMR = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? niveauCMR : '';
+        licence.licenceIHF = (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(qualite)) ? licenceIHF : '';
+        licence.ancienClub = ancienClub;
+        licence.dateDepartAncienClub = dateDepartAncienClub;
+        licence.dateArrivee = dateArrivee;
+        licence.ligueRegionale = ligueRegionale;
+        licence.ligueDepartementale = ligueDepartementale;
+        licence.niveau = niveau;
+        licence.photo = photo;
+        await updateLicence(licence);
+        bootstrap.Modal.getInstance(document.getElementById('editLicenceModal')).hide();
+        await refreshLicenceList();
+        await refreshClubsList();
       });
-      html+=`</tbody></table><p style="text-align:center">Généré par ID LICENCE 4 PRO LEAGUE</p></body></html>`;
-      const w=window.open('','_blank'); w.document.write(html); w.document.close(); w.print();
-    });
+    }
 
-    // ----- Générateur carte (avec champs regroupés sur une même ligne) -----
-    function genererCarteHTML(licence, orientation, settings) {
+    // ----- Bordereau -----
+    const btnBordereau = safeId('btnBordereau');
+    if (btnBordereau) {
+      btnBordereau.addEventListener('click', async () => {
+        if (!hasPermission('print')) return alert('Permission insuffisante');
+        if (!currentClub) return;
+        const licences = await loadLicences();
+        const filtered = licences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
+        if (!filtered.length) return alert('Aucune licence');
+        const settings = await loadSettings();
+        const logoHtml = settings.portrait.logoFederal ? `<img src="${settings.portrait.logoFederal}" style="max-height:30px;vertical-align:middle;margin-right:10px;">` : '';
+        let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bordereau ${currentClub.name}</title><style>body{font-family:'Segoe UI';margin:20px}h2{display:flex;align-items:center;justify-content:center;gap:10px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #000;padding:4px 6px;font-size:12px}th{background:#eee}</style></head><body><h2>${logoHtml} Bordereau - ${currentClub.name} (${currentClub.saison})</h2><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><table><thead><tr><th>N°</th><th>Nom</th><th>Né le</th><th>Lieu</th><th>Genre</th><th>Nationalité</th><th>Catégorie</th><th>Qualité</th><th>Ancien Club</th><th>Date départ</th><th>Date arrivée</th><th>Ligue régionale</th><th>Ligue départementale</th><th>Niveau</th><th>Saison</th></tr></thead><tbody>`;
+        filtered.forEach(l => {
+          const genreDisplay = l.sexe === 'M' ? 'Masculin' : (l.sexe === 'F' ? 'Féminin' : '');
+          html += `<tr><td>${l.numero}</td><td>${l.nom}</td><td>${l.dateNaissance}</td><td>${l.lieu}</td><td>${genreDisplay}</td><td>${l.nationalite||''}</td><td>${l.categorie||''}</td><td>${l.qualite||''}</td><td>${l.ancienClub||''}</td><td>${l.dateDepartAncienClub||''}</td><td>${l.dateArrivee||''}</td><td>${l.ligueRegionale||''}</td><td>${l.ligueDepartementale||''}</td><td>${l.niveau||''}</td><td>${l.saison}</td></tr>`;
+        });
+        html += `</tbody></table><p style="text-align:center">Généré par ID LICENCE 4 PRO LEAGUE</p></body></html>`;
+        const w = window.open('', '_blank');
+        if (w) { w.document.write(html); w.document.close(); w.print(); }
+      });
+    }
+
+    // ====== FONCTION GENERER CARTE (avec N° sous titre, Saison au-dessus du QR) ======
+    function genererCarteHTML(licence, orientation, settings, appSettings) {
+      appSettings = appSettings || { taillePolice: 'medium' };
       const photoHtml = licence.photo ? `<img src="${licence.photo}" class="photo">` : 'Photo';
       const orgLogoHtml = settings.logo ? `<img src="${settings.logo}" class="org-logo-header">` : '';
       const federalLogoHtml = settings.logoFederal ? `<img src="${settings.logoFederal}" class="federal-logo-header">` : '';
       const extraTextHtml = settings.extraText ? `<span class="extra-text">${settings.extraText.replace(/\n/g,'<br>')}</span>` : '';
       const headerOrgHtml = settings.headerText || 'FÉDÉRATION SPORTIVE';
-      
+      const sizeClass = 'size-' + (appSettings.taillePolice || 'medium');
+
+      const t = labels.fr;
+      const en = labels.en;
+
       const genreText = licence.sexe === 'M' ? 'Masculin' : (licence.sexe === 'F' ? 'Féminin' : '');
       let qualiteDisplay = licence.qualite || '';
       if (licence.qualite === 'Autre' && licence.autrePrecision) {
         qualiteDisplay += ' (' + licence.autrePrecision + ')';
       }
 
-      const line1 = `Genre : ${genreText} · Nationalité : ${licence.nationalite || ''}`;
-      const line2 = `Profession : ${licence.profession || ''} · Catégorie : ${licence.categorie || ''}`;
-      const line3 = `Taille : ${licence.taille || ''} cm · Poids : ${licence.poids || ''} kg`;
-      const line4 = `Saison : ${licence.saison} · N° : ${licence.numero}`;
-
-      let fields = [
-        {l:'Nom', v:licence.nom},
-        {l:'Né(e) le', v:licence.dateNaissance + ' à ' + licence.lieu},
-        {l:'', v:line1},
-        {l:'', v:line2},
-        {l:'', v:line3},
-        {l:'Qualité', v:qualiteDisplay}
+      // Champs (sans N° ni Saison)
+      const singleFields = [
+        { fr: t.nom, en: en.nom, val: licence.nom },
+        { fr: t.ne_le, en: en.ne_le, val: licence.dateNaissance + ' à ' + licence.lieu },
+        { fr: t.genre, en: en.genre, val: genreText },
+        { fr: t.nationalite, en: en.nationalite, val: licence.nationalite || '' },
+        { fr: t.profession, en: en.profession, val: licence.profession || '' },
+        { fr: t.categorie, en: en.categorie, val: licence.categorie || '' },
+        { fr: t.taille_poids, en: en.taille_poids, val: (licence.taille||'') + ' cm / ' + (licence.poids||'') + ' kg' },
+        { fr: t.qualite, en: en.qualite, val: qualiteDisplay }
       ];
       if (['Médecin','Dirigeant','Entraineur','KINE','Autre'].includes(licence.qualite)) {
-        fields.push({l:'Niveau CMR', v:licence.niveauCMR || ''});
-        fields.push({l:'Licence IHF', v:licence.licenceIHF || ''});
+        singleFields.push({ fr: t.niveauCMR, en: en.niveauCMR, val: licence.niveauCMR || '' });
+        singleFields.push({ fr: t.licenceIHF, en: en.licenceIHF, val: licence.licenceIHF || '' });
       }
-      fields.push(
-        {l:'Ancien club', v:licence.ancienClub || ''},
-        {l:'Date arrivée', v:licence.dateArrivee || ''},
-        {l:'Nouveau club', v:licence.clubName},
-        {l:'Ligue régionale', v:licence.ligueRegionale || ''},
-        {l:'Ligue départementale', v:licence.ligueDepartementale || ''},
-        {l:'Niveau', v:licence.niveau || ''},
-        {l:'CNI/Passeport', v:licence.cniNum || ''},
-        {l:'Délivré le', v:(licence.cniDate||'') + ' à ' + (licence.cniLieu||'')},
-        {l:'', v:line4}
+      singleFields.push(
+        { fr: t.ancienClub, en: en.ancienClub, val: licence.ancienClub || '' },
+        { fr: t.dateDepart, en: en.dateDepart, val: licence.dateDepartAncienClub || '' },
+        { fr: t.nouveauClub, en: en.nouveauClub, val: licence.clubName },
+        { fr: t.dateArrivee, en: en.dateArrivee, val: licence.dateArrivee || '' },
+        { fr: t.ligueRegionale, en: en.ligueRegionale, val: licence.ligueRegionale || '' },
+        { fr: t.ligueDepartementale, en: en.ligueDepartementale, val: licence.ligueDepartementale || '' },
+        { fr: t.niveau, en: en.niveau, val: licence.niveau || '' }
       );
 
-      const infoLines = fields.map(f => {
-        if (f.l === '') {
-          return `<div class="field">${f.v}</div>`;
-        } else {
-          return `<div class="field"><strong>${f.l} :</strong> ${f.v}</div>`;
-        }
-      }).join('');
+      // Générer les lignes d'info
+      let infoHtml = '';
+      singleFields.forEach(f => {
+        infoHtml += `<div class="field-row"><span class="label">${f.fr}</span><span class="en"> / ${f.en}</span><span class="value"> : ${f.val}</span></div>`;
+      });
+
+      // Saison au-dessus du QR
+      const saisonHtml = `<div class="saison-label">${t.saison} / ${en.saison} : ${licence.saison}</div>`;
 
       const bgStyle = (settings.bgType === 'image' && settings.bgImage) ? `background-image: url('${settings.bgImage}'); background-size: cover;` : `background-color: ${settings.bgColor || '#ffffff'};`;
       const cardClass = orientation === 'landscape' ? 'card-preview landscape' : 'card-preview';
       const qrId = `qr-${Date.now()}-${Math.random().toString(36).substr(2,6)}`;
+
       return `<div class="${cardClass}" style="${bgStyle}">
         <div class="card-top-header">${federalLogoHtml}${extraTextHtml}</div>
-        <div class="card-org-line">${orgLogoHtml}<span class="card-header-custom">${headerOrgHtml}</span></div>
+        <div class="card-org-line">
+          <div>${orgLogoHtml}</div>
+          <span class="card-header-custom">${headerOrgHtml}</span>
+          <div class="card-numero">${t.numero} / ${en.numero} : ${licence.numero}</div>
+        </div>
         <div class="photo-qr-row">
           <div class="photo-area">${photoHtml}</div>
-          <div class="qr-area" id="${qrId}"></div>
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            ${saisonHtml}
+            <div class="qr-area" id="${qrId}"></div>
+          </div>
         </div>
-        <div class="info-area">${infoLines}</div>
+        <div class="info-area ${sizeClass}">${infoHtml}</div>
         <div class="card-footer">Créé le ${licence.dateCreation} · ID LICENCE 4 PRO LEAGUE</div>
       </div>`;
     }
@@ -1260,6 +1421,7 @@
     function printHTML(contentHtml) {
       return new Promise((resolve, reject) => {
         const iframe = printFrame;
+        if (!iframe) { reject('iframe introuvable'); return; }
         iframe.srcdoc = '';
         iframe.srcdoc = contentHtml;
         iframe.onload = () => {
@@ -1279,19 +1441,20 @@
 
     // ----- Planche A4 -----
     async function genererPlancheA4(orientation) {
-      if(!hasPermission('print')) return alert('Permission insuffisante');
+      if (!hasPermission('print')) return alert('Permission insuffisante');
       if (!currentClub) { alert('Aucun club sélectionné'); return; }
       const licences = await loadLicences();
       const filtered = licences.filter(l => l.clubId === currentClub.id && l.saison === currentClub.saison);
       if (!filtered.length) { alert('Aucune licence pour ce club'); return; }
       const allSettings = await loadSettings();
       const settings = orientation === 'portrait' ? allSettings.portrait : allSettings.landscape;
+      const app = allSettings.app || { taillePolice: 'medium' };
       
       let cardsHtml = '';
       const qrInfos = [];
       for (let idx = 0; idx < filtered.length; idx++) {
         const l = filtered[idx];
-        const cardHtml = genererCarteHTML(l, orientation, settings);
+        const cardHtml = genererCarteHTML(l, orientation, settings, app);
         const match = cardHtml.match(/id="([^"]+)"/);
         if (match) qrInfos.push({ id: match[1], licence: l });
         cardsHtml += cardHtml;
@@ -1304,26 +1467,39 @@
       <style>
         .card-preview { width: 55mm; height: 85mm; border: 2px solid #000; padding: 1.5mm 1.5mm 1.5mm 1.5mm; margin: 0; display: flex; flex-direction: column; justify-content: flex-start; background-size: cover; background-position: center; background-repeat: no-repeat; color: #000; box-sizing: border-box; border-radius: 4mm; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
         .card-preview.landscape { width: 85mm; height: 55mm; flex-direction: row; flex-wrap: wrap; align-content: flex-start; padding: 1.5mm 1.5mm 1.5mm 1.5mm; }
-        .card-top-header { display: flex; align-items: center; justify-content: center; margin-bottom: 0.8mm; width: 100%; }
-        .extra-text { font-size: 5px; text-align: center; flex: 1; }
+        .card-top-header { display: flex; align-items: center; justify-content: center; margin-bottom: 0.6mm; width: 100%; }
+        .extra-text { font-size: 4.5px; text-align: center; flex: 1; }
         .federal-logo-header { max-height: 5mm; max-width: 8mm; object-fit: contain; margin-right: 1mm; }
-        .card-org-line { display: flex; align-items: center; justify-content: center; margin-bottom: 0.6mm; width: 100%; }
+        .card-org-line { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0.6mm; width: 100%; }
         .org-logo-header { max-height: 5mm; max-width: 8mm; object-fit: contain; margin-right: 1mm; }
         .card-header-custom { font-weight: bold; font-size: 9px; text-align: center; }
-        .photo-qr-row { display: flex; align-items: center; justify-content: center; gap: 1.5mm; margin: 1.5mm 0 0.8mm 0; }
+        .card-numero { font-weight: bold; font-size: 8px; text-align: center; }
+        .photo-qr-row { display: flex; align-items: center; justify-content: center; gap: 1.5mm; margin: 1mm 0 0.6mm 0; }
         .card-preview.landscape .photo-qr-row { width: 38%; justify-content: space-between; gap: 1mm; flex-shrink: 0; align-items: center; }
-        .photo-area { width: 18mm; height: 24mm; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; flex-shrink: 0; border-radius: 2mm; }
-        .card-preview.landscape .photo-area { width: 16mm; height: 20mm; }
+        .photo-area { width: 17mm; height: 22mm; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; flex-shrink: 0; border-radius: 2mm; }
+        .card-preview.landscape .photo-area { width: 14mm; height: 18mm; }
         .photo-area img { width: 100%; height: 100%; object-fit: cover; }
         .qr-area { width: 12mm; height: 12mm; flex-shrink: 0; }
         .card-preview.landscape .qr-area { width: 10mm; height: 10mm; }
         .qr-area canvas, .qr-area img { width: 100% !important; height: 100% !important; }
-        .info-area { flex: 1; padding: 0.3mm 0.5mm 0 0.5mm; font-size: 6.5px; line-height: 1.2; display: flex; flex-direction: column; justify-content: flex-start; }
-        .card-preview.landscape .info-area { width: 60%; font-size: 6.5px; margin-left: 1mm; }
-        .info-area strong { font-weight: 600; }
-        .info-area .field { margin-bottom: 0.1mm; font-size: 6.5px; line-height: 1.2; }
-        .card-preview.landscape .info-area .field { font-size: 6.5px; }
-        .card-footer { font-size: 4px; text-align: center; margin-top: 0.8mm; border-top: 0.5px solid #aaa; padding-top: 0.3mm; width: 100%; flex-shrink: 0; }
+        .saison-label { font-size: 6px; text-align: center; font-weight: 500; margin-bottom: 0.2mm; }
+        .info-area { flex: 1; padding: 0.3mm 0.5mm 0 0.5mm; display: flex; flex-direction: column; justify-content: flex-start; }
+        .card-preview.landscape .info-area { width: 60%; margin-left: 1mm; }
+        .info-area .field-row { display: flex; flex-wrap: wrap; margin-bottom: 0.15mm; font-size: 7.5px; line-height: 1.15; }
+        .info-area .field-row .label { font-weight: 600; margin-right: 2px; }
+        .info-area .field-row .en { font-style: italic; font-size: 0.65em; color: #555; margin-left: 2px; margin-right: 4px; }
+        .info-area .field-row .value { font-weight: normal; word-break: break-word; }
+        .info-area.size-small .field-row { font-size: 6px; }
+        .info-area.size-small .field-row .en { font-size: 0.65em; }
+        .info-area.size-medium .field-row { font-size: 7.5px; }
+        .info-area.size-medium .field-row .en { font-size: 0.65em; }
+        .info-area.size-large .field-row { font-size: 9.5px; }
+        .info-area.size-large .field-row .en { font-size: 0.65em; }
+        .card-preview.landscape .info-area .field-row { font-size: 7.5px; }
+        .card-preview.landscape .info-area.size-small .field-row { font-size: 6px; }
+        .card-preview.landscape .info-area.size-medium .field-row { font-size: 7.5px; }
+        .card-preview.landscape .info-area.size-large .field-row { font-size: 9.5px; }
+        .card-footer { font-size: 4.5px; text-align: center; margin-top: 0.8mm; border-top: 0.5px solid #aaa; padding-top: 0.3mm; width: 100%; flex-shrink: 0; }
         @page { size: A4 ${pageSize}; margin: 10mm; }
         body { margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 5mm; background: white; }
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 5mm; }
@@ -1356,11 +1532,11 @@
                 niveauCMR: item.licence.niveauCMR || '',
                 licenceIHF: item.licence.licenceIHF || '',
                 ancienClub: item.licence.ancienClub || '',
+                dateDepartAncienClub: item.licence.dateDepartAncienClub || '',
                 dateArrivee: item.licence.dateArrivee || '',
                 ligueRegionale: item.licence.ligueRegionale || '',
                 ligueDepartementale: item.licence.ligueDepartementale || '',
-                niveau: item.licence.niveau || '',
-                cniNum: item.licence.cniNum || ''
+                niveau: item.licence.niveau || ''
               };
               signData.hash = CryptoJS.SHA256(JSON.stringify(signData)).toString();
               new QRCode(container, { text: JSON.stringify(signData), width: 100, height: 100 });
@@ -1369,23 +1545,27 @@
         };
       <\/script>
       </body></html>`;
-      try { await printHTML(plancheHtml); } catch(e) { alert("Erreur impression : " + e.message); }
+      try { await printHTML(plancheHtml); } catch(e) { alert('Erreur impression : ' + e.message); }
     }
 
-    document.getElementById('btnPlancheA4Portrait').onclick = () => genererPlancheA4('portrait');
-    document.getElementById('btnPlancheA4Landscape').onclick = () => genererPlancheA4('landscape');
+    const btnPlanchePortrait = safeId('btnPlancheA4Portrait');
+    const btnPlancheLandscape = safeId('btnPlancheA4Landscape');
+    if (btnPlanchePortrait) btnPlanchePortrait.onclick = () => genererPlancheA4('portrait');
+    if (btnPlancheLandscape) btnPlancheLandscape.onclick = () => genererPlancheA4('landscape');
 
     // ----- Aperçu carte et téléchargement JPEG -----
     async function showCardPreview(licence) {
-      if(!hasPermission('print')) return;
+      if (!hasPermission('print')) return;
       const allSettings = await loadSettings();
-      const previewDiv = document.getElementById('cardPreview');
-      const orientationSelect = document.getElementById('orientationSelect');
+      const previewDiv = safeId('cardPreview');
+      const orientationSelect = safeId('orientationSelect');
+      const app = allSettings.app || { taillePolice: 'medium' };
       
       function updatePreview() {
+        if (!previewDiv || !orientationSelect) return;
         const orientation = orientationSelect.value;
         const settings = orientation === 'portrait' ? allSettings.portrait : allSettings.landscape;
-        const cardHtml = genererCarteHTML(licence, orientation, settings);
+        const cardHtml = genererCarteHTML(licence, orientation, settings, app);
         previewDiv.innerHTML = cardHtml;
         const match = cardHtml.match(/id="([^"]+)"/);
         if (match) {
@@ -1409,252 +1589,269 @@
               niveauCMR: licence.niveauCMR || '',
               licenceIHF: licence.licenceIHF || '',
               ancienClub: licence.ancienClub || '',
+              dateDepartAncienClub: licence.dateDepartAncienClub || '',
               dateArrivee: licence.dateArrivee || '',
               ligueRegionale: licence.ligueRegionale || '',
               ligueDepartementale: licence.ligueDepartementale || '',
-              niveau: licence.niveau || '',
-              cniNum: licence.cniNum || ''
+              niveau: licence.niveau || ''
             };
             signData.hash = hashObj(signData);
             new QRCode(container, { text: JSON.stringify(signData), width: 100, height: 100 });
           }
         }
       }
+      if (orientationSelect) {
+        orientationSelect.onchange = updatePreview;
+      }
       updatePreview();
-      orientationSelect.onchange = updatePreview;
 
-      document.getElementById('btnPrintCard').onclick = async () => {
-        const chosen = orientationSelect.value;
-        const settings = chosen === 'portrait' ? allSettings.portrait : allSettings.landscape;
-        const cardHtml = genererCarteHTML(licence, chosen, settings);
-        const qrId = `qr-print-${Date.now()}`;
-        let finalHtml = cardHtml.replace(/id="([^"]+)"/, `id="${qrId}"`);
-        const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', clubName: '${licence.clubName}', saison: '${licence.saison}', qualite: '${licence.qualite||''}', categorie: '${licence.categorie||''}', nationalite: '${licence.nationalite||''}', profession: '${licence.profession||''}', taille: '${licence.taille||''}', poids: '${licence.poids||''}', niveauCMR: '${licence.niveauCMR||''}', licenceIHF: '${licence.licenceIHF||''}', ancienClub: '${licence.ancienClub||''}', dateArrivee: '${licence.dateArrivee||''}', ligueRegionale: '${licence.ligueRegionale||''}', ligueDepartementale: '${licence.ligueDepartementale||''}', niveau: '${licence.niveau||''}', cniNum: '${licence.cniNum||''}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, clubName: licence.clubName, saison: licence.saison, qualite: licence.qualite||'', categorie: licence.categorie||'', nationalite: licence.nationalite||'', profession: licence.profession||'', taille: licence.taille||'', poids: licence.poids||'', niveauCMR: licence.niveauCMR||'', licenceIHF: licence.licenceIHF||'', ancienClub: licence.ancienClub||'', dateArrivee: licence.dateArrivee||'', ligueRegionale: licence.ligueRegionale||'', ligueDepartementale: licence.ligueDepartementale||'', niveau: licence.niveau||'', cniNum: licence.cniNum||''})}'}), width: 100, height: 100});<\/script></body></html>`;
-        try { await printHTML(printDoc); } catch(e) { alert("Erreur impression : " + e.message); }
-      };
+      const btnPrintCard = safeId('btnPrintCard');
+      if (btnPrintCard) {
+        btnPrintCard.onclick = async () => {
+          if (!orientationSelect) return;
+          const chosen = orientationSelect.value;
+          const settings = chosen === 'portrait' ? allSettings.portrait : allSettings.landscape;
+          const cardHtml = genererCarteHTML(licence, chosen, settings, app);
+          const qrId = `qr-print-${Date.now()}`;
+          let finalHtml = cardHtml.replace(/id="([^"]+)"/, `id="${qrId}"`);
+          const printDoc = `<!DOCTYPE html><html><head><title>Licence ${licence.numero}</title><style>${document.querySelector('style').innerHTML}@page{size:A4 ${chosen === 'landscape' ? 'landscape' : 'portrait'};margin:20mm}body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.print-area{width:${chosen === 'landscape' ? '85mm' : '55mm'};height:${chosen === 'landscape' ? '55mm' : '85mm'}}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"><\/script></head><body><div class="print-area">${finalHtml}</div><script>new QRCode(document.getElementById('${qrId}'), {text: JSON.stringify({numero: '${licence.numero}', nom: '${licence.nom}', dateNaissance: '${licence.dateNaissance}', lieu: '${licence.lieu}', sexe: '${licence.sexe}', clubName: '${licence.clubName}', saison: '${licence.saison}', qualite: '${licence.qualite||''}', categorie: '${licence.categorie||''}', nationalite: '${licence.nationalite||''}', profession: '${licence.profession||''}', taille: '${licence.taille||''}', poids: '${licence.poids||''}', niveauCMR: '${licence.niveauCMR||''}', licenceIHF: '${licence.licenceIHF||''}', ancienClub: '${licence.ancienClub||''}', dateDepartAncienClub: '${licence.dateDepartAncienClub||''}', dateArrivee: '${licence.dateArrivee||''}', ligueRegionale: '${licence.ligueRegionale||''}', ligueDepartementale: '${licence.ligueDepartementale||''}', niveau: '${licence.niveau||''}', hash: '${hashObj({numero: licence.numero, nom: licence.nom, dateNaissance: licence.dateNaissance, lieu: licence.lieu, sexe: licence.sexe, clubName: licence.clubName, saison: licence.saison, qualite: licence.qualite||'', categorie: licence.categorie||'', nationalite: licence.nationalite||'', profession: licence.profession||'', taille: licence.taille||'', poids: licence.poids||'', niveauCMR: licence.niveauCMR||'', licenceIHF: licence.licenceIHF||'', ancienClub: licence.ancienClub||'', dateDepartAncienClub: licence.dateDepartAncienClub||'', dateArrivee: licence.dateArrivee||'', ligueRegionale: licence.ligueRegionale||'', ligueDepartementale: licence.ligueDepartementale||'', niveau: licence.niveau||''})}'}), width: 100, height: 100});<\/script></body></html>`;
+          try { await printHTML(printDoc); } catch(e) { alert('Erreur impression : ' + e.message); }
+        };
+      }
 
-      document.getElementById('btnDownloadJPEG').onclick = function() {
-        const cardElement = document.getElementById('cardPreview');
-        const rect = cardElement.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
+      const btnDownloadJPEG = safeId('btnDownloadJPEG');
+      if (btnDownloadJPEG && previewDiv) {
+        btnDownloadJPEG.onclick = function() {
+          const cardElement = previewDiv;
+          const rect = cardElement.getBoundingClientRect();
+          const width = rect.width;
+          const height = rect.height;
 
-        const clone = cardElement.cloneNode(true);
-        clone.style.border = 'none';
-        clone.style.boxShadow = 'none';
-        clone.style.backgroundColor = '#ffffff';
-        clone.style.margin = '0';
-        clone.style.padding = '1.5mm';
-        clone.style.boxSizing = 'border-box';
+          const clone = cardElement.cloneNode(true);
+          clone.style.border = 'none';
+          clone.style.boxShadow = 'none';
+          clone.style.backgroundColor = '#ffffff';
+          clone.style.margin = '0';
+          clone.style.padding = '1.5mm';
+          clone.style.boxSizing = 'border-box';
 
-        const container = document.createElement('div');
-        container.style.position = 'absolute';
-        container.style.left = '-9999px';
-        container.style.top = '0';
-        container.style.width = width + 'px';
-        container.style.height = height + 'px';
-        container.style.backgroundColor = '#ffffff';
-        container.style.display = 'flex';
-        container.style.alignItems = 'center';
-        container.style.justifyContent = 'center';
-        container.style.padding = '1px';
-        clone.style.width = '100%';
-        clone.style.height = '100%';
-        container.appendChild(clone);
-        document.body.appendChild(container);
+          const container = document.createElement('div');
+          container.style.position = 'absolute';
+          container.style.left = '-9999px';
+          container.style.top = '0';
+          container.style.width = width + 'px';
+          container.style.height = height + 'px';
+          container.style.backgroundColor = '#ffffff';
+          container.style.display = 'flex';
+          container.style.alignItems = 'center';
+          container.style.justifyContent = 'center';
+          container.style.padding = '1px';
+          clone.style.width = '100%';
+          clone.style.height = '100%';
+          container.appendChild(clone);
+          document.body.appendChild(container);
 
-        setTimeout(() => {
-          html2canvas(container, {
-            scale: 3,
-            useCORS: true,
-            allowTaint: false,
-            backgroundColor: '#ffffff',
-            width: width,
-            height: height,
-            logging: false
-          }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `licence_${licence.numero}.jpg`;
-            link.href = canvas.toDataURL('image/jpeg', 0.95);
-            link.click();
-            document.body.removeChild(container);
-          }).catch(err => {
-            alert('Erreur lors de la génération du JPEG : ' + err.message);
-            document.body.removeChild(container);
-          });
-        }, 500);
-      };
+          setTimeout(() => {
+            html2canvas(container, {
+              scale: 3,
+              useCORS: true,
+              allowTaint: false,
+              backgroundColor: '#ffffff',
+              width: width,
+              height: height,
+              logging: false
+            }).then(canvas => {
+              const link = document.createElement('a');
+              link.download = `licence_${licence.numero}.jpg`;
+              link.href = canvas.toDataURL('image/jpeg', 0.95);
+              link.click();
+              document.body.removeChild(container);
+            }).catch(err => {
+              alert('Erreur lors de la génération du JPEG : ' + err.message);
+              document.body.removeChild(container);
+            });
+          }, 500);
+        };
+      }
 
       new bootstrap.Modal(document.getElementById('cardModal')).show();
     }
 
-    // ----- Import CSV (adapté avec 20 colonnes) -----
+    // ----- Import CSV -----
     let csvData = [];
-    document.getElementById('csvFile').addEventListener('change', function(e) {
-      if(!hasPermission('import')) return;
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const text = ev.target.result;
-        const lines = text.split(/\r?\n/);
-        csvData = [];
-        for (let i = 0; i < lines.length; i++) {
-          const cols = lines[i].split(',');
-          if (cols.length >= 20 && cols[0].trim() !== '') {
-            csvData.push({
-              nom: cols[0].trim(),
-              dateNaissance: cols[1].trim(),
-              lieu: cols[2].trim(),
-              sexe: cols[3].trim(),
-              nationalite: cols[4].trim(),
-              profession: cols[5].trim(),
-              categorie: cols[6].trim(),
-              taille: parseFloat(cols[7].trim()) || 0,
-              poids: parseFloat(cols[8].trim()) || 0,
-              qualite: cols[9].trim(),
-              niveauCMR: cols[10].trim(),
-              licenceIHF: cols[11].trim(),
-              ancienClub: cols[12].trim(),
-              dateArrivee: cols[13].trim(),
-              ligueRegionale: cols[14].trim(),
-              ligueDepartementale: cols[15].trim(),
-              niveau: cols[16].trim(),
-              cniNum: cols[17].trim(),
-              cniDate: cols[18].trim(),
-              cniLieu: cols[19].trim()
+    const csvFile = safeId('csvFile');
+    if (csvFile) {
+      csvFile.addEventListener('change', function(e) {
+        if (!hasPermission('import')) return;
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          const text = ev.target.result;
+          const lines = text.split(/\r?\n/);
+          csvData = [];
+          for (let i = 0; i < lines.length; i++) {
+            const cols = lines[i].split(',');
+            if (cols.length >= 18 && cols[0].trim() !== '') {
+              csvData.push({
+                nom: cols[0].trim(),
+                dateNaissance: cols[1].trim(),
+                lieu: cols[2].trim(),
+                sexe: cols[3].trim(),
+                nationalite: cols[4].trim(),
+                profession: cols[5].trim(),
+                categorie: cols[6].trim(),
+                taille: parseFloat(cols[7].trim()) || 0,
+                poids: parseFloat(cols[8].trim()) || 0,
+                qualite: cols[9].trim(),
+                niveauCMR: cols[10].trim(),
+                licenceIHF: cols[11].trim(),
+                ancienClub: cols[12].trim(),
+                dateDepartAncienClub: cols[13].trim(),
+                dateArrivee: cols[14].trim(),
+                ligueRegionale: cols[15].trim(),
+                ligueDepartementale: cols[16].trim(),
+                niveau: cols[17].trim()
+              });
+            }
+          }
+          const previewDiv = safeId('importPreview');
+          if (previewDiv) previewDiv.classList.remove('d-none');
+          const tbody = document.querySelector('#importTable tbody');
+          if (tbody) {
+            tbody.innerHTML = '';
+            csvData.forEach(row => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `<td>${row.nom}</td><td>${row.dateNaissance}</td><td>${row.sexe}</td><td>${row.categorie}</td><td>${row.qualite}</td><td><span class="text-muted">(photo par défaut)</span></td>`;
+              tbody.appendChild(tr);
             });
           }
+        };
+        reader.readAsText(file, 'UTF-8');
+      });
+    }
+
+    const btnGenerateAll = safeId('btnGenerateAll');
+    if (btnGenerateAll) {
+      btnGenerateAll.addEventListener('click', async () => {
+        if (!hasPermission('import')) return alert('Permission insuffisante');
+        if (!currentClub) { alert('Sélectionnez un club'); return; }
+        if (csvData.length === 0) { alert('Aucune donnée CSV chargée'); return; }
+        let created = 0;
+        for (const row of csvData) {
+          try {
+            const defaultPhoto = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+            const counter = await getLicenseCounter();
+            const numero = buildNumeroLicence(row.nom, row.dateNaissance, counter);
+            const licence = {
+              numero,
+              nom: row.nom,
+              dateNaissance: row.dateNaissance,
+              lieu: row.lieu,
+              sexe: row.sexe,
+              nationalite: row.nationalite,
+              profession: row.profession,
+              categorie: row.categorie,
+              taille: row.taille,
+              poids: row.poids,
+              qualite: row.qualite,
+              niveauCMR: row.niveauCMR,
+              licenceIHF: row.licenceIHF,
+              ancienClub: row.ancienClub,
+              dateDepartAncienClub: row.dateDepartAncienClub,
+              dateArrivee: row.dateArrivee,
+              ligueRegionale: row.ligueRegionale,
+              ligueDepartementale: row.ligueDepartementale,
+              niveau: row.niveau,
+              clubId: currentClub.id,
+              clubName: currentClub.name,
+              saison: currentClub.saison,
+              photo: defaultPhoto,
+              dateCreation: new Date().toISOString().slice(0,10)
+            };
+            await saveLicence(licence);
+            created++;
+          } catch(err) { console.error(err); }
         }
-        const previewDiv = document.getElementById('importPreview');
-        previewDiv.classList.remove('d-none');
-        const tbody = document.querySelector('#importTable tbody');
-        tbody.innerHTML = '';
-        csvData.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${row.nom}</td><td>${row.dateNaissance}</td><td>${row.sexe}</td><td>${row.categorie}</td><td>${row.qualite}</td><td><span class="text-muted">(photo par défaut)</span></td>`;
-          tbody.appendChild(tr);
-        });
-      };
-      reader.readAsText(file, 'UTF-8');
-    });
+        alert(`${created} licence(s) créée(s)`);
+        await refreshLicenceList();
+        await refreshClubsList();
+      });
+    }
 
-    document.getElementById('btnGenerateAll').addEventListener('click', async () => {
-      if(!hasPermission('import')) return alert('Permission insuffisante');
-      if (!currentClub) { alert('Sélectionnez un club'); return; }
-      if (csvData.length === 0) { alert('Aucune donnée CSV chargée'); return; }
-      let created = 0;
-      for (const row of csvData) {
-        try {
-          const defaultPhoto = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
-          const counter = await getLicenseCounter();
-          const numero = buildNumeroLicence(row.nom, row.dateNaissance, counter);
-          const licence = {
-            numero,
-            nom: row.nom,
-            dateNaissance: row.dateNaissance,
-            lieu: row.lieu,
-            sexe: row.sexe,
-            nationalite: row.nationalite,
-            profession: row.profession,
-            categorie: row.categorie,
-            taille: row.taille,
-            poids: row.poids,
-            qualite: row.qualite,
-            niveauCMR: row.niveauCMR,
-            licenceIHF: row.licenceIHF,
-            ancienClub: row.ancienClub,
-            dateArrivee: row.dateArrivee,
-            ligueRegionale: row.ligueRegionale,
-            ligueDepartementale: row.ligueDepartementale,
-            niveau: row.niveau,
-            cniNum: row.cniNum,
-            cniDate: row.cniDate,
-            cniLieu: row.cniLieu,
-            clubId: currentClub.id,
-            clubName: currentClub.name,
-            saison: currentClub.saison,
-            photo: defaultPhoto,
-            dateCreation: new Date().toISOString().slice(0,10)
-          };
-          await saveLicence(licence);
-          created++;
-        } catch(err) { console.error(err); }
-      }
-      alert(`${created} licence(s) créée(s)`);
-      await refreshLicenceList();
-      await refreshClubsList();
-    });
-
-    // ----- Paramètres UI (inchangé) -----
+    // ----- Paramètres UI -----
     async function loadUISettings() {
       try {
         const settings = await loadSettings();
-        document.getElementById('portraitHeaderText').value = settings.portrait.headerText || '';
-        document.getElementById('portraitExtraText').value = settings.portrait.extraText || '';
-        document.getElementById('portraitBackgroundColor').value = settings.portrait.bgColor || '#ffffff';
+        const app = settings.app || { taillePolice: 'medium' };
+        const appTaillePolice = safeId('appTaillePolice');
+        if (appTaillePolice) appTaillePolice.value = app.taillePolice || 'medium';
+        appSettings.taillePolice = app.taillePolice || 'medium';
+
+        const portraitHeaderText = safeId('portraitHeaderText');
+        if (portraitHeaderText) portraitHeaderText.value = settings.portrait.headerText || '';
+        const portraitExtraText = safeId('portraitExtraText');
+        if (portraitExtraText) portraitExtraText.value = settings.portrait.extraText || '';
+        const portraitBackgroundColor = safeId('portraitBackgroundColor');
+        if (portraitBackgroundColor) portraitBackgroundColor.value = settings.portrait.bgColor || '#ffffff';
         if (settings.portrait.bgType === 'image') {
-          document.getElementById('portraitBgImage').checked = true;
-          document.getElementById('portraitBgColorPicker').classList.add('d-none');
-          document.getElementById('portraitBgImageUpload').classList.remove('d-none');
+          const portraitBgImage = safeId('portraitBgImage');
+          if (portraitBgImage) portraitBgImage.checked = true;
+          const portraitBgColorPicker = safeId('portraitBgColorPicker');
+          if (portraitBgColorPicker) portraitBgColorPicker.classList.add('d-none');
+          const portraitBgImageUpload = safeId('portraitBgImageUpload');
+          if (portraitBgImageUpload) portraitBgImageUpload.classList.remove('d-none');
         } else {
-          document.getElementById('portraitBgColor').checked = true;
-          document.getElementById('portraitBgColorPicker').classList.remove('d-none');
-          document.getElementById('portraitBgImageUpload').classList.add('d-none');
+          const portraitBgColor = safeId('portraitBgColor');
+          if (portraitBgColor) portraitBgColor.checked = true;
+          const portraitBgColorPicker = safeId('portraitBgColorPicker');
+          if (portraitBgColorPicker) portraitBgColorPicker.classList.remove('d-none');
+          const portraitBgImageUpload = safeId('portraitBgImageUpload');
+          if (portraitBgImageUpload) portraitBgImageUpload.classList.add('d-none');
         }
-        document.getElementById('landscapeHeaderText').value = settings.landscape.headerText || '';
-        document.getElementById('landscapeExtraText').value = settings.landscape.extraText || '';
-        document.getElementById('landscapeBackgroundColor').value = settings.landscape.bgColor || '#ffffff';
+        const landscapeHeaderText = safeId('landscapeHeaderText');
+        if (landscapeHeaderText) landscapeHeaderText.value = settings.landscape.headerText || '';
+        const landscapeExtraText = safeId('landscapeExtraText');
+        if (landscapeExtraText) landscapeExtraText.value = settings.landscape.extraText || '';
+        const landscapeBackgroundColor = safeId('landscapeBackgroundColor');
+        if (landscapeBackgroundColor) landscapeBackgroundColor.value = settings.landscape.bgColor || '#ffffff';
         if (settings.landscape.bgType === 'image') {
-          document.getElementById('landscapeBgImage').checked = true;
-          document.getElementById('landscapeBgColorPicker').classList.add('d-none');
-          document.getElementById('landscapeBgImageUpload').classList.remove('d-none');
+          const landscapeBgImage = safeId('landscapeBgImage');
+          if (landscapeBgImage) landscapeBgImage.checked = true;
+          const landscapeBgColorPicker = safeId('landscapeBgColorPicker');
+          if (landscapeBgColorPicker) landscapeBgColorPicker.classList.add('d-none');
+          const landscapeBgImageUpload = safeId('landscapeBgImageUpload');
+          if (landscapeBgImageUpload) landscapeBgImageUpload.classList.remove('d-none');
         } else {
-          document.getElementById('landscapeBgColor').checked = true;
-          document.getElementById('landscapeBgColorPicker').classList.remove('d-none');
-          document.getElementById('landscapeBgImageUpload').classList.add('d-none');
+          const landscapeBgColor = safeId('landscapeBgColor');
+          if (landscapeBgColor) landscapeBgColor.checked = true;
+          const landscapeBgColorPicker = safeId('landscapeBgColorPicker');
+          if (landscapeBgColorPicker) landscapeBgColorPicker.classList.remove('d-none');
+          const landscapeBgImageUpload = safeId('landscapeBgImageUpload');
+          if (landscapeBgImageUpload) landscapeBgImageUpload.classList.add('d-none');
         }
         updateLogoPreview('portrait', settings.portrait.logo, settings.portrait.logoFederal);
         updateLogoPreview('landscape', settings.landscape.logo, settings.landscape.logoFederal);
-        updateSettingsPreview('portrait');
-        updateSettingsPreview('landscape');
+        updateSettingsPreview('portrait', app);
+        updateSettingsPreview('landscape', app);
       } catch(e) {
         console.error('Erreur chargement paramètres:', e);
       }
     }
 
-    function updateLogoPreview(orient, logoDataUrl, federalDataUrl) {
-      const logoPreview = document.getElementById(`${orient}LogoPreview`);
-      const fedPreview = document.getElementById(`${orient}LogoFederalPreview`);
-      const btnDelLogo = document.querySelector(`.btn-delete-logo[data-orient="${orient}"]`);
-      const btnDelFed = document.querySelector(`.btn-delete-logo-federal[data-orient="${orient}"]`);
-      if (logoDataUrl) {
-        logoPreview.innerHTML = `<img src="${logoDataUrl}" style="max-height:80px;">`;
-        if (btnDelLogo) btnDelLogo.style.display = 'inline-block';
-      } else {
-        logoPreview.innerHTML = '';
-        if (btnDelLogo) btnDelLogo.style.display = 'none';
-      }
-      if (federalDataUrl) {
-        fedPreview.innerHTML = `<img src="${federalDataUrl}" style="max-height:80px;">`;
-        if (btnDelFed) btnDelFed.style.display = 'inline-block';
-      } else {
-        fedPreview.innerHTML = '';
-        if (btnDelFed) btnDelFed.style.display = 'none';
-      }
-    }
-
-    async function updateSettingsPreview(orient) {
+    async function updateSettingsPreview(orient, appOverride) {
       try {
-        const previewDiv = document.getElementById(`${orient}Preview`);
-        const headerText = document.getElementById(`${orient}HeaderText`).value || 'FÉDÉRATION SPORTIVE';
-        const extraText = document.getElementById(`${orient}ExtraText`).value;
+        const previewDiv = safeId(`${orient}Preview`);
+        if (!previewDiv) return;
+        const settings = await loadSettings();
+        const currentSettings = settings[orient];
+        const headerText = safeId(`${orient}HeaderText`)?.value || 'FÉDÉRATION SPORTIVE';
+        const extraText = safeId(`${orient}ExtraText`)?.value || '';
         const bgType = document.querySelector(`input[name="${orient}BgType"]:checked`)?.value || 'color';
-        const bgColor = document.getElementById(`${orient}BackgroundColor`).value;
-        const logoFile = document.getElementById(`${orient}LogoFile`).files[0];
-        const federalFile = document.getElementById(`${orient}LogoFederalFile`).files[0];
-        const bgFile = document.getElementById(`${orient}BgImageFile`).files[0];
-        const currentSettings = (await loadSettings())[orient];
+        const bgColor = safeId(`${orient}BackgroundColor`)?.value || '#ffffff';
+        const logoFile = safeId(`${orient}LogoFile`)?.files?.[0] || null;
+        const federalFile = safeId(`${orient}LogoFederalFile`)?.files?.[0] || null;
+        const bgFile = safeId(`${orient}BgImageFile`)?.files?.[0] || null;
         const logo = logoFile ? await fileToDataURL(logoFile) : currentSettings.logo;
         const fed = federalFile ? await fileToDataURL(federalFile) : currentSettings.logoFederal;
         const bg = bgFile ? await fileToDataURL(bgFile) : currentSettings.bgImage;
@@ -1682,17 +1879,16 @@
           niveauCMR: '',
           licenceIHF: '',
           ancienClub: 'Ancien club',
+          dateDepartAncienClub: '2024-12-31',
           dateArrivee: '2025-01-01',
           ligueRegionale: 'Ligue 1',
           ligueDepartementale: 'Ligue 2',
           niveau: 'National',
-          cniNum: 'ABC123',
-          cniDate: '2025-01-01',
-          cniLieu: 'Ville',
           photo: null,
           dateCreation: '2025-01-01'
         };
-        const cardHtml = genererCarteHTML(dummyLicence, orient, { headerText, extraText, logo, logoFederal: fed, bgType, bgColor, bgImage: bg });
+        const app = appOverride || settings.app || { taillePolice: 'medium' };
+        const cardHtml = genererCarteHTML(dummyLicence, orient, { headerText, extraText, logo, logoFederal: fed, bgType, bgColor, bgImage: bg }, app);
         previewDiv.innerHTML = cardHtml;
         const match = cardHtml.match(/id="([^"]+)"/);
         if (match) new QRCode(document.getElementById(match[1]), { text: 'APERÇU', width: 80, height: 80 });
@@ -1701,17 +1897,56 @@
       }
     }
 
-    // ----- Sauvegarde paramètres -----
+    const appSettingsForm = safeId('appSettingsForm');
+    if (appSettingsForm) {
+      appSettingsForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!hasPermission('settings')) return alert('Permission insuffisante');
+        const taillePolice = safeId('appTaillePolice')?.value || 'medium';
+        await saveAppSettings({ taillePolice });
+        appSettings.taillePolice = taillePolice;
+        alert('Paramètres généraux enregistrés');
+        const app = { taillePolice };
+        updateSettingsPreview('portrait', app);
+        updateSettingsPreview('landscape', app);
+      });
+    }
+
+    function updateLogoPreview(orient, logoDataUrl, federalDataUrl) {
+      const logoPreview = safeId(`${orient}LogoPreview`);
+      const fedPreview = safeId(`${orient}LogoFederalPreview`);
+      const btnDelLogo = document.querySelector(`.btn-delete-logo[data-orient="${orient}"]`);
+      const btnDelFed = document.querySelector(`.btn-delete-logo-federal[data-orient="${orient}"]`);
+      if (logoPreview) {
+        if (logoDataUrl) {
+          logoPreview.innerHTML = `<img src="${logoDataUrl}" style="max-height:80px;">`;
+          if (btnDelLogo) btnDelLogo.style.display = 'inline-block';
+        } else {
+          logoPreview.innerHTML = '';
+          if (btnDelLogo) btnDelLogo.style.display = 'none';
+        }
+      }
+      if (fedPreview) {
+        if (federalDataUrl) {
+          fedPreview.innerHTML = `<img src="${federalDataUrl}" style="max-height:80px;">`;
+          if (btnDelFed) btnDelFed.style.display = 'inline-block';
+        } else {
+          fedPreview.innerHTML = '';
+          if (btnDelFed) btnDelFed.style.display = 'none';
+        }
+      }
+    }
+
     async function saveOrientationSettings(orient) {
-      if(!hasPermission('settings')) return alert('Permission insuffisante');
+      if (!hasPermission('settings')) return alert('Permission insuffisante');
       try {
-        const headerText = document.getElementById(`${orient}HeaderText`).value.trim();
-        const extraText = document.getElementById(`${orient}ExtraText`).value.trim();
+        const headerText = safeId(`${orient}HeaderText`)?.value?.trim() || '';
+        const extraText = safeId(`${orient}ExtraText`)?.value?.trim() || '';
         const bgType = document.querySelector(`input[name="${orient}BgType"]:checked`)?.value || 'color';
-        const bgColor = document.getElementById(`${orient}BackgroundColor`).value;
-        const logoFile = document.getElementById(`${orient}LogoFile`).files[0];
-        const federalFile = document.getElementById(`${orient}LogoFederalFile`).files[0];
-        const bgFile = document.getElementById(`${orient}BgImageFile`).files[0];
+        const bgColor = safeId(`${orient}BackgroundColor`)?.value || '#ffffff';
+        const logoFile = safeId(`${orient}LogoFile`)?.files?.[0] || null;
+        const federalFile = safeId(`${orient}LogoFederalFile`)?.files?.[0] || null;
+        const bgFile = safeId(`${orient}BgImageFile`)?.files?.[0] || null;
         const current = (await loadSettings())[orient];
         const logo = logoFile ? await fileToDataURL(logoFile) : current.logo;
         const fed = federalFile ? await fileToDataURL(federalFile) : current.logoFederal;
@@ -1721,7 +1956,9 @@
         else await saveLandscapeSettings(newSettings);
         alert(`Configuration ${orient === 'portrait' ? 'Portrait' : 'Paysage'} enregistrée`);
         updateLogoPreview(orient, logo, fed);
-        updateSettingsPreview(orient);
+        const allSettings = await loadSettings();
+        const app = allSettings.app || { taillePolice: 'medium' };
+        updateSettingsPreview(orient, app);
       } catch(e) {
         console.error(e);
         alert('Erreur lors de l\'enregistrement');
@@ -1729,61 +1966,80 @@
     }
 
     async function resetOrientationSettings(orient) {
-      if(!hasPermission('settings')) return alert('Permission insuffisante');
+      if (!hasPermission('settings')) return alert('Permission insuffisante');
       const defaultSettings = { headerText: 'FÉDÉRATION SPORTIVE', extraText: '', logo: null, logoFederal: null, bgType: 'color', bgColor: '#ffffff', bgImage: null };
       if (orient === 'portrait') await savePortraitSettings(defaultSettings);
       else await saveLandscapeSettings(defaultSettings);
       const all = await loadSettings();
       const settings = all[orient];
-      document.getElementById(`${orient}HeaderText`).value = settings.headerText;
-      document.getElementById(`${orient}ExtraText`).value = settings.extraText;
-      document.getElementById(`${orient}BackgroundColor`).value = settings.bgColor;
-      if (settings.bgType === 'image') document.getElementById(`${orient}BgImage`).checked = true;
-      else document.getElementById(`${orient}BgColor`).checked = true;
-      document.getElementById(`${orient}LogoFile`).value = '';
-      document.getElementById(`${orient}LogoFederalFile`).value = '';
-      document.getElementById(`${orient}BgImageFile`).value = '';
+      const headerText = safeId(`${orient}HeaderText`);
+      if (headerText) headerText.value = settings.headerText;
+      const extraText = safeId(`${orient}ExtraText`);
+      if (extraText) extraText.value = settings.extraText;
+      const bgColor = safeId(`${orient}BackgroundColor`);
+      if (bgColor) bgColor.value = settings.bgColor;
+      if (settings.bgType === 'image') {
+        const bgImage = safeId(`${orient}BgImage`);
+        if (bgImage) bgImage.checked = true;
+      } else {
+        const bgColorRadio = safeId(`${orient}BgColor`);
+        if (bgColorRadio) bgColorRadio.checked = true;
+      }
+      const logoFile = safeId(`${orient}LogoFile`);
+      if (logoFile) logoFile.value = '';
+      const federalFile = safeId(`${orient}LogoFederalFile`);
+      if (federalFile) federalFile.value = '';
+      const bgFile = safeId(`${orient}BgImageFile`);
+      if (bgFile) bgFile.value = '';
       updateLogoPreview(orient, settings.logo, settings.logoFederal);
-      updateSettingsPreview(orient);
+      const app = all.app || { taillePolice: 'medium' };
+      updateSettingsPreview(orient, app);
       alert(`Configuration ${orient === 'portrait' ? 'Portrait' : 'Paysage'} réinitialisée`);
     }
 
-    document.getElementById('portraitSettingsForm').addEventListener('submit', e => { e.preventDefault(); saveOrientationSettings('portrait'); });
-    document.getElementById('landscapeSettingsForm').addEventListener('submit', e => { e.preventDefault(); saveOrientationSettings('landscape'); });
+    const portraitSettingsForm = safeId('portraitSettingsForm');
+    if (portraitSettingsForm) portraitSettingsForm.addEventListener('submit', e => { e.preventDefault(); saveOrientationSettings('portrait'); });
+    const landscapeSettingsForm = safeId('landscapeSettingsForm');
+    if (landscapeSettingsForm) landscapeSettingsForm.addEventListener('submit', e => { e.preventDefault(); saveOrientationSettings('landscape'); });
+
     document.querySelectorAll('.btn-reset-settings').forEach(btn => {
       btn.addEventListener('click', () => resetOrientationSettings(btn.dataset.orient));
     });
     document.querySelectorAll('.btn-delete-logo').forEach(btn => {
       btn.addEventListener('click', async () => {
-        if(!hasPermission('settings')) return;
+        if (!hasPermission('settings')) return;
         const orient = btn.dataset.orient;
         const current = (await loadSettings())[orient];
         current.logo = null;
         if (orient === 'portrait') await savePortraitSettings(current);
         else await saveLandscapeSettings(current);
         updateLogoPreview(orient, null, current.logoFederal);
-        updateSettingsPreview(orient);
+        const all = await loadSettings();
+        const app = all.app || { taillePolice: 'medium' };
+        updateSettingsPreview(orient, app);
       });
     });
     document.querySelectorAll('.btn-delete-logo-federal').forEach(btn => {
       btn.addEventListener('click', async () => {
-        if(!hasPermission('settings')) return;
+        if (!hasPermission('settings')) return;
         const orient = btn.dataset.orient;
         const current = (await loadSettings())[orient];
         current.logoFederal = null;
         if (orient === 'portrait') await savePortraitSettings(current);
         else await saveLandscapeSettings(current);
         updateLogoPreview(orient, current.logo, null);
-        updateSettingsPreview(orient);
+        const all = await loadSettings();
+        const app = all.app || { taillePolice: 'medium' };
+        updateSettingsPreview(orient, app);
       });
     });
 
     function bindBgRadio(orient) {
-      const colorRadio = document.getElementById(`${orient}BgColor`);
-      const imageRadio = document.getElementById(`${orient}BgImage`);
-      const colorPickerDiv = document.getElementById(`${orient}BgColorPicker`);
-      const imageUploadDiv = document.getElementById(`${orient}BgImageUpload`);
-      if (colorRadio && imageRadio) {
+      const colorRadio = safeId(`${orient}BgColor`);
+      const imageRadio = safeId(`${orient}BgImage`);
+      const colorPickerDiv = safeId(`${orient}BgColorPicker`);
+      const imageUploadDiv = safeId(`${orient}BgImageUpload`);
+      if (colorRadio && imageRadio && colorPickerDiv && imageUploadDiv) {
         colorRadio.addEventListener('change', () => { if (colorRadio.checked) { colorPickerDiv.classList.remove('d-none'); imageUploadDiv.classList.add('d-none'); updateSettingsPreview(orient); } });
         imageRadio.addEventListener('change', () => { if (imageRadio.checked) { colorPickerDiv.classList.add('d-none'); imageUploadDiv.classList.remove('d-none'); updateSettingsPreview(orient); } });
       }
@@ -1792,14 +2048,18 @@
     bindBgRadio('landscape');
 
     ['portraitHeaderText','portraitExtraText','portraitBackgroundColor','portraitLogoFile','portraitLogoFederalFile','portraitBgImageFile'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('change', () => updateSettingsPreview('portrait'));
-      if (el) el.addEventListener('input', () => updateSettingsPreview('portrait'));
+      const el = safeId(id);
+      if (el) {
+        el.addEventListener('change', () => updateSettingsPreview('portrait'));
+        el.addEventListener('input', () => updateSettingsPreview('portrait'));
+      }
     });
     ['landscapeHeaderText','landscapeExtraText','landscapeBackgroundColor','landscapeLogoFile','landscapeLogoFederalFile','landscapeBgImageFile'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('change', () => updateSettingsPreview('landscape'));
-      if (el) el.addEventListener('input', () => updateSettingsPreview('landscape'));
+      const el = safeId(id);
+      if (el) {
+        el.addEventListener('change', () => updateSettingsPreview('landscape'));
+        el.addEventListener('input', () => updateSettingsPreview('landscape'));
+      }
     });
 
     // ----- Export / Import (inchangé) -----
@@ -1832,51 +2092,75 @@
       if (data.settings) {
         if (data.settings.portrait) await savePortraitSettings(data.settings.portrait);
         if (data.settings.landscape) await saveLandscapeSettings(data.settings.landscape);
+        if (data.settings.app) await saveAppSettings(data.settings.app);
       }
     }
-    document.getElementById('btnExportDataOnly').onclick = async () => { const data = await getAllData(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = `idges_data_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    const btnExportDataOnly = safeId('btnExportDataOnly');
+    if (btnExportDataOnly) btnExportDataOnly.onclick = async () => { const data = await getAllData(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = `idges_data_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    const importDataOnlyFile = safeId('importDataOnlyFile');
     let importDataContent = null;
-    document.getElementById('importDataOnlyFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importDataContent = ev.target.result; r.readAsText(f); } };
-    document.getElementById('btnImportDataOnly').onclick = async () => { if (!importDataContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer toutes les données ?')) return; try { const d = JSON.parse(importDataContent); if (!d.users || !d.licences || !d.clubs) throw new Error(); await replaceAllData(d); alert('Données importées. Rechargement...'); location.reload(); } catch (e) { alert('Erreur'); } };
-    document.getElementById('btnClearData').onclick = async () => { if (confirm('Effacer tout ?')) { await replaceAllData({ users: [], licences: [], clubs: [] }); sessionStorage.removeItem('currentClub'); location.reload(); } };
-    document.getElementById('btnExportFull').onclick = async () => { const data = await getAllData(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = `idges_full_backup_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    if (importDataOnlyFile) {
+      importDataOnlyFile.onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importDataContent = ev.target.result; r.readAsText(f); } };
+    }
+    const btnImportDataOnly = safeId('btnImportDataOnly');
+    if (btnImportDataOnly) {
+      btnImportDataOnly.onclick = async () => { if (!importDataContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer toutes les données ?')) return; try { const d = JSON.parse(importDataContent); if (!d.users || !d.licences || !d.clubs) throw new Error(); await replaceAllData(d); alert('Données importées. Rechargement...'); location.reload(); } catch (e) { alert('Erreur'); } };
+    }
+    const btnClearData = safeId('btnClearData');
+    if (btnClearData) {
+      btnClearData.onclick = async () => { if (confirm('Effacer tout ?')) { await replaceAllData({ users: [], licences: [], clubs: [] }); sessionStorage.removeItem('currentClub'); location.reload(); } };
+    }
+    const btnExportFull = safeId('btnExportFull');
+    if (btnExportFull) {
+      btnExportFull.onclick = async () => { const data = await getAllData(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = `idges_full_backup_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    }
+    const importFullFile = safeId('importFullFile');
     let importFullContent = null;
-    document.getElementById('importFullFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importFullContent = ev.target.result; r.readAsText(f); } };
-    document.getElementById('btnImportFull').onclick = async () => { if (!importFullContent) return alert('Choisissez un fichier'); if (!confirm('Restaurer tout ?')) return; try { const d = JSON.parse(importFullContent); if (!d.users || !d.licences || !d.clubs || !d.settings) throw new Error(); await replaceAllData(d); alert('Sauvegarde restaurée. Rechargement...'); location.reload(); } catch (e) { alert('Erreur'); } };
-    document.getElementById('btnExportSettingsOnly').onclick = async () => { const s = await loadSettings(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(s)], { type: 'application/json' })); a.download = `idges_settings_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    if (importFullFile) {
+      importFullFile.onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importFullContent = ev.target.result; r.readAsText(f); } };
+    }
+    const btnImportFull = safeId('btnImportFull');
+    if (btnImportFull) {
+      btnImportFull.onclick = async () => { if (!importFullContent) return alert('Choisissez un fichier'); if (!confirm('Restaurer tout ?')) return; try { const d = JSON.parse(importFullContent); if (!d.users || !d.licences || !d.clubs || !d.settings) throw new Error(); await replaceAllData(d); alert('Sauvegarde restaurée. Rechargement...'); location.reload(); } catch (e) { alert('Erreur'); } };
+    }
+    const btnExportSettingsOnly = safeId('btnExportSettingsOnly');
+    if (btnExportSettingsOnly) {
+      btnExportSettingsOnly.onclick = async () => { const s = await loadSettings(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(s)], { type: 'application/json' })); a.download = `idges_settings_${new Date().toISOString().slice(0, 10)}.json`; a.click(); };
+    }
+    const importSettingsFile = safeId('importSettingsFile');
     let importSettingsContent = null;
-    document.getElementById('importSettingsFile').onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importSettingsContent = ev.target.result; r.readAsText(f); } };
-    document.getElementById('btnImportSettingsOnly').onclick = async () => { if (!importSettingsContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer la configuration ?')) return; try { const ns = JSON.parse(importSettingsContent); if (!ns.portrait || !ns.landscape) throw new Error(); await savePortraitSettings(ns.portrait); await saveLandscapeSettings(ns.landscape); alert('Paramètres importés'); await loadUISettings(); } catch (e) { alert('Erreur'); } };
+    if (importSettingsFile) {
+      importSettingsFile.onchange = e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => importSettingsContent = ev.target.result; r.readAsText(f); } };
+    }
+    const btnImportSettingsOnly = safeId('btnImportSettingsOnly');
+    if (btnImportSettingsOnly) {
+      btnImportSettingsOnly.onclick = async () => { if (!importSettingsContent) return alert('Choisissez un fichier'); if (!confirm('Remplacer la configuration ?')) return; try { const ns = JSON.parse(importSettingsContent); if (!ns.portrait || !ns.landscape) throw new Error(); await savePortraitSettings(ns.portrait); await saveLandscapeSettings(ns.landscape); if(ns.app) await saveAppSettings(ns.app); alert('Paramètres importés'); await loadUISettings(); } catch (e) { alert('Erreur'); } };
+    }
 
-    // ----- Utilisateurs (inchangé) -----
+    // ----- Utilisateurs -----
     function permsToCheckboxes(perms) {
-      document.getElementById('perm_clubs_view').checked = perms.clubs_view || false;
-      document.getElementById('perm_clubs_edit').checked = perms.clubs_edit || false;
-      document.getElementById('perm_licences_view').checked = perms.licences_view || false;
-      document.getElementById('perm_licences_edit').checked = perms.licences_edit || false;
-      document.getElementById('perm_import').checked = perms.import || false;
-      document.getElementById('perm_print').checked = perms.print || false;
-      document.getElementById('perm_settings').checked = perms.settings || false;
-      document.getElementById('perm_users').checked = perms.users || false;
+      const ids = ['perm_clubs_view','perm_clubs_edit','perm_licences_view','perm_licences_edit','perm_import','perm_print','perm_settings','perm_users'];
+      ids.forEach(id => { const el = safeId(id); if (el) el.checked = perms[id.replace('perm_','')] || false; });
     }
     function checkboxesToPerms() {
       return {
-        clubs_view: document.getElementById('perm_clubs_view').checked,
-        clubs_edit: document.getElementById('perm_clubs_edit').checked,
-        licences_view: document.getElementById('perm_licences_view').checked,
-        licences_edit: document.getElementById('perm_licences_edit').checked,
-        import: document.getElementById('perm_import').checked,
-        print: document.getElementById('perm_print').checked,
-        settings: document.getElementById('perm_settings').checked,
-        users: document.getElementById('perm_users').checked
+        clubs_view: safeId('perm_clubs_view')?.checked || false,
+        clubs_edit: safeId('perm_clubs_edit')?.checked || false,
+        licences_view: safeId('perm_licences_view')?.checked || false,
+        licences_edit: safeId('perm_licences_edit')?.checked || false,
+        import: safeId('perm_import')?.checked || false,
+        print: safeId('perm_print')?.checked || false,
+        settings: safeId('perm_settings')?.checked || false,
+        users: safeId('perm_users')?.checked || false
       };
     }
     async function refreshUsersList() {
-      if(!hasPermission('users')) return;
+      if (!hasPermission('users')) return;
       const users = await loadUsers();
       const tbody = document.querySelector('#usersTable tbody');
+      if (!tbody) return;
       tbody.innerHTML = '';
-      for(const u of users) {
+      for (const u of users) {
         const perms = u.permissions || {};
         const permSummary = Object.entries(perms).filter(([k,v])=>v).map(([k])=>k.substring(0,3)).join(', ');
         const tr = document.createElement('tr');
@@ -1890,67 +2174,82 @@
           const userId = parseInt(btn.dataset.id);
           const usersList = await loadUsers();
           const user = usersList.find(u => u.id === userId);
-          if(user) {
-            document.getElementById('editUserId').value = user.id;
-            document.getElementById('userUsername').value = user.username;
-            document.getElementById('userPassword').value = '';
+          if (user) {
+            const editUserId = safeId('editUserId');
+            if (editUserId) editUserId.value = user.id;
+            const userUsername = safeId('userUsername');
+            if (userUsername) userUsername.value = user.username;
+            const userPassword = safeId('userPassword');
+            if (userPassword) userPassword.value = '';
             permsToCheckboxes(user.permissions || {});
           }
         };
       });
       document.querySelectorAll('.delete-user-btn').forEach(btn => {
         btn.onclick = async () => {
-          if(!confirm(`Supprimer l'utilisateur ${btn.dataset.username} ?`)) return;
+          if (!confirm(`Supprimer l'utilisateur ${btn.dataset.username} ?`)) return;
           await deleteUser(parseInt(btn.dataset.id));
           await refreshUsersList();
         };
       });
     }
-    document.getElementById('userForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if(!hasPermission('users')) return alert('Permission insuffisante');
-      const userId = document.getElementById('editUserId').value;
-      const username = document.getElementById('userUsername').value.trim();
-      const password = document.getElementById('userPassword').value;
-      const perms = checkboxesToPerms();
-      if(!username) return alert('Nom requis');
-      const users = await loadUsers();
-      if(userId === '') { // création
-        if(users.find(u => u.username === username)) return alert('Nom déjà utilisé');
-        if(!password) return alert('Mot de passe requis pour nouvelle création');
-        await saveUser({ username, passwordHash: hashPwd(password), permissions: perms });
-      } else { // modification
-        const existing = users.find(u => u.id === parseInt(userId));
-        if(!existing) return alert('Utilisateur introuvable');
-        if(existing.username !== username && users.find(u => u.username === username)) return alert('Nom déjà utilisé');
-        existing.username = username;
-        if(password) existing.passwordHash = hashPwd(password);
-        existing.permissions = perms;
-        await updateUser(existing);
-        if(currentUser.id === existing.id) {
-          currentUser.username = username;
-          currentUserDisplay.textContent = `👤 ${username}`;
-          currentPermissions = perms;
-          applyPermissionsUI();
+    const userForm = safeId('userForm');
+    if (userForm) {
+      userForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!hasPermission('users')) return alert('Permission insuffisante');
+        const userId = safeId('editUserId')?.value || '';
+        const username = safeId('userUsername')?.value?.trim() || '';
+        const password = safeId('userPassword')?.value || '';
+        const perms = checkboxesToPerms();
+        if (!username) return alert('Nom requis');
+        const users = await loadUsers();
+        if (userId === '') {
+          if (users.find(u => u.username === username)) return alert('Nom déjà utilisé');
+          if (!password) return alert('Mot de passe requis pour nouvelle création');
+          await saveUser({ username, passwordHash: hashPwd(password), permissions: perms });
+        } else {
+          const existing = users.find(u => u.id === parseInt(userId));
+          if (!existing) return alert('Utilisateur introuvable');
+          if (existing.username !== username && users.find(u => u.username === username)) return alert('Nom déjà utilisé');
+          existing.username = username;
+          if (password) existing.passwordHash = hashPwd(password);
+          existing.permissions = perms;
+          await updateUser(existing);
+          if (currentUser.id === existing.id) {
+            currentUser.username = username;
+            if (currentUserDisplay) currentUserDisplay.textContent = `👤 ${username}`;
+            currentPermissions = perms;
+            applyPermissionsUI();
+          }
         }
-      }
-      document.getElementById('editUserId').value = '';
-      document.getElementById('userUsername').value = '';
-      document.getElementById('userPassword').value = '';
-      permsToCheckboxes({});
-      await refreshUsersList();
-    });
-    document.getElementById('cancelUserEdit').onclick = () => {
-      document.getElementById('editUserId').value = '';
-      document.getElementById('userUsername').value = '';
-      document.getElementById('userPassword').value = '';
-      permsToCheckboxes({});
-    };
+        const editUserId = safeId('editUserId');
+        if (editUserId) editUserId.value = '';
+        const userUsername = safeId('userUsername');
+        if (userUsername) userUsername.value = '';
+        const userPassword = safeId('userPassword');
+        if (userPassword) userPassword.value = '';
+        permsToCheckboxes({});
+        await refreshUsersList();
+      });
+    }
+    const cancelUserEdit = safeId('cancelUserEdit');
+    if (cancelUserEdit) {
+      cancelUserEdit.onclick = () => {
+        const editUserId = safeId('editUserId');
+        if (editUserId) editUserId.value = '';
+        const userUsername = safeId('userUsername');
+        if (userUsername) userUsername.value = '';
+        const userPassword = safeId('userPassword');
+        if (userPassword) userPassword.value = '';
+        permsToCheckboxes({});
+      };
+    }
 
     // ----- Authentification -----
     async function initAdmin() {
       const users = await loadUsers();
-      if(!users.some(u => u.username === 'admin')) {
+      if (!users.some(u => u.username === 'admin')) {
         await saveUser({
           username: 'admin',
           passwordHash: hashPwd('idges2025'),
@@ -1967,58 +2266,60 @@
       try {
         const users = await loadUsers();
         const user = users.find(u => u.username === username && u.passwordHash === hashPwd(password));
-        if(user){
+        if (user) {
           currentUser = { id: user.id, username: user.username };
           currentPermissions = user.permissions || {};
           sessionStorage.setItem('loggedUser', JSON.stringify(currentUser));
           sessionStorage.setItem('currentPermissions', JSON.stringify(currentPermissions));
           const saved = sessionStorage.getItem('currentClub');
-          if(saved) currentClub = JSON.parse(saved);
+          if (saved) currentClub = JSON.parse(saved);
           await showApp();
           return true;
         }
         return false;
-      } catch(e) {
+      } catch (e) {
         console.error('Erreur login:', e);
         return false;
       }
     }
-    function logout(){
+    function logout() {
       sessionStorage.removeItem('loggedUser');
       sessionStorage.removeItem('currentPermissions');
       sessionStorage.removeItem('currentClub');
-      currentUser=null; currentClub=null; currentPermissions=null;
-      loginPage.style.display='flex';
-      appContent.style.display='none';
+      currentUser = null; currentClub = null; currentPermissions = null;
+      if (loginPage) loginPage.style.display = 'flex';
+      if (appContent) appContent.style.display = 'none';
     }
-    async function showApp(){
+    async function showApp() {
       try {
-        loginPage.style.display='none';
-        appContent.style.display='block';
-        if(currentUser){
-          currentUserDisplay.textContent=`👤 ${currentUser.username}`;
+        if (loginPage) loginPage.style.display = 'none';
+        if (appContent) appContent.style.display = 'block';
+        if (currentUser && currentUserDisplay) {
+          currentUserDisplay.textContent = `👤 ${currentUser.username}`;
           applyPermissionsUI();
         }
         await refreshClubsList();
         await refreshLicenceList();
-        if(hasPermission('users')) await refreshUsersList();
+        if (hasPermission('users')) await refreshUsersList();
         switchTab('clubsTab');
         await loadUISettings();
         updateNumeroPreview();
-      } catch(e) {
+      } catch (e) {
         console.error('Erreur affichage app:', e);
         alert('Erreur lors du chargement de l\'application. Voir console.');
       }
     }
-    function switchTab(panelId){
-      document.querySelectorAll('#mainTabs .nav-link').forEach(l=>l.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('show','active'); p.style.display='none';});
-      const activeLink=document.querySelector(`#mainTabs .nav-link[data-panel="${panelId}"]`);
-      if(activeLink) activeLink.classList.add('active');
-      const activePane=document.querySelector(`.tab-pane[data-panel="${panelId}"]`);
-      if(activePane){activePane.classList.add('show','active'); activePane.style.display='block';}
+    function switchTab(panelId) {
+      document.querySelectorAll('#mainTabs .nav-link').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => { p.classList.remove('show', 'active'); p.style.display = 'none'; });
+      const activeLink = document.querySelector(`#mainTabs .nav-link[data-panel="${panelId}"]`);
+      if (activeLink) activeLink.classList.add('active');
+      const activePane = document.querySelector(`.tab-pane[data-panel="${panelId}"]`);
+      if (activePane) { activePane.classList.add('show', 'active'); activePane.style.display = 'block'; }
     }
-    document.querySelectorAll('#mainTabs .nav-link[data-panel]').forEach(link=>link.addEventListener('click',(e)=>{e.preventDefault(); switchTab(link.dataset.panel);}));
+    document.querySelectorAll('#mainTabs .nav-link[data-panel]').forEach(link => {
+      link.addEventListener('click', (e) => { e.preventDefault(); switchTab(link.dataset.panel); });
+    });
 
     // ----- Initialisation -----
     (async function () {
@@ -2027,26 +2328,36 @@
         await initAdmin();
         const savedUser = sessionStorage.getItem('loggedUser');
         const savedPerms = sessionStorage.getItem('currentPermissions');
-        if(savedUser && savedPerms){
+        if (savedUser && savedPerms) {
           currentUser = JSON.parse(savedUser);
           currentPermissions = JSON.parse(savedPerms);
           const savedClub = sessionStorage.getItem('currentClub');
-          if(savedClub) currentClub = JSON.parse(savedClub);
+          if (savedClub) currentClub = JSON.parse(savedClub);
           await showApp();
         } else {
-          loginPage.style.display='flex';
-          appContent.style.display='none';
+          if (loginPage) loginPage.style.display = 'flex';
+          if (appContent) appContent.style.display = 'none';
         }
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const username = document.getElementById('username').value.trim();
-          const password = document.getElementById('password').value;
-          const ok = await login(username, password);
-          if(!ok) alert('Identifiants incorrects');
-        });
-        document.getElementById('logoutBtn').addEventListener('click', () => { if(confirm('Déconnexion ?')) logout(); });
-        window.updateClubDisplay = async function(){ if(currentClub) sessionStorage.setItem('currentClub',JSON.stringify(currentClub)); else sessionStorage.removeItem('currentClub'); await updateClubDisplay(); };
-      } catch(e) {
+        const loginForm = safeId('loginForm');
+        if (loginForm) {
+          loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = safeId('username')?.value?.trim() || '';
+            const password = safeId('password')?.value || '';
+            const ok = await login(username, password);
+            if (!ok) alert('Identifiants incorrects');
+          });
+        }
+        const logoutBtn = safeId('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', () => { if (confirm('Déconnexion ?')) logout(); });
+        }
+        window.updateClubDisplay = async function() {
+          if (currentClub) sessionStorage.setItem('currentClub', JSON.stringify(currentClub));
+          else sessionStorage.removeItem('currentClub');
+          await updateClubDisplay();
+        };
+      } catch (e) {
         console.error('Erreur initialisation:', e);
         alert('Erreur au démarrage : ' + e.message);
       }
